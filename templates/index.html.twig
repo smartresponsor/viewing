@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ meta.title|default('Viewing / View') }}</title>
+</head>
+<body>
+    <main data-viewing-self="1">
+        <header>
+            <h1>{{ locations.body.title|default(meta.title|default('Viewing / View')) }}</h1>
+            <p>{{ locations.body.summary|default(meta.description|default('Central view boundary is active.')) }}</p>
+        </header>
+
+        <section aria-labelledby="viewing-boundary-heading">
+            <h2 id="viewing-boundary-heading">Boundary</h2>
+            <dl>
+                <dt>Surface</dt>
+                <dd>{{ view.surface|default('view') }}</dd>
+                <dt>Operation</dt>
+                <dd>{{ view.operation|default('index') }}</dd>
+                <dt>Component</dt>
+                <dd>{{ view.component|default('Viewing') }}</dd>
+                <dt>Selected template</dt>
+                <dd>{{ viewing.selected_template|default('@Viewing/index.html.twig') }}</dd>
+            </dl>
+        </section>
+
+        <section aria-labelledby="viewing-payload-heading">
+            <h2 id="viewing-payload-heading">Payload</h2>
+            <pre>{{ data|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+        </section>
+    </main>
+</body>
+</html>

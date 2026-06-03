@@ -1,0 +1,104 @@
+= Cruding Migration to Viewing
+:toc:
+
+== Goal
+
+Cruding should stop rendering templates and stop resolving interface/template providers directly.
+
+Cruding should produce neutral View Payloads and allow Viewing to decide the final response.
+
+== Step 1: simple index/show/profile surfaces
+
+Before:
+
+[source,php]
+----
+return $this->render('crud/vendor/show.html.twig', [
+    'vendor' => $vendor,
+]);
+----
+
+After:
+
+[source,php]
+----
+return [
+    '_view' => [
+        'surface' => 'vendor',
+        'operation' => 'show',
+        'intent' => 'profile',
+        'format' => 'auto',
+        'component' => 'Cruding',
+    ],
+    'locations' => [
+        'body' => [
+            'entity' => $vendor,
+        ],
+    ],
+    'meta' => [
+        'title' => 'Vendor profile',
+    ],
+];
+----
+
+== Step 2: forms/actions/bulk surfaces
+
+Use operation names such as:
+
+* `index`
+* `show`
+* `create`
+* `edit`
+* `delete`
+* `bulk`
+* `profile`
+
+Use `intent` only for semantic refinements such as `profile`, `workbench`, `review`, `wizard`, or `diagnostic`.
+
+== Step 3: remove old render paths
+
+Remove or disable:
+
+* Cruding template providers;
+* Cruding template adapters;
+* controller Twig injection;
+* direct template strings in `src/`;
+* fallback rendering inside controllers.
+
+== Step 4: guard with CI/Watchdog
+
+A controlled producer route should be rejected by CI if it directly renders HTML.
+
+The defensive response guard is runtime containment, not a substitute for source checks.
+
+== Wave 4 migration gate
+
+Before a Cruding migration patch is accepted, run:
+
+[source,shell]
+----
+php bin/console viewing:drift:check ../Cruding/src/Controller
+----
+
+Cruding must not keep a private renderer, template provider, template adapter, Twig injection, or direct `render()` path for controlled UI routes. It may keep explicit API/JSON, redirect, binary, or streamed responses where those are the real route contract.
+
+For the pilot migration, start with `index`, `show`, and `profile` operations and return only View Payload:
+
+[source,php]
+----
+return [
+    '_view' => [
+        'surface' => $resourceName,
+        'operation' => 'show',
+        'intent' => 'profile',
+        'format' => 'auto',
+        'component' => 'Cruding',
+    ],
+    'locations' => [
+        'body' => $payload,
+    ],
+    'meta' => [
+        'title' => $title,
+    ],
+];
+----

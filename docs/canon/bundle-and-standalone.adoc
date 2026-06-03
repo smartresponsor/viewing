@@ -1,0 +1,80 @@
+= Viewing Bundle and Standalone Canon
+:toc:
+
+== Package identity
+
+[source,text]
+----
+Repository/package: viewing/view
+Namespace: App\Viewing
+Bundle class: App\Viewing\ViewingBundle
+Twig namespace: @Viewing
+----
+
+== Bundle mode
+
+A host application enables the bundle in `config/bundles.php`:
+
+[source,php]
+----
+return [
+    App\Viewing\ViewingBundle::class => ['all' => true],
+];
+----
+
+If the host wants the Viewing diagnostic/home route, it imports:
+
+[source,php]
+----
+// config/routes/viewing.php
+return static function (Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator $routes): void {
+    $routes->import('@ViewingBundle/Resources/config/routes.php');
+};
+----
+
+Producer components do not need to depend on Viewing classes. They return the
+neutral View Payload shape.
+
+== Standalone mode
+
+The repository includes a small Symfony application shell for local/dev checks:
+
+[source,text]
+----
+config/bundles.php
+config/packages/framework.php
+config/packages/twig.php
+config/packages/viewing.php
+config/routes/viewing.php
+public/index.php
+bin/console
+src/Kernel.php
+----
+
+Standalone mode uses the same bundle, route file, controller, `kernel.view`
+subscriber, and template hierarchy. It is not a separate rendering architecture.
+
+== Self-processing rule
+
+Viewing's own controllers are not exempt:
+
+[source,text]
+----
+Viewing controller -> View Payload -> ViewKernelViewSubscriber -> template/JSON response
+----
+
+Forbidden in Viewing controllers:
+
+[source,text]
+----
+$this->render(...)
+renderView(...)
+Twig\Environment injection
+custom template provider
+manual .html.twig path lookup
+----
+
+== Local template rule
+
+`templates/index.html.twig` is the package local/home fallback. It is rendered
+by Viewing through the central boundary, not by a controller.

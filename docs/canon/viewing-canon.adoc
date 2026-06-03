@@ -1,0 +1,108 @@
+= Viewing/View Canon
+:toc:
+
+== Responsibility
+
+Viewing is the active view/render decision layer.
+
+It owns:
+
+* neutral View Payload normalization;
+* request/view context classification;
+* JSON vs HTML decision;
+* template candidate resolution;
+* Interfacing template consumption;
+* local fallback template consumption;
+* structured JSON fallback;
+* defensive `kernel.response` drift containment.
+
+Viewing does not own business CRUD behavior, domain entities, authentication, authorization, or template design internals.
+
+== Interfacing boundary
+
+Interfacing is passive from the outside. It owns templates, shells, layouts, partials, macros, and internal template inheritance.
+
+Interfacing must not inspect requests, discover producer components, decide route behavior, or become the active rendering dispatcher.
+
+== Producer boundary
+
+Producer components prepare business data and return a neutral View Payload.
+
+Forbidden inside producer UI controllers:
+
+* `render()`;
+* `renderView()`;
+* direct `Twig\Environment` rendering;
+* arbitrary `.html.twig` path strings;
+* component-specific template providers;
+* render adapters;
+* returning control to a controller after Viewing decision.
+
+Allowed outputs:
+
+* neutral View Payload array/DTO;
+* explicit `JsonResponse` for API endpoints;
+* `RedirectResponse` for real redirects;
+* binary/stream/file responses for file delivery;
+* webhook/health/metrics responses where explicitly outside UI surface.
+
+== Event ownership
+
+The normal path is `kernel.view`. The defensive path is `kernel.response`.
+
+The defensive path does not replace the normal path. It only contains drift when a controlled producer route illegally returns pre-rendered HTML.
+
+== Template fallback chain
+
+The canonical order is intentionally short and folder-based:
+
+[source,text]
+----
+1. Interfacing/templates/<resource>/index.html.twig
+   Twig: @Interfacing/<resource>/index.html.twig
+
+2. Interfacing/templates/index.html.twig
+   Twig: @Interfacing/index.html.twig
+
+3. <Component>/templates/index.html.twig
+   Twig: @<Component>/index.html.twig
+
+4. Viewing/templates/view/index.html.twig
+   Twig: @Viewing/view/index.html.twig
+
+5. Structured JSON fallback
+----
+
+The local component fallback is rendered by Viewing. It does not return control
+to the producer controller.
+
+== Traffic policy
+
+Bot traffic should return structured JSON and avoid template lookup.
+
+Human HTML traffic may resolve templates.
+
+Unknown traffic may be allowed, observed, or downgraded based on host policy.
+
+== Bundle and self-processing canon
+
+Viewing is a Symfony bundle and also contains a standalone development shell.
+The standalone shell is not a second architecture; it runs the same bundle,
+route import, `kernel.view` subscriber, template candidates, and JSON fallback.
+
+Viewing controllers are not exempt from the producer rule. If Viewing exposes
+its own routes, those controllers return View Payloads and do not render.
+
+For Viewing's own home surface, the effective template order is:
+
+[source,text]
+----
+@Interfacing/view/index.html.twig
+@Interfacing/index.html.twig
+@Viewing/index.html.twig
+@Viewing/view/index.html.twig
+JSON fallback
+----
+
+`@Viewing/index.html.twig` is the local/home fallback. It is rendered by
+Viewing's central subscriber, not by `ViewHomeController`.

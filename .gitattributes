@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.php text eol=lf
+*.adoc text eol=lf
+*.json text eol=lf
+*.twig text eol=lf

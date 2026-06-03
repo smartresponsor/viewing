@@ -1,0 +1,77 @@
+= Viewing Template Fallback Chain
+:toc:
+
+== Canon
+
+Viewing owns final response selection. Producer controllers must not render
+Twig, search templates, or call rendering providers. Local component fallback
+is allowed only as a template candidate rendered by Viewing.
+
+The hierarchy is intentionally simple and folder-based. The word `templates`
+below means the package filesystem template root, not an additional Twig path
+segment.
+
+== Candidate order
+
+[source,text]
+----
+1. Interfacing resource index
+   Interfacing/templates/<resource>/index.html.twig
+   Twig candidate: @Interfacing/<resource>/index.html.twig
+
+2. Interfacing root index
+   Interfacing/templates/index.html.twig
+   Twig candidate: @Interfacing/index.html.twig
+
+3. Local producer/component home index fallback
+   <Component>/templates/index.html.twig
+   Twig candidate: @<Component>/index.html.twig
+
+4. Viewing diagnostic fallback
+   Viewing/templates/view/index.html.twig
+   Twig candidate: @Viewing/view/index.html.twig
+
+5. Structured JSON fallback
+   Used when policy requires JSON, traffic is classified as JSON-only, or no
+   template candidate is usable.
+----
+
+== Viewing itself
+
+Viewing uses the same hierarchy for its own pages. For the home route the
+payload has `surface = view` and `component = Viewing`, so the effective order
+is:
+
+[source,text]
+----
+@Interfacing/view/index.html.twig
+@Interfacing/index.html.twig
+@Viewing/index.html.twig
+@Viewing/view/index.html.twig
+JSON fallback
+----
+
+The controller still returns only View Payload. `@Viewing/index.html.twig` is
+rendered by the central Viewing pipeline.
+
+== Resource naming
+
+`<resource>` is the neutral surface/resource directory name prepared by the
+producer payload. Examples: `vendor`, `user`, `order`, `payment`, `search`,
+`project`, `document`, `admin`, `view`.
+
+The producer component does not decide the physical Twig path. It only returns
+a neutral view payload such as `surface = vendor`; Viewing turns that into the
+Interfacing candidate `@Interfacing/vendor/index.html.twig`.
+
+== Important boundary
+
+A local component fallback template does not return control to the component.
+Viewing resolves and renders it centrally through the same request/view context,
+decision trace, and JSON fallback path.
+
+== Bot and JSON policy
+
+If the request context says the actor is a bot, or if the request/payload format
+requires JSON, template resolution is skipped. The response remains structured
+JSON and no Interfacing or local fallback lookup is performed.

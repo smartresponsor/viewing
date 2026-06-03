@@ -1,0 +1,351 @@
+{
+  "package": "viewing/view",
+  "component": "Viewing",
+  "namespace": "App\\Viewing",
+  "wave": "wave4-hardening-guardrails-traffic",
+  "generated_at": "2026-05-30T21:12:00-05:00",
+  "base": "viewing-view-wave3-cumulative.zip",
+  "description": "Viewing Wave 4: host-ready hardening, route/path exclusions, traffic actor classifier, production-safe diagnostics, response guard integration, drift checker command, migration checklists, and tests.",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 94,
+      "sha256": "50977d0ee1faac589985105349b0ca67d7bd2db2c721129c8f298dea2d7157b3"
+    },
+    {
+      "path": ".gitignore",
+      "size": 64,
+      "sha256": "91d04aebf921049b2675e77c8a7d97ddc01a0ef10b22d78ced0960f79576c792"
+    },
+    {
+      "path": "README.adoc",
+      "size": 5702,
+      "sha256": "32a6240abeb993a1ea0463b769dadefdda69c6dd5dd0342c8f297b0d331129f8"
+    },
+    {
+      "path": "Resources/config/routes.php",
+      "size": 249,
+      "sha256": "7e19bf131f99263a6316a668ee84d856d3dcd3ac7fc71cd49754089ef8a586f2"
+    },
+    {
+      "path": "Resources/config/services.php",
+      "size": 4979,
+      "sha256": "9a266bffdc53bbcee3067c9d6c62e5d29c26fa449b1a44e58275021a435ab3ba"
+    },
+    {
+      "path": "bin/console",
+      "size": 550,
+      "sha256": "cc1999984aee4100e3ed550cfe903b396a0d275d89a02d37e61c9f34df9973a1"
+    },
+    {
+      "path": "composer.json",
+      "size": 1152,
+      "sha256": "9984d0158cf800bbf55edbdfe03a603df62286ab282331d9da7b4c89e2895c55"
+    },
+    {
+      "path": "config/bundles.php",
+      "size": 222,
+      "sha256": "85bf0fa078364e8c3407d2d43819b16f77c88a0c97c13742b95d12c83890a4c3"
+    },
+    {
+      "path": "config/packages/framework.php",
+      "size": 336,
+      "sha256": "7c7f5eb1c8454b2b7b20e6bee6cdc174890b289e25823524254668bf0305f7bb"
+    },
+    {
+      "path": "config/packages/twig.php",
+      "size": 176,
+      "sha256": "8389b3ae38f81741e7313d4fe9641d942a7c6a3129bc18ed7d3f808ae8e71d27"
+    },
+    {
+      "path": "config/packages/viewing.php",
+      "size": 631,
+      "sha256": "8dce2e148257eb8eddf20302f1ee5d013586fb71cf0c1853347382178f8ce22f"
+    },
+    {
+      "path": "config/routes/viewing.php",
+      "size": 236,
+      "sha256": "b908faf462be07ae956a841a0a5afe6279217e4b43e82f46f7fd2c0d40aed0bf"
+    },
+    {
+      "path": "docs/adr/0001-central-view-boundary.adoc",
+      "size": 1160,
+      "sha256": "8f582477b8ea77e172ec3be962198600fb0384502108dd2b5938d1bd41ee7de2"
+    },
+    {
+      "path": "docs/adr/0002-template-fallback-chain.adoc",
+      "size": 1582,
+      "sha256": "53c5f0f7af5cf438b09ad2179fef800328bf4997c9a820b5dd0368c608fedc0d"
+    },
+    {
+      "path": "docs/adr/0003-connectable-and-self-processing.adoc",
+      "size": 1676,
+      "sha256": "06c30cd6095c48797f22cec478b1420991a76c9ecfcc346888a59015abebf99d"
+    },
+    {
+      "path": "docs/adr/0004-guardrails-and-traffic-policy.adoc",
+      "size": 1777,
+      "sha256": "abde7691aed50563f65ca08b9cfea5fb14da95e64c9b2f5ade11bbabff88ce86"
+    },
+    {
+      "path": "docs/canon/bundle-and-standalone.adoc",
+      "size": 1768,
+      "sha256": "420c0328ae42ba973e83f3a1f9aeb82485d501a8112dd51b0cb0037bfbab3565"
+    },
+    {
+      "path": "docs/canon/guardrails.adoc",
+      "size": 1080,
+      "sha256": "01773c6f430dccff993543ce78499594473d93fd74f5201f7453523e2faaea52"
+    },
+    {
+      "path": "docs/canon/template-fallback-chain.adoc",
+      "size": 2492,
+      "sha256": "45ded9f17607b7092785313e0ec2caf474a238317b30e223a6b611b7422bd290"
+    },
+    {
+      "path": "docs/canon/viewing-canon.adoc",
+      "size": 3277,
+      "sha256": "f493e1ecb235c7da0f67ac854f7c4cd1b6da110fce80267b2dbfbca0fb58cb78"
+    },
+    {
+      "path": "docs/migration/cruding-to-viewing.adoc",
+      "size": 2323,
+      "sha256": "a01c1734f2a96ccac199a6cf6066833143f83ca8c6c766651151bb6483a67dac"
+    },
+    {
+      "path": "docs/migration/host-integration-checklist.adoc",
+      "size": 1174,
+      "sha256": "f514ed3e8bdcbcee4a3b098a76de1371b205bb6f2258fee763149bd3135d6965"
+    },
+    {
+      "path": "phpstan.neon.dist",
+      "size": 103,
+      "sha256": "a6a7a619301da285ce946bf3663bacec4f83ee5d4f617b7d97ac1fd49fd234b4"
+    },
+    {
+      "path": "phpunit.xml.dist",
+      "size": 248,
+      "sha256": "b263379779d6da1e8acf00932e7592f02b8fe9db30bf0a4c13886de5b0376b04"
+    },
+    {
+      "path": "public/index.php",
+      "size": 388,
+      "sha256": "8c8df1cc0ac94188eb29d2b506115d09f8ea28fa25e7419130e6bb5cc129fbfa"
+    },
+    {
+      "path": "src/Command/ViewDriftCheckCommand.php",
+      "size": 2798,
+      "sha256": "8833585da9d6a11347343429a8c0da6324e983176ba69fe1f229afe60c059950"
+    },
+    {
+      "path": "src/Controller/View/ViewHomeController.php",
+      "size": 1562,
+      "sha256": "3049c2a7b9a320628c6d57dfb5c40bfacf32c69ce29790637662ec8190c1015a"
+    },
+    {
+      "path": "src/DependencyInjection/Configuration.php",
+      "size": 3083,
+      "sha256": "bfdfdd4a018ab2984f00987d63eff3964866c4ec2619c1591791b37d1469112c"
+    },
+    {
+      "path": "src/DependencyInjection/ViewingExtension.php",
+      "size": 2986,
+      "sha256": "fc41317588ff18a0c3cb5ae6c2b77a29824e7e21f0f856e4b1347e74c71713b3"
+    },
+    {
+      "path": "src/Exception/ViewPayloadException.php",
+      "size": 339,
+      "sha256": "8cc78ab486e0f0e95a68cb6ac0157bc4284607277967069594b81da3bcee1c69"
+    },
+    {
+      "path": "src/Kernel.php",
+      "size": 241,
+      "sha256": "75c4c31cefafef6233e9ec027006b8b340627d4459b3d7facac2834608b59548"
+    },
+    {
+      "path": "src/Service/View/ViewDecisionService.php",
+      "size": 2125,
+      "sha256": "bef890548b6953abcaa3bc81a97f42b39621039fdce7d99dbf4535ad303d2668"
+    },
+    {
+      "path": "src/Service/View/ViewJsonResponseFactory.php",
+      "size": 1461,
+      "sha256": "1a569bfe800ef4919cf4829a64de0e4536df52136a405981eb7127df3b5f1bd7"
+    },
+    {
+      "path": "src/Service/View/ViewPayloadNormalizer.php",
+      "size": 2609,
+      "sha256": "67cec474477c66a7bdf01cf92a22154a6bbeeafd78b2739a51835dbe51a2fc47"
+    },
+    {
+      "path": "src/Service/View/ViewRequestContextFactory.php",
+      "size": 1472,
+      "sha256": "951ecc323ad2a261ed3cd696cdbb9bc7ae470d96cd20c2192b497a12070d257d"
+    },
+    {
+      "path": "src/Service/View/ViewResponseGuardService.php",
+      "size": 2927,
+      "sha256": "87cc0b4e25fbb53b3207063bd2f44f777a4ac3d3fc6b8e2acc2c6356c6fdd32c"
+    },
+    {
+      "path": "src/Service/View/ViewRouteExclusionService.php",
+      "size": 1401,
+      "sha256": "0a73a14f8e246fb1a72acc982256584047efe82642d5d7d0fd71e70ca446eccc"
+    },
+    {
+      "path": "src/Service/View/ViewTemplateCandidateService.php",
+      "size": 3029,
+      "sha256": "36525f8486918f427f35ffa9efc6b5413938369df15e861c5dab43143eb5e764"
+    },
+    {
+      "path": "src/Service/View/ViewTemplateRenderer.php",
+      "size": 2195,
+      "sha256": "d445690d73515ee6ea9e19629a92e8830852fc1fd04e922923f6945aacdfff45"
+    },
+    {
+      "path": "src/Service/View/ViewTemplateResolver.php",
+      "size": 1771,
+      "sha256": "f3861c41cbb3a3a70d4d393bde04a79e0511af2e415a4802f65f81d8527ca6d7"
+    },
+    {
+      "path": "src/Service/View/ViewTrafficClassifier.php",
+      "size": 1258,
+      "sha256": "aea49a09ea6a1cae8d79778862659a6c80ea8bbd1c75e612d00e6c2d230bbf78"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewDecisionServiceInterface.php",
+      "size": 344,
+      "sha256": "ee29ff9d8eed406a49f081f78e5d81d732172ad3095053ca40332b675ef295d1"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewJsonResponseFactoryInterface.php",
+      "size": 423,
+      "sha256": "253258a92337e1c68aefeb60c2f51bb24538e891ffb2e3dcaf3418faeaba5a7c"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewPayloadNormalizerInterface.php",
+      "size": 296,
+      "sha256": "f3cf73ade22713c3f450a8dd59ea1749824efc46e8eccbef8757f4a33a4b48da"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewRequestContextFactoryInterface.php",
+      "size": 288,
+      "sha256": "e3f9311a6b8a3212f04213eb07717f804382815c431578a5d6b79f99e0b4b19a"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewResponseGuardServiceInterface.php",
+      "size": 382,
+      "sha256": "b0dfb05ff4a30149dd60a393acf2e15d2eead1aa5955e6b1bf908932b59c63af"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewRouteExclusionServiceInterface.php",
+      "size": 231,
+      "sha256": "3cbd59d8839569865a13ad820fe8c1a0001df3a1880f1e0bf9087585473d943c"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewTemplateCandidateServiceInterface.php",
+      "size": 353,
+      "sha256": "178537abbc5ecb1b89a64da43e7a44d6272dd29d143034ca566fc160ba9a531e"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewTemplateRendererInterface.php",
+      "size": 413,
+      "sha256": "c8f9d82a73805819333c70b17b530cb9ff87d99f8f541d3f607add0778825c2e"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewTemplateResolverInterface.php",
+      "size": 318,
+      "sha256": "8a1a75dd59b8d7915517517d36ec18bd2bc7a36ec15378a6d0de301f9400aead"
+    },
+    {
+      "path": "src/ServiceInterface/View/ViewTrafficClassifierInterface.php",
+      "size": 228,
+      "sha256": "15d549b79a4677d81a02fb90f3b49a378da375983a0567bd151c74a8667c3d44"
+    },
+    {
+      "path": "src/Subscriber/View/ViewKernelResponseGuardSubscriber.php",
+      "size": 1301,
+      "sha256": "2e7f00132dffff56321fb0a7d723a75ac05542eb925e3c3bc3267f481f8bcd3e"
+    },
+    {
+      "path": "src/Subscriber/View/ViewKernelViewSubscriber.php",
+      "size": 3036,
+      "sha256": "ed71a74c8c6941b9f1ff2f6e17a326025c1abea43ec4566a0250666c8d347ee7"
+    },
+    {
+      "path": "src/Subscriber/View/ViewTrafficRequestSubscriber.php",
+      "size": 1552,
+      "sha256": "6fe4d0e1910b62fc5d32e905baba765a8afbd5981e1bbd8888476446465c19bd"
+    },
+    {
+      "path": "src/Value/View/ViewDecision.php",
+      "size": 901,
+      "sha256": "a7817bc195b297d8161f5a0117598e6426ed6822d6f226a669a58a9d5f60f42a"
+    },
+    {
+      "path": "src/Value/View/ViewPayload.php",
+      "size": 1214,
+      "sha256": "5c30e65118e60e189ccaed0111c3146652362f21cc301b95d082a915e13675f5"
+    },
+    {
+      "path": "src/Value/View/ViewRequestContext.php",
+      "size": 590,
+      "sha256": "67fdcdaba9829b25ad779943bd20d8f0cdd5ba3b551bcd80613c34a7e0f2cf9d"
+    },
+    {
+      "path": "src/Value/View/ViewTemplateResolution.php",
+      "size": 1249,
+      "sha256": "7a21c987bd0b76c57f61976a170363fd52fe8771800c6ff79b53cc06b6b40f5b"
+    },
+    {
+      "path": "src/ViewingBundle.php",
+      "size": 235,
+      "sha256": "5d610ed3ab23ab3c6e86583164782dac8639fdf5b85b05ff5b2b6809923a90e5"
+    },
+    {
+      "path": "templates/index.html.twig",
+      "size": 1343,
+      "sha256": "e1816eb6898c154c4500fdd81140db573d3d8921f258c52ce29ec3ddffe72aa0"
+    },
+    {
+      "path": "templates/view/index.html.twig",
+      "size": 1425,
+      "sha256": "c17af9633ae9056ab5eb1dc895a37ce833bca3294a2c920442e0b8b58a6f638a"
+    },
+    {
+      "path": "tests/Unit/ViewDecisionServiceTest.php",
+      "size": 1207,
+      "sha256": "83833e3bd3ac1050789b8735ef8472a3f257980cda07b515a775cd393b768003"
+    },
+    {
+      "path": "tests/Unit/ViewHomeControllerTest.php",
+      "size": 697,
+      "sha256": "5472a78a718cb283465a8e1c45a1b513e88fefe4357ab1999596b573bdd7f46c"
+    },
+    {
+      "path": "tests/Unit/ViewPayloadNormalizerTest.php",
+      "size": 1028,
+      "sha256": "58c124c6c0c07b2aa1bacbee34a09dbb9410aab42b582d6845b62a53bce679f2"
+    },
+    {
+      "path": "tests/Unit/ViewRouteExclusionServiceTest.php",
+      "size": 1103,
+      "sha256": "22d57d8363c1e672ff6a5634859ca60d88ca1df3584761e6e99a41d194d665be"
+    },
+    {
+      "path": "tests/Unit/ViewTemplateCandidateServiceTest.php",
+      "size": 2782,
+      "sha256": "5af6ce01ccaa93e59a0d0870734321aab83e6194705b461dbdf3bd53fa002f74"
+    },
+    {
+      "path": "tests/Unit/ViewTemplateResolverTest.php",
+      "size": 981,
+      "sha256": "0bc991e3105071afaf9a308d0f9b9323291e3582b10988991865d646d843e926"
+    },
+    {
+      "path": "tests/Unit/ViewTrafficClassifierTest.php",
+      "size": 1250,
+      "sha256": "70ac0398c908cb9968e5997275f4d17b2601965c8618fd9e93c10da4214bc56e"
+    }
+  ]
+}

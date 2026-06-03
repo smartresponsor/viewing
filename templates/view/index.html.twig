@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ meta.title|default('Viewing diagnostic surface') }}</title>
+</head>
+<body>
+<main data-viewing-diagnostic="1">
+    <h1>{{ meta.title|default('Viewing diagnostic surface') }}</h1>
+    <p>Viewing rendered the controlled fallback diagnostic surface. A more specific host, Interfacing, or local component template was not selected.</p>
+
+    <section>
+        <h2>View</h2>
+        <dl>
+            <dt>Surface</dt><dd>{{ view.surface|default('') }}</dd>
+            <dt>Operation</dt><dd>{{ view.operation|default('') }}</dd>
+            <dt>Intent</dt><dd>{{ view.intent|default('') }}</dd>
+            <dt>Component</dt><dd>{{ view.component|default('') }}</dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Request</h2>
+        <dl>
+            <dt>Route</dt><dd>{{ request_context.route|default('') }}</dd>
+            <dt>Path</dt><dd>{{ request_context.path|default('') }}</dd>
+            <dt>Actor type</dt><dd>{{ request_context.actor_type|default('unknown') }}</dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Locations</h2>
+        <pre>{{ locations|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    </section>
+
+    <section>
+        <h2>Template resolution</h2>
+        <pre>{{ viewing.template_resolution|default({})|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    </section>
+</main>
+</body>
+</html>

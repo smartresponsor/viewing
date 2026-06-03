@@ -1,0 +1,49 @@
+= Viewing Host Integration Checklist
+:toc:
+
+== Bundle registration
+
+[source,php]
+----
+App\Viewing\ViewingBundle::class => ['all' => true],
+----
+
+== Route defaults for controlled UI surfaces
+
+Set controlled UI routes to opt into the response guard:
+
+[source,yaml]
+----
+defaults:
+  _view_controlled: true
+----
+
+The normal `kernel.view` path does not require this flag when controllers return View Payload. The flag is for defensive `kernel.response` containment when a controller incorrectly returns HTML.
+
+== Template hierarchy
+
+[source,text]
+----
+Interfacing/templates/<resource>/index.html.twig
+Interfacing/templates/index.html.twig
+<Component>/templates/index.html.twig
+Viewing/templates/view/index.html.twig
+structured JSON fallback
+----
+
+The producer local fallback is rendered only by Viewing.
+
+== Traffic behavior
+
+Bot actor values force JSON and skip template lookup. The default request attribute is `_view_actor_type`.
+
+== Drift check
+
+Run before accepting producer patches:
+
+[source,shell]
+----
+php bin/console viewing:drift:check path/to/Producer/src/Controller
+----
+
+Failures mean the producer attempted direct rendering or a custom render/template lookup path.

@@ -1,0 +1,51 @@
+= ADR 0003: Connectable and Self-Processing Viewing Component
+:toc:
+
+== Status
+
+Accepted.
+
+== Context
+
+Viewing must work as a Symfony bundle inside a host application and as a
+standalone development application. Its own controllers must not become an
+exception to the platform rule against controller-level rendering.
+
+== Decision
+
+Viewing registers itself as a bundle through `ViewingBundle` and
+`ViewingExtension`. The extension loads services and prepends the package
+`templates/` directory into Twig as `@Viewing`.
+
+Viewing routes are exported through `Resources/config/routes.php`. Host
+applications may import that file when they want the Viewing diagnostic/home
+surface. Standalone development imports the same route file from
+`config/routes/viewing.php`.
+
+Viewing's own controller returns a neutral View Payload. The same
+`kernel.view` subscriber converts that payload into HTML or JSON. The controller
+must not call Twig, `render()`, `renderView()`, or a custom template provider.
+
+== Template order for Viewing itself
+
+For the Viewing home surface, the regular hierarchy is used:
+
+[source,text]
+----
+@Interfacing/view/index.html.twig
+@Interfacing/index.html.twig
+@Viewing/index.html.twig
+@Viewing/view/index.html.twig
+structured JSON fallback
+----
+
+`@Viewing/index.html.twig` is the local/home fallback rendered by Viewing
+itself. It is not rendered by the controller.
+
+== Consequences
+
+* Viewing can be installed as a bundle without coupling producer components to
+  Viewing classes.
+* Viewing can run as a standalone Symfony app for development checks.
+* Viewing proves its own rule: controller output remains data, final response
+  selection remains centralized.

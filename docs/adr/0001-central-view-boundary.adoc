@@ -1,0 +1,34 @@
+= ADR 0001: Central View Boundary
+:toc:
+
+== Status
+
+Accepted for initial implementation.
+
+== Context
+
+Producer components previously performed their own template lookup and rendering. During AI-assisted development this caused drift: each component could invent a new provider, adapter, direct Twig path, or local controller rendering contract.
+
+== Decision
+
+Create a separate `viewing/view` component that owns the final view decision at the Symfony event boundary.
+
+Producer controllers return neutral data. Viewing converts that data to a response through `kernel.view`.
+
+`kernel.response` is used only as a defensive guard for controlled producer routes that illegally return already-rendered HTML.
+
+== Consequences
+
+Positive:
+
+* one render contract;
+* less AI drift;
+* bot traffic can bypass template lookup;
+* Interfacing remains passive;
+* producer components do not depend on Interfacing namespaces.
+
+Negative:
+
+* controlled routes must return a valid View Payload;
+* illegal pre-rendered HTML may lose source data and can only be contained, not fully recovered;
+* migration requires removing producer-level render providers and template lookup paths.

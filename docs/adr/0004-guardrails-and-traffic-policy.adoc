@@ -1,0 +1,45 @@
+= ADR 0004: Guardrails and Traffic Policy
+:toc:
+
+== Status
+
+Accepted for Wave 4.
+
+== Context
+
+Viewing must be connectable to a host application without letting producer components regain rendering control. AI-assisted development may introduce direct controller rendering, Twig injection, custom template providers, or local render adapters. Viewing also needs basic traffic decisions so bot requests can receive JSON without template lookup.
+
+== Decision
+
+Viewing owns two complementary controls:
+
+* runtime controls through Symfony subscribers and services;
+* static guardrails through a console drift checker.
+
+Runtime controls:
+
+[source,text]
+----
+kernel.request  -> ViewTrafficRequestSubscriber marks actor type when obvious
+kernel.view     -> ViewKernelViewSubscriber converts View Payload to HTML or JSON
+kernel.response -> ViewKernelResponseGuardSubscriber replaces illegal controlled HTML responses
+----
+
+Path and route exclusions protect Symfony/system surfaces such as profiler, assets, health, metrics, robots, and sitemap endpoints.
+
+Diagnostic mode is configurable:
+
+[source,text]
+----
+off   -> minimal JSON viewing metadata
+safe  -> route/path/method/format/actor metadata
+debug -> safe metadata plus template candidate trace
+----
+
+== Consequences
+
+Producer controllers remain data producers only. Local component fallback templates are rendered by Viewing, not by the controller.
+
+The traffic classifier is intentionally conservative. It detects obvious bot user agents and basic browser fetch headers. More advanced traffic/security policy may later move to a separate component if the trigger set grows.
+
+The response guard cannot recover lost View Payload data after illegal direct rendering. It is a containment mechanism, not the preferred execution path.

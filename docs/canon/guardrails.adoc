@@ -1,0 +1,33 @@
+= Viewing Guardrails Canon
+:toc:
+
+== Non-negotiable rules
+
+Controlled producer controllers must not:
+
+* call `$this->render()`;
+* call `renderView()`;
+* inject or use `Twig\Environment`;
+* reference `.html.twig` paths directly;
+* introduce custom render providers, template providers, render adapters, or interface resolvers.
+
+Controlled producer controllers must return View Payload, explicit JSON/API responses, redirects, binary responses, or streamed responses.
+
+== Runtime guard
+
+`ViewKernelResponseGuardSubscriber` replaces illegal pre-rendered HTML only for controlled routes and only after exclusions are applied.
+
+== Static guard
+
+Use:
+
+[source,shell]
+----
+php bin/console viewing:drift:check src/Controller
+----
+
+In a host application, run the same command against producer controller directories before merging AI-generated patches.
+
+== Exclusions
+
+System/debug/infrastructure routes are excluded from Viewing runtime interception by path or route pattern. Profiler, debug toolbar, assets, health, metrics, robots, and sitemap routes must not be normalized by Viewing.

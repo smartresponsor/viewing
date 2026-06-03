@@ -1,0 +1,51 @@
+= ADR 0002: Canonical Template Fallback Chain
+:toc:
+
+== Status
+
+Accepted.
+
+== Context
+
+Producer components previously drifted between direct Twig rendering, custom
+providers, adapters, and component-specific interface/template lookup logic.
+That allowed AI-assisted changes to create new rendering contracts inside each
+component.
+
+Viewing must therefore own final response selection and must keep the fallback
+chain industrial, explicit, and easy to audit.
+
+== Decision
+
+Viewing resolves templates in this exact order:
+
+[source,text]
+----
+1. @Interfacing/<resource>/index.html.twig
+   Filesystem: Interfacing/templates/<resource>/index.html.twig
+
+2. @Interfacing/index.html.twig
+   Filesystem: Interfacing/templates/index.html.twig
+
+3. @<Component>/index.html.twig
+   Filesystem: <Component>/templates/index.html.twig
+
+4. @Viewing/view/index.html.twig
+   Filesystem: Viewing/templates/view/index.html.twig
+
+5. Structured JSON fallback
+----
+
+The local component template is not rendered by the component controller. It is
+rendered by Viewing only after the Interfacing resource index and Interfacing
+root index are unavailable.
+
+== Consequences
+
+* Producer controllers return View Payload data only.
+* Producer controllers do not call `render()`, `renderView()`, Twig, template
+  providers, or adapters.
+* Interfacing remains passive and externally inert.
+* Viewing can apply traffic triggers before template lookup; for example, bot
+  traffic can receive JSON without touching Interfacing or local templates.
+* The fallback chain is short enough for CI/Watchdog rules to validate.
