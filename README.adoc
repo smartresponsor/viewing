@@ -15,7 +15,7 @@ It keeps producer components from rendering templates directly. Producer control
 * Main event boundary: `kernel.view`
 * Defensive event boundary: `kernel.response`
 * Producer components: data producers only
-* Interfacing: passive template/layout provider only
+* Interfacing: passive templates/layout provider only
 * Viewing: active view/render decision layer
 
 == Main rule
@@ -185,3 +185,4 @@ php bin/console viewing:drift:check ../Cruding/src/Controller
 ----
 
 A failing drift check means the producer is trying to regain rendering control and must be migrated back to View Payload output.
+

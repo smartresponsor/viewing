@@ -26,10 +26,10 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
         // Interfacing owns passive noun-surface templates. Runtime lookup is
         // intentionally folder-based: route operations are payload context, not
         // physical template filenames.
-        // Filesystem: Interfacing/template/<resource>/index.html.twig
+        // Filesystem: Interfacing/templates/<resource>/index.html.twig
         $candidates[] = sprintf('@%s/%s/index.html.twig', $this->interfacingTwigNamespace, $resource);
 
-        // Filesystem: Interfacing/template/index.html.twig
+        // Filesystem: Interfacing/templates/index.html.twig
         $candidates[] = sprintf('@%s/index.html.twig', $this->interfacingTwigNamespace);
 
         foreach ($this->localComponentCandidates($payload) as $candidate) {
