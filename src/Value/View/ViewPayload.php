@@ -38,6 +38,9 @@ final readonly class ViewPayload
                 'format' => $this->format,
                 'component' => $this->component,
             ],
+            'interface' => [
+                'locations' => $this->locations,
+            ],
             'locations' => $this->locations,
             'data' => $this->data,
             'meta' => $this->meta,

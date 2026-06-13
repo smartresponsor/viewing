@@ -26,10 +26,13 @@ final readonly class ViewHomeController
                 'format' => 'auto',
                 'component' => 'Viewing',
             ],
-            'locations' => [
-                'body' => [
-                    'title' => 'Viewing / View',
-                    'summary' => 'Central Symfony view boundary for Smart Responsor component payloads.',
+            'interface' => [
+                'locations' => [
+                    'shell.main.content' => [[
+                        'type' => 'text',
+                        'label' => 'Viewing / View',
+                        'description' => 'Central Symfony view boundary for Smart Responsor component payloads.',
+                    ]],
                 ],
             ],
             'data' => [

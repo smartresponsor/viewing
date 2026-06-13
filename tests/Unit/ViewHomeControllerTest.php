@@ -16,7 +16,8 @@ final class ViewHomeControllerTest extends TestCase
         self::assertSame('view', $payload['_view']['surface']);
         self::assertSame('index', $payload['_view']['operation']);
         self::assertSame('Viewing', $payload['_view']['component']);
-        self::assertArrayHasKey('locations', $payload);
+        self::assertArrayHasKey('interface', $payload);
+        self::assertArrayHasKey('locations', $payload['interface']);
         self::assertArrayHasKey('data', $payload);
         self::assertArrayHasKey('meta', $payload);
     }

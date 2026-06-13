@@ -64,11 +64,25 @@ final class ViewPayloadNormalizer implements ViewPayloadNormalizerInterface
             format: \is_string($format) && '' !== trim($format) ? trim($format) : 'auto',
             intent: \is_string($intent) && '' !== trim($intent) ? trim($intent) : null,
             component: \is_string($component) && '' !== trim($component) ? trim($component) : null,
-            locations: \is_array($controllerResult['locations'] ?? null) ? $controllerResult['locations'] : [],
+            locations: $this->interfaceLocationsFromControllerResult($controllerResult),
             data: \is_array($controllerResult['data'] ?? null) ? $controllerResult['data'] : [],
             meta: \is_array($controllerResult['meta'] ?? null) ? $controllerResult['meta'] : [],
             debug: \is_array($controllerResult['debug'] ?? null) ? $controllerResult['debug'] : [],
         );
+    }
+
+    /**
+     * @param array<string, mixed> $controllerResult
+     *
+     * @return array<string, mixed>
+     */
+    private function interfaceLocationsFromControllerResult(array $controllerResult): array
+    {
+        if (\is_array($controllerResult['interface'] ?? null) && \is_array($controllerResult['interface']['locations'] ?? null)) {
+            return $controllerResult['interface']['locations'];
+        }
+
+        return \is_array($controllerResult['locations'] ?? null) ? $controllerResult['locations'] : [];
     }
 
     /**
@@ -154,19 +168,19 @@ final class ViewPayloadNormalizer implements ViewPayloadNormalizerInterface
      */
     private function locationsFrom(array $templateContext, array $fallbackData): array
     {
+        if (\is_array($templateContext['interface'] ?? null) && \is_array($templateContext['interface']['locations'] ?? null)) {
+            return $templateContext['interface']['locations'];
+        }
+
+        if (\is_array($fallbackData['interface'] ?? null) && \is_array($fallbackData['interface']['locations'] ?? null)) {
+            return $fallbackData['interface']['locations'];
+        }
+
         if (\is_array($templateContext['locations'] ?? null)) {
             return $templateContext['locations'];
         }
 
-        if (\is_array($fallbackData['locations'] ?? null)) {
-            return $fallbackData['locations'];
-        }
-
-        if (\is_array($templateContext['slots'] ?? null)) {
-            return $templateContext['slots'];
-        }
-
-        return \is_array($fallbackData['slots'] ?? null) ? $fallbackData['slots'] : [];
+        return \is_array($fallbackData['locations'] ?? null) ? $fallbackData['locations'] : [];
     }
 
     /**

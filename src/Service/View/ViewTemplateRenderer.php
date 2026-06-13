@@ -29,6 +29,9 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
             try {
                 $renderContext = [
                     'view' => $payload->toArray()['_view'],
+                    'interface' => [
+                        'locations' => $payload->locations,
+                    ],
                     'locations' => $payload->locations,
                     'data' => $payload->data,
                     'meta' => $payload->meta,
@@ -52,11 +55,9 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                     ],
                 ];
 
-                // Legacy surface templates expect variables such as word, slots,
-                // forms, rows, filters, and selected entities at the top level.
                 // Viewing keeps its reserved keys authoritative, then exposes
-                // producer payload data as template context for a non-breaking
-                // migration away from direct controller rendering.
+                // producer payload data as template context after the canonical
+                // interface.locations projection has been assembled.
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
             } catch (Error) {
                 continue;

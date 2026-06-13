@@ -8,8 +8,8 @@
 <body>
     <main data-viewing-self="1">
         <header>
-            <h1>{{ locations.body.title|default(meta.title|default('Viewing / View')) }}</h1>
-            <p>{{ locations.body.summary|default(meta.description|default('Central view boundary is active.')) }}</p>
+            <h1>{{ interface.locations['shell.main.content'][0].label|default(meta.title|default('Viewing / View')) }}</h1>
+            <p>{{ interface.locations['shell.main.content'][0].description|default(meta.description|default('Central view boundary is active.')) }}</p>
         </header>
 
         <section aria-labelledby="viewing-boundary-heading">

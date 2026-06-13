@@ -20,8 +20,10 @@ final class ViewPayloadNormalizerTest extends TestCase
                 'intent' => 'profile',
                 'component' => 'Cruding',
             ],
-            'locations' => [
-                'body' => ['entity' => ['id' => 'v1']],
+            'interface' => [
+                'locations' => [
+                    'shell.main.content' => [['type' => 'text', 'label' => 'Vendor']],
+                ],
             ],
             'meta' => ['title' => 'Vendor'],
         ]);
@@ -31,6 +33,7 @@ final class ViewPayloadNormalizerTest extends TestCase
         self::assertSame('profile', $payload->intent);
         self::assertSame('Cruding', $payload->component);
         self::assertSame(['title' => 'Vendor'], $payload->meta);
+        self::assertSame('Vendor', $payload->locations['shell.main.content'][0]['label'] ?? null);
     }
 
     public function testNormalizesSurfaceObjectUsingRouteContextSurfaceBeforeWord(): void
@@ -42,7 +45,7 @@ final class ViewPayloadNormalizerTest extends TestCase
         self::assertSame('compliance', $payload->surface);
         self::assertSame('briefing', $payload->operation);
         self::assertSame('surface', $payload->intent);
-        self::assertSame('main payload', $payload->locations['body']['text'] ?? null);
+        self::assertSame('main payload', $payload->locations['shell.main.content'][0]['label'] ?? null);
         self::assertSame('crud', $payload->data['word'] ?? null);
         self::assertSame('compliance', $payload->data['routeContext']['surfacePath'] ?? null);
     }
@@ -66,8 +69,10 @@ final class ViewPayloadNormalizerSurfaceStub
                     'operation' => 'briefing',
                 ],
             ],
-            'locations' => [
-                'body' => ['text' => 'main payload'],
+            'interface' => [
+                'locations' => [
+                    'shell.main.content' => [['type' => 'text', 'label' => 'main payload']],
+                ],
             ],
             'meta' => ['title' => 'Compliance'],
         ];
@@ -81,7 +86,7 @@ final class ViewPayloadNormalizerSurfaceStub
         return [
             'word' => 'crud',
             'view' => 'briefing',
-            'locations' => [],
+            'interface' => ['locations' => []],
         ];
     }
 }
