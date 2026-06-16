@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"App\\Viewing\\Test\\Unit\\ViewTemplateRendererTest::testTemplateThrowableFallsBackToJsonPath":0.017,"App\\Viewing\\Test\\Unit\\ViewTemplateRendererTest::testStatusCodeDefaultsToOkWhenPayloadHasNoExplicitCode":0.005}}

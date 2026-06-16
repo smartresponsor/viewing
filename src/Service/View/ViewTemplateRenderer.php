@@ -4,35 +4,47 @@ declare(strict_types=1);
 
 namespace App\Viewing\Service\View;
 
+use App\ServiceInterface\InterfaceLocation\AppInterfaceLocationComposeServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
 use App\Viewing\Value\View\ViewDecision;
 use App\Viewing\Value\View\ViewPayload;
 use App\Viewing\Value\View\ViewRequestContext;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use Twig\Error\Error;
 
 final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterface
 {
     public function __construct(
         private Environment $twig,
         private ViewTemplateResolverInterface $templateResolver,
+        private RequestStack $requestStack,
+        private ?AppInterfaceLocationComposeServiceInterface $interfaceLocationComposeService = null,
     ) {
     }
 
     public function render(ViewPayload $payload, ViewRequestContext $context, ViewDecision $decision): ?Response
     {
         $resolution = $this->templateResolver->resolve($decision->templateCandidates);
+        $locations = $payload->locations;
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (null !== $request && null !== $this->interfaceLocationComposeService) {
+            $locations = $this->mergeLocations(
+                $locations,
+                $this->interfaceLocationComposeService->composeLocations($request),
+            );
+        }
 
         foreach ($resolution->availableCandidates as $candidate) {
             try {
                 $renderContext = [
                     'view' => $payload->toArray()['_view'],
                     'interface' => [
-                        'locations' => $payload->locations,
+                        'locations' => $locations,
                     ],
-                    'locations' => $payload->locations,
+                    'locations' => $locations,
                     'data' => $payload->data,
                     'meta' => $payload->meta,
                     'debug' => $payload->debug,
@@ -59,7 +71,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 // producer payload data as template context after the canonical
                 // interface.locations projection has been assembled.
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
-            } catch (Error) {
+            } catch (\Throwable) {
                 continue;
             }
 
@@ -86,5 +98,20 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         }
 
         return Response::HTTP_OK;
+    }
+
+    /**
+     * @param array<string, list<array<string, mixed>>> $left
+     * @param array<string, list<array<string, mixed>>> $right
+     *
+     * @return array<string, list<array<string, mixed>>>
+     */
+    private function mergeLocations(array $left, array $right): array
+    {
+        foreach ($right as $location => $blocks) {
+            $left[$location] = array_values(array_merge($left[$location] ?? [], $blocks));
+        }
+
+        return $left;
     }
 }
