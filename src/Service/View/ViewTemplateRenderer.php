@@ -101,6 +101,9 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
     }
 
     /**
+     * App-composed locations are authoritative for every location they publish.
+     * Producer locations remain available only where App has no projection.
+     *
      * @param array<string, list<array<string, mixed>>> $left
      * @param array<string, list<array<string, mixed>>> $right
      *
@@ -109,7 +112,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
     private function mergeLocations(array $left, array $right): array
     {
         foreach ($right as $location => $blocks) {
-            $left[$location] = array_values(array_merge($left[$location] ?? [], $blocks));
+            $left[$location] = array_values($blocks);
         }
 
         return $left;
