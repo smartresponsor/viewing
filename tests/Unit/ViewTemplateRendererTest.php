@@ -61,4 +61,36 @@ final class ViewTemplateRendererTest extends TestCase
         self::assertInstanceOf(Response::class, $response);
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
+
+    public function testAppComposedLocationReplacesProducerLocationWithoutDuplicatingItems(): void
+    {
+        $twig = $this->createMock(Environment::class);
+        $resolver = $this->createMock(ViewTemplateResolverInterface::class);
+        $renderer = new ViewTemplateRenderer($twig, $resolver, new RequestStack());
+
+        $method = new \ReflectionMethod($renderer, 'mergeLocations');
+        $method->setAccessible(true);
+
+        $locations = $method->invoke($renderer, [
+            'shell.left.middle' => [
+                ['key' => 'vendor', 'href' => '/vendor/index'],
+            ],
+            'shell.main.toolbar' => [
+                ['key' => 'producer-action'],
+            ],
+        ], [
+            'shell.left.middle' => [
+                ['key' => 'vendor', 'href' => '/vendor/index'],
+                ['key' => 'order', 'href' => '/order/index'],
+            ],
+        ]);
+
+        self::assertSame([
+            ['key' => 'vendor', 'href' => '/vendor/index'],
+            ['key' => 'order', 'href' => '/order/index'],
+        ], $locations['shell.left.middle']);
+        self::assertSame([
+            ['key' => 'producer-action'],
+        ], $locations['shell.main.toolbar']);
+    }
 }
