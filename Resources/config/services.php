@@ -10,6 +10,7 @@ use App\Viewing\Service\View\ViewResponseGuardService;
 use App\Viewing\Service\View\ViewRouteExclusionService;
 use App\Viewing\Service\View\ViewTemplateCandidateService;
 use App\Viewing\Service\View\ViewTemplateRenderer;
+use App\Viewing\Service\View\ViewObjectPayloadNormalizer;
 use App\Viewing\Service\View\ViewTemplateResolver;
 use App\Viewing\Service\View\ViewTrafficClassifier;
 use App\Viewing\ServiceInterface\View\ViewDecisionServiceInterface;
@@ -19,6 +20,7 @@ use App\Viewing\ServiceInterface\View\ViewRequestContextFactoryInterface;
 use App\Viewing\ServiceInterface\View\ViewResponseGuardServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewRouteExclusionServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateCandidateServiceInterface;
+use App\Viewing\ServiceInterface\View\ViewObjectPayloadNormalizerInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
 use App\Viewing\ServiceInterface\View\ViewTrafficClassifierInterface;
@@ -38,6 +40,7 @@ return static function (ContainerConfigurator $container): void {
         ->exclude('../../src/{DependencyInjection,Value,ViewingBundle.php,Kernel.php}');
 
     $services->alias(ViewPayloadNormalizerInterface::class, ViewPayloadNormalizer::class);
+    $services->alias(ViewObjectPayloadNormalizerInterface::class, ViewObjectPayloadNormalizer::class);
     $services->alias(ViewRequestContextFactoryInterface::class, ViewRequestContextFactory::class);
     $services->alias(ViewDecisionServiceInterface::class, ViewDecisionService::class);
     $services->alias(ViewTemplateCandidateServiceInterface::class, ViewTemplateCandidateService::class);

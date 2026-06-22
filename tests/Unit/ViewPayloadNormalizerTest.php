@@ -36,22 +36,22 @@ final class ViewPayloadNormalizerTest extends TestCase
         self::assertSame('Vendor', $payload->locations['shell.main.content'][0]['label'] ?? null);
     }
 
-    public function testNormalizesSurfaceObjectUsingRouteContextSurfaceBeforeWord(): void
+    public function testNormalizesObjectPayloadUsingRouteContextBeforeWord(): void
     {
         $normalizer = new ViewPayloadNormalizer();
 
-        $payload = $normalizer->normalize(new ViewPayloadNormalizerSurfaceStub());
+        $payload = $normalizer->normalize(new ViewPayloadNormalizerObjectStub());
 
         self::assertSame('compliance', $payload->surface);
         self::assertSame('briefing', $payload->operation);
-        self::assertSame('surface', $payload->intent);
+        self::assertSame('object', $payload->intent);
         self::assertSame('main payload', $payload->locations['shell.main.content'][0]['label'] ?? null);
         self::assertSame('crud', $payload->data['word'] ?? null);
         self::assertSame('compliance', $payload->data['routeContext']['surfacePath'] ?? null);
     }
 }
 
-final class ViewPayloadNormalizerSurfaceStub
+final class ViewPayloadNormalizerObjectStub
 {
     /**
      * @return array<string, mixed>
