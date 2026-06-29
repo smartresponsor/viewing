@@ -37,6 +37,13 @@ final readonly class ViewDecisionService implements ViewDecisionServiceInterface
             return new ViewDecision(ViewDecision::MODE_JSON, ['payload_format_json']);
         }
 
+        if (
+            true === ($context->routeAttributes['_view_controlled'] ?? false)
+            && 'html' === strtolower($context->requestFormat)
+        ) {
+            return new ViewDecision(ViewDecision::MODE_HTML, ['view_controlled_html_route']);
+        }
+
         if ($context->prefersJson && !$context->prefersHtml) {
             return new ViewDecision(ViewDecision::MODE_JSON, ['accept_header_prefers_json']);
         }

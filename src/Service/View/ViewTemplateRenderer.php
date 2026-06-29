@@ -71,7 +71,18 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 // producer payload data as template context after the canonical
                 // interface.locations projection has been assembled.
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
-            } catch (\Throwable) {
+            } catch (\Throwable $exception) {
+                if (null !== $request) {
+                    $failures = $request->attributes->get('_view_render_failures');
+                    $failures = \is_array($failures) ? $failures : [];
+                    $failures[] = [
+                        'template' => $candidate,
+                        'exception' => $exception::class,
+                        'message' => mb_substr($exception->getMessage(), 0, 300),
+                    ];
+                    $request->attributes->set('_view_render_failures', $failures);
+                }
+
                 continue;
             }
 

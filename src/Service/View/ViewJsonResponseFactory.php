@@ -23,13 +23,13 @@ final readonly class ViewJsonResponseFactory implements ViewJsonResponseFactoryI
     public function create(ViewPayload $payload, ViewRequestContext $context, ViewDecision $decision): JsonResponse
     {
         $data = $payload->toArray();
-        $data['_viewing'] = [
+        $viewing = [
             'mode' => $decision->mode,
             'reasons' => $decision->reasons,
         ];
 
         if ('off' !== $this->diagnosticMode) {
-            $data['_viewing'] += [
+            $viewing += [
                 'route' => $context->routeName,
                 'path' => $context->path,
                 'method' => $context->method,
@@ -39,8 +39,16 @@ final readonly class ViewJsonResponseFactory implements ViewJsonResponseFactoryI
         }
 
         if ('debug' === $this->diagnosticMode && [] !== $decision->templateCandidates) {
-            $data['_viewing']['template_candidates'] = $decision->templateCandidates;
+            $viewing['template_candidates'] = $decision->templateCandidates;
         }
+
+        $data = [
+            '_view' => $data['_view'] ?? null,
+            '_viewing' => $viewing,
+        ] + array_diff_key($data, [
+            '_view' => true,
+            '_viewing' => true,
+        ]);
 
         $json = json_encode($data, self::JSON_FLAGS);
         if (false === $json) {

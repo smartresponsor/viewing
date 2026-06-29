@@ -73,10 +73,20 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
             return;
         }
 
+        $fallbackReasons = ['template_missing_json_fallback'];
+        $renderFailures = $event->getRequest()->attributes->get('_view_render_failures');
+        if (\is_array($renderFailures) && [] !== $renderFailures) {
+            $firstFailure = $renderFailures[0] ?? [];
+            $exception = \is_array($firstFailure) && \is_string($firstFailure['exception'] ?? null)
+                ? $firstFailure['exception']
+                : 'unknown';
+            $fallbackReasons[] = 'template_render_failed:'.$exception;
+        }
+
         $event->setResponse($this->jsonResponseFactory->create(
             $payload,
             $context,
-            new ViewDecision(ViewDecision::MODE_JSON, ['template_missing_json_fallback'], $templateCandidates),
+            new ViewDecision(ViewDecision::MODE_JSON, $fallbackReasons, $templateCandidates),
         ));
     }
 }
