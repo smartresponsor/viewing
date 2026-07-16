@@ -6,6 +6,7 @@ namespace App\Viewing\Subscriber\View;
 
 use App\Viewing\ServiceInterface\View\ViewDecisionServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewJsonResponseFactoryInterface;
+use App\Viewing\ServiceInterface\View\ViewObservabilityServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewPayloadNormalizerInterface;
 use App\Viewing\ServiceInterface\View\ViewRequestContextFactoryInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateCandidateServiceInterface;
@@ -26,6 +27,7 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
         private ViewTemplateRendererInterface $templateRenderer,
         private ViewJsonResponseFactoryInterface $jsonResponseFactory,
         private bool $enabled = true,
+        private ?ViewObservabilityServiceInterface $observability = null,
     ) {
     }
 
@@ -56,6 +58,13 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
         $payload = $this->payloadNormalizer->normalize($result);
         $context = $this->contextFactory->create($event->getRequest());
         $decision = $this->decisionService->decide($payload, $context);
+        $this->observability?->record('decision', [
+            'route' => $context->routeName,
+            'path' => $context->path,
+            'actor_type' => $context->actorType,
+            'decision_mode' => $decision->mode,
+            'reason' => $decision->reasons[0] ?? null,
+        ]);
 
         if (ViewDecision::MODE_JSON === $decision->mode) {
             $event->setResponse($this->jsonResponseFactory->create($payload, $context, $decision));
@@ -69,6 +78,14 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
 
         if (null !== $htmlResponse) {
             $htmlResponse->headers->set('X-Viewing-Rendered', '1');
+            $this->observability?->record('html_response', [
+                'route' => $context->routeName,
+                'path' => $context->path,
+                'actor_type' => $context->actorType,
+                'decision_mode' => ViewDecision::MODE_HTML,
+                'status_code' => $htmlResponse->getStatusCode(),
+                'candidate_depth' => \count($templateCandidates),
+            ]);
             $event->setResponse($htmlResponse);
 
             return;
@@ -93,6 +110,15 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
             $fallbackReasons[] = ViewDecisionReason::TemplateRenderFailed->value.':'.$exception;
             $statusCodeOverride = 500;
         }
+
+        $this->observability?->record('fallback', [
+            'route' => $context->routeName,
+            'path' => $context->path,
+            'actor_type' => $context->actorType,
+            'decision_mode' => ViewDecision::MODE_JSON,
+            'reason' => $fallbackReasons[0] ?? null,
+            'status_code' => $statusCodeOverride,
+        ], null !== $statusCodeOverride ? 'error' : 'warning');
 
         $event->setResponse($this->jsonResponseFactory->create(
             $payload,

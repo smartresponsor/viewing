@@ -63,6 +63,14 @@ The producer local fallback is rendered only by Viewing.
 
 Bot actor values force JSON and skip template lookup. The default request attribute is `_view_actor_type`.
 
+== Observability and guard rollout
+
+Provide a PSR-3 logger through the normal Symfony `Psr\Log\LoggerInterface` alias to receive Viewing events. Without a logger, Viewing remains operational and silently uses the no-op path.
+
+Start migrations with `response_guard_mode: observe`; verify `viewing.guard_violation` events and the `X-Viewing-Guard` response header, then move to `enforce`. Use `off` only for explicitly unmanaged hosts.
+
+JSON serialization is strict. Recursive or unsupported payloads return HTTP 500 with `serialization_degraded`; partial JSON is never emitted.
+
 == Drift check
 
 Run before accepting producer patches:

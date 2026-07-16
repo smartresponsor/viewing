@@ -16,14 +16,22 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
 {
     public function __construct(
         private string $controlledRouteAttribute = '_view_controlled',
-        private bool $enabled = true,
+        private string $guardMode = 'enforce',
         private bool $debug = false,
     ) {
+        if (!\in_array($this->guardMode, ['off', 'observe', 'enforce'], true)) {
+            throw new \InvalidArgumentException('Response guard mode must be off, observe, or enforce.');
+        }
     }
 
-    public function shouldReplace(Request $request, Response $response): bool
+    public function mode(): string
     {
-        if (!$this->enabled) {
+        return $this->guardMode;
+    }
+
+    public function isViolation(Request $request, Response $response): bool
+    {
+        if ('off' === $this->guardMode) {
             return false;
         }
 
@@ -52,6 +60,13 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
         }
 
         return true;
+    }
+
+    public function observe(Response $response): Response
+    {
+        $response->headers->set('X-Viewing-Guard', 'observed-illegal-controller-render');
+
+        return $response;
     }
 
     public function replacement(Request $request, Response $response): Response

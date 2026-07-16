@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Viewing\Service\View;
 
 use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
+use App\Viewing\ServiceInterface\View\ViewObservabilityServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewStatusCodeResolverInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
@@ -23,11 +24,13 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         private RequestStack $requestStack,
         private ?ViewInterfaceLocationComposeServiceInterface $interfaceLocationComposeService = null,
         private ?ViewStatusCodeResolverInterface $statusCodeResolver = null,
+        private ?ViewObservabilityServiceInterface $observability = null,
     ) {
     }
 
     public function render(ViewPayload $payload, ViewRequestContext $context, ViewDecision $decision): ?Response
     {
+        $startedAt = microtime(true);
         $resolution = $this->templateResolver->resolve($decision->templateCandidates);
         $locations = $payload->locations;
         $request = $this->requestStack->getCurrentRequest();
@@ -78,6 +81,15 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 // interface.locations projection has been assembled.
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
             } catch (\Throwable $exception) {
+                $this->observability?->record('template_render_failure', [
+                    'route' => $context->routeName,
+                    'path' => $context->path,
+                    'actor_type' => $context->actorType,
+                    'exception_class' => $exception::class,
+                    'candidate_depth' => \count($decision->templateCandidates),
+                    'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
+                ], 'error');
+
                 if (null !== $request) {
                     $failures = $request->attributes->get('_view_render_failures');
                     $failures = \is_array($failures) ? $failures : [];
@@ -93,6 +105,14 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
             }
 
             $statusCode = $this->statusCodeResolver?->resolve($payload) ?? Response::HTTP_OK;
+            $this->observability?->record('template_render', [
+                'route' => $context->routeName,
+                'path' => $context->path,
+                'actor_type' => $context->actorType,
+                'status_code' => $statusCode,
+                'candidate_depth' => \count($decision->templateCandidates),
+                'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
+            ]);
 
             return new Response($content, $statusCode, ['Content-Type' => 'text/html; charset=UTF-8']);
         }

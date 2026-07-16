@@ -45,3 +45,5 @@ The traffic classifier is intentionally conservative. It detects obvious bot use
 Template candidate absence is distinct from loader and render failure. Missing candidates may use normal JSON fallback, while loader or render failures carry stable reason codes and force a 500 fallback status unless the payload already defines an explicit error status. HTML and JSON branches use the same status resolver contract.
 
 The response guard cannot recover lost View Payload data after illegal direct rendering. It is a containment mechanism, not the preferred execution path.
+
+Guard rollout is explicit: `off` disables detection, `observe` preserves the original response while marking and logging the violation, and `enforce` replaces illegal controlled HTML with structured JSON. Observability emits PSR-3 events with stable event/metric fields and safe scalar context only. JSON serialization never uses partial output; unsupported or recursive payloads produce an explicit `serialization_degraded` 500 response.

@@ -34,6 +34,8 @@ Template absence and template failure are distinct. Missing candidates may use s
 
 Producer objects are accepted only when they implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposeServiceInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
 
+Structured observability uses optional PSR-3 logging with stable event and metric fields; payload content, stack traces, and filesystem paths are not logged. JSON serialization is all-or-nothing with UTF-8 substitution and explicit `serialization_degraded` HTTP 500 fallback. Response guard rollout is configured with `response_guard_mode: off|observe|enforce`; observe preserves the original response and adds `X-Viewing-Guard`.
+
 ## Local Setup
 
 Install dependencies:

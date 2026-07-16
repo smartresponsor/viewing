@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Subscriber\View;
 
+use App\Viewing\ServiceInterface\View\ViewObservabilityServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewResponseGuardServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewRouteExclusionServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,6 +16,7 @@ final readonly class ViewKernelResponseGuardSubscriber implements EventSubscribe
     public function __construct(
         private ViewResponseGuardServiceInterface $responseGuardService,
         private ViewRouteExclusionServiceInterface $routeExclusionService,
+        private ?ViewObservabilityServiceInterface $observability = null,
     ) {
     }
 
@@ -34,7 +36,21 @@ final readonly class ViewKernelResponseGuardSubscriber implements EventSubscribe
             return;
         }
 
-        if (!$this->responseGuardService->shouldReplace($request, $response)) {
+        if (!$this->responseGuardService->isViolation($request, $response)) {
+            return;
+        }
+
+        $routeName = $request->attributes->get('_route');
+        $this->observability?->record('guard_violation', [
+            'route' => \is_string($routeName) ? $routeName : null,
+            'path' => $request->getPathInfo(),
+            'guard_mode' => $this->responseGuardService->mode(),
+            'status_code' => $response->getStatusCode(),
+        ], 'warning');
+
+        if ('observe' === $this->responseGuardService->mode()) {
+            $event->setResponse($this->responseGuardService->observe($response));
+
             return;
         }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Viewing\Service\View\ViewDecisionService;
 use App\Viewing\Service\View\ViewJsonResponseFactory;
+use App\Viewing\Service\View\ViewJsonSerializer;
+use App\Viewing\Service\View\ViewObservabilityService;
 use App\Viewing\Service\View\ViewPayloadNormalizer;
 use App\Viewing\Service\View\ViewRequestContextFactory;
 use App\Viewing\Service\View\ViewResponseGuardService;
@@ -17,6 +19,8 @@ use App\Viewing\Service\View\ViewTrafficClassifier;
 use App\Viewing\ServiceInterface\View\ViewDecisionServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewJsonResponseFactoryInterface;
+use App\Viewing\ServiceInterface\View\ViewJsonSerializerInterface;
+use App\Viewing\ServiceInterface\View\ViewObservabilityServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewPayloadNormalizerInterface;
 use App\Viewing\ServiceInterface\View\ViewRequestContextFactoryInterface;
 use App\Viewing\ServiceInterface\View\ViewResponseGuardServiceInterface;
@@ -30,6 +34,7 @@ use App\Viewing\ServiceInterface\View\ViewTrafficClassifierInterface;
 use App\Viewing\Subscriber\View\ViewKernelResponseGuardSubscriber;
 use App\Viewing\Subscriber\View\ViewKernelViewSubscriber;
 use App\Viewing\Subscriber\View\ViewTrafficRequestSubscriber;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -42,6 +47,8 @@ return static function (ContainerConfigurator $container): void {
     $services->load('App\\Viewing\\', '../../src/')
         ->exclude('../../src/{DependencyInjection,Value,ViewingBundle.php,Kernel.php}');
 
+    $services->alias(ViewJsonSerializerInterface::class, ViewJsonSerializer::class);
+    $services->alias(ViewObservabilityServiceInterface::class, ViewObservabilityService::class);
     $services->alias(ViewPayloadNormalizerInterface::class, ViewPayloadNormalizer::class);
     $services->alias(ViewObjectPayloadNormalizerInterface::class, ViewObjectPayloadNormalizer::class);
     $services->alias(ViewRequestContextFactoryInterface::class, ViewRequestContextFactory::class);
@@ -55,11 +62,16 @@ return static function (ContainerConfigurator $container): void {
     $services->alias(ViewRouteExclusionServiceInterface::class, ViewRouteExclusionService::class);
     $services->alias(ViewTrafficClassifierInterface::class, ViewTrafficClassifier::class);
 
+    $services->set(ViewObservabilityService::class)
+        ->arg('$logger', service(LoggerInterface::class)->nullOnInvalid());
+
     $services->set(ViewKernelViewSubscriber::class)
-        ->arg('$enabled', '%viewing.enabled%');
+        ->arg('$enabled', '%viewing.enabled%')
+        ->arg('$observability', service(ViewObservabilityServiceInterface::class));
 
     $services->set(ViewKernelResponseGuardSubscriber::class)
-        ->arg('$routeExclusionService', service(ViewRouteExclusionServiceInterface::class));
+        ->arg('$routeExclusionService', service(ViewRouteExclusionServiceInterface::class))
+        ->arg('$observability', service(ViewObservabilityServiceInterface::class));
 
     $services->set(ViewTrafficRequestSubscriber::class)
         ->arg('$actorRequestAttribute', '%viewing.actor_request_attribute%')
@@ -81,16 +93,19 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ViewTemplateRenderer::class)
         ->arg('$templateResolver', service(ViewTemplateResolverInterface::class))
         ->arg('$interfaceLocationComposeService', service(ViewInterfaceLocationComposeServiceInterface::class)->nullOnInvalid())
-        ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class));
+        ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class))
+        ->arg('$observability', service(ViewObservabilityServiceInterface::class));
 
     $services->set(ViewJsonResponseFactory::class)
         ->arg('$fallbackStatusCode', '%viewing.json_fallback_status_code%')
         ->arg('$diagnosticMode', '%viewing.diagnostic_mode%')
-        ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class));
+        ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class))
+        ->arg('$jsonSerializer', service(ViewJsonSerializerInterface::class))
+        ->arg('$observability', service(ViewObservabilityServiceInterface::class));
 
     $services->set(ViewResponseGuardService::class)
         ->arg('$controlledRouteAttribute', '%viewing.controlled_route_attribute%')
-        ->arg('$enabled', '%viewing.response_guard_enabled%')
+        ->arg('$guardMode', '%viewing.response_guard_mode%')
         ->arg('$debug', '%viewing.debug_response_guard%');
 
     $services->set(ViewRouteExclusionService::class)

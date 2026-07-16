@@ -129,7 +129,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * }
  * @psalm-type ServicesConfig = array{
  *     _defaults?: DefaultsType,
- *     _instanceof?: InstanceofType,
+ *     _instanceof?: array<class-string, InstanceofType>,
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
@@ -741,7 +741,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     unknown_actor_policy?: "html"|"json"|Param, // Default: "html"
  *     actor_request_attribute?: scalar|Param|null, // Default: "_view_actor_type"
  *     controlled_route_attribute?: scalar|Param|null, // Default: "_view_controlled"
- *     response_guard_enabled?: bool|Param, // Default: true
+ *     response_guard_mode?: "off"|"observe"|"enforce"|Param, // Default: "enforce"
  *     debug_response_guard?: bool|Param, // Default: false
  *     diagnostic_mode?: "off"|"safe"|"debug"|Param, // Default: "safe"
  *     traffic_classifier_enabled?: bool|Param, // Default: true

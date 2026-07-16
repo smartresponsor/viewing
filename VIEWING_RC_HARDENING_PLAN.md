@@ -142,3 +142,9 @@ Producer object payloads now require `ViewObjectPayloadInterface`; duck typing a
 
 Remaining RC work starts at R7.
 
+### R7-R9 Observability, Serialization, and Guard Rollout
+
+Status: implemented and gate-verified.
+
+Structured PSR-3 events cover representation decisions, JSON responses, fallbacks, serialization failures, and guard violations. JSON serialization is strict and all-or-nothing. The response guard now supports `off`, `observe`, and `enforce` rollout modes.
+

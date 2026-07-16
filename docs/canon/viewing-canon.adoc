@@ -51,7 +51,9 @@ Allowed outputs:
 
 The normal path is `kernel.view`. The defensive path is `kernel.response`.
 
-The defensive path does not replace the normal path. It only contains drift when a controlled producer route illegally returns pre-rendered HTML.
+The defensive path does not replace the normal path. It only contains drift when a controlled producer route illegally returns pre-rendered HTML. Hosts roll it out with `response_guard_mode`: `off`, `observe`, or `enforce`.
+
+Viewing emits safe structured PSR-3 evidence for decisions, JSON responses, fallbacks, serialization failures, and guard violations. Event records contain stable metric names and scalar request context only. JSON output is never partial: serialization succeeds completely or returns the controlled `serialization_degraded` 500 envelope.
 
 == Template fallback chain
 

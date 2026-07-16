@@ -9,7 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface ViewResponseGuardServiceInterface
 {
-    public function shouldReplace(Request $request, Response $response): bool;
+    public function mode(): string;
+
+    public function isViolation(Request $request, Response $response): bool;
+
+    public function observe(Response $response): Response;
 
     public function replacement(Request $request, Response $response): Response;
 }

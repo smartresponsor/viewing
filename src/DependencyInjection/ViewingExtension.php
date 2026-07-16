@@ -42,7 +42,7 @@ final class ViewingExtension extends Extension implements PrependExtensionInterf
         $container->setParameter('viewing.unknown_actor_policy', $config['unknown_actor_policy']);
         $container->setParameter('viewing.actor_request_attribute', $config['actor_request_attribute']);
         $container->setParameter('viewing.controlled_route_attribute', $config['controlled_route_attribute']);
-        $container->setParameter('viewing.response_guard_enabled', $config['response_guard_enabled']);
+        $container->setParameter('viewing.response_guard_mode', $config['response_guard_mode']);
         $container->setParameter('viewing.debug_response_guard', $config['debug_response_guard']);
         $container->setParameter('viewing.diagnostic_mode', $config['diagnostic_mode']);
         $container->setParameter('viewing.traffic_classifier_enabled', $config['traffic_classifier_enabled']);
