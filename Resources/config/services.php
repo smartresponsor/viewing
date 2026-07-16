@@ -11,6 +11,7 @@ use App\Viewing\Service\View\ViewRouteExclusionService;
 use App\Viewing\Service\View\ViewTemplateCandidateService;
 use App\Viewing\Service\View\ViewTemplateRenderer;
 use App\Viewing\Service\View\ViewObjectPayloadNormalizer;
+use App\Viewing\Service\View\ViewStatusCodeResolver;
 use App\Viewing\Service\View\ViewTemplateResolver;
 use App\Viewing\Service\View\ViewTrafficClassifier;
 use App\Viewing\ServiceInterface\View\ViewDecisionServiceInterface;
@@ -21,6 +22,7 @@ use App\Viewing\ServiceInterface\View\ViewResponseGuardServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewRouteExclusionServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateCandidateServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewObjectPayloadNormalizerInterface;
+use App\Viewing\ServiceInterface\View\ViewStatusCodeResolverInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
 use App\Viewing\ServiceInterface\View\ViewTrafficClassifierInterface;
@@ -45,6 +47,7 @@ return static function (ContainerConfigurator $container): void {
     $services->alias(ViewDecisionServiceInterface::class, ViewDecisionService::class);
     $services->alias(ViewTemplateCandidateServiceInterface::class, ViewTemplateCandidateService::class);
     $services->alias(ViewTemplateResolverInterface::class, ViewTemplateResolver::class);
+    $services->alias(ViewStatusCodeResolverInterface::class, ViewStatusCodeResolver::class);
     $services->alias(ViewTemplateRendererInterface::class, ViewTemplateRenderer::class);
     $services->alias(ViewJsonResponseFactoryInterface::class, ViewJsonResponseFactory::class);
     $services->alias(ViewResponseGuardServiceInterface::class, ViewResponseGuardService::class);
@@ -65,7 +68,8 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$actorRequestAttribute', '%viewing.actor_request_attribute%');
 
     $services->set(ViewDecisionService::class)
-        ->arg('$botActorValues', '%viewing.bot_actor_values%');
+        ->arg('$botActorValues', '%viewing.bot_actor_values%')
+        ->arg('$unknownActorPolicy', '%viewing.unknown_actor_policy%');
 
     $services->set(ViewTemplateCandidateService::class)
         ->arg('$interfacingTwigNamespace', '%viewing.interfacing_twig_namespace%')
@@ -74,11 +78,13 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$diagnosticMode', '%viewing.diagnostic_mode%');
 
     $services->set(ViewTemplateRenderer::class)
-        ->arg('$templateResolver', service(ViewTemplateResolverInterface::class));
+        ->arg('$templateResolver', service(ViewTemplateResolverInterface::class))
+        ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class));
 
     $services->set(ViewJsonResponseFactory::class)
         ->arg('$fallbackStatusCode', '%viewing.json_fallback_status_code%')
-        ->arg('$diagnosticMode', '%viewing.diagnostic_mode%');
+        ->arg('$diagnosticMode', '%viewing.diagnostic_mode%')
+        ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class));
 
     $services->set(ViewResponseGuardService::class)
         ->arg('$controlledRouteAttribute', '%viewing.controlled_route_attribute%')

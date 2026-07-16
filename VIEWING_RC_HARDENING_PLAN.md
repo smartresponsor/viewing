@@ -124,3 +124,13 @@ Exit: machine and human readers see one drift-free architecture.
 - Provide host import guidance and examples.
 - Keep endpoint ownership outside `Viewing`.
 
+## Milestone progress
+
+### R1-R4 Decision and Failure Contract
+
+Status: implemented and gate-verified.
+
+Actor and decision semantics are typed, unknown traffic policy is explicit, classifier patterns fail fast, template absence is separated from loader and render failures, status resolution is centralized, Symfony kernel pipeline coverage proves bot JSON and human HTML paths, and README, canon, ADR, and configuration reference are synchronized.
+
+Remaining RC work starts at R5 and does not reopen the completed R1-R4 contract unless regression evidence requires it.
+

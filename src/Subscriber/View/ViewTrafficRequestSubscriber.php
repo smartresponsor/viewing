@@ -44,11 +44,6 @@ final readonly class ViewTrafficRequestSubscriber implements EventSubscriberInte
         }
 
         $actorType = $this->trafficClassifier->classify($request);
-
-        if (null === $actorType) {
-            return;
-        }
-
         $request->attributes->set($this->actorRequestAttribute, $actorType);
     }
 }

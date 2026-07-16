@@ -78,11 +78,13 @@ to the producer controller.
 
 == Traffic policy
 
-Bot traffic should return structured JSON and avoid template lookup.
+Bot traffic returns structured JSON and avoids template lookup.
 
 Human HTML traffic may resolve templates.
 
-Unknown traffic may be allowed, observed, or downgraded based on host policy.
+Unknown traffic follows the explicit `unknown_actor_policy`: `html` by default or `json` when the host requires conservative machine output. Actor values and decision reasons are stable typed contracts. Invalid bot user-agent patterns fail visibly and are never suppressed.
+
+Template absence, loader failure, render failure, and an empty candidate chain are distinct diagnostic states. Loader and render failures force a 500 JSON fallback unless the payload already carries an explicit error status. HTML and JSON representations share one status-code resolver.
 
 == Bundle and self-processing canon
 

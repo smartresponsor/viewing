@@ -738,6 +738,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * @psalm-type ViewingConfig = array{
  *     enabled?: bool|Param, // Default: true
  *     bot_actor_values?: list<scalar|Param|null>,
+ *     unknown_actor_policy?: "html"|"json"|Param, // Default: "html"
  *     actor_request_attribute?: scalar|Param|null, // Default: "_view_actor_type"
  *     controlled_route_attribute?: scalar|Param|null, // Default: "_view_controlled"
  *     response_guard_enabled?: bool|Param, // Default: true
@@ -759,7 +760,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     framework?: FrameworkConfig,
  *     twig?: TwigConfig,
  *     viewing?: ViewingConfig,
- *     "when@dev"?: array{
+ *     "when@test"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
@@ -849,7 +850,7 @@ namespace Symfony\Component\Routing\Loader\Configurator;
  *     deprecated?: array{package:string, version:string, message?:string},
  * }
  * @psalm-type RoutesConfig = array{
- *     "when@dev"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
+ *     "when@test"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     ...<string, RouteConfig|ImportConfig|AliasConfig>
  * }
  */

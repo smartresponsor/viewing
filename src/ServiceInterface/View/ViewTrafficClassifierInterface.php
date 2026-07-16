@@ -8,5 +8,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface ViewTrafficClassifierInterface
 {
-    public function classify(Request $request): ?string;
+    public function classify(Request $request): string;
 }

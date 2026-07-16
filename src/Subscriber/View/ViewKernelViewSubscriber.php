@@ -11,6 +11,7 @@ use App\Viewing\ServiceInterface\View\ViewRequestContextFactoryInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateCandidateServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\Value\View\ViewDecision;
+use App\Viewing\Value\View\ViewDecisionReason;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -73,20 +74,35 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        $fallbackReasons = ['template_missing_json_fallback'];
+        $fallbackReasons = [] === $templateCandidates
+            ? [ViewDecisionReason::TemplateCandidateChainEmpty->value]
+            : [ViewDecisionReason::TemplateMissingFallback->value];
+        $statusCodeOverride = null;
+        $loaderFailures = $event->getRequest()->attributes->get('_view_loader_failures');
+        if (\is_array($loaderFailures) && [] !== $loaderFailures) {
+            $fallbackReasons[] = ViewDecisionReason::TemplateLoaderFailed->value;
+            $statusCodeOverride = 500;
+        }
+
         $renderFailures = $event->getRequest()->attributes->get('_view_render_failures');
         if (\is_array($renderFailures) && [] !== $renderFailures) {
             $firstFailure = $renderFailures[0] ?? [];
             $exception = \is_array($firstFailure) && \is_string($firstFailure['exception'] ?? null)
                 ? $firstFailure['exception']
                 : 'unknown';
-            $fallbackReasons[] = 'template_render_failed:'.$exception;
+            $fallbackReasons[] = ViewDecisionReason::TemplateRenderFailed->value.':'.$exception;
+            $statusCodeOverride = 500;
         }
 
         $event->setResponse($this->jsonResponseFactory->create(
             $payload,
             $context,
-            new ViewDecision(ViewDecision::MODE_JSON, $fallbackReasons, $templateCandidates),
+            new ViewDecision(
+                ViewDecision::MODE_JSON,
+                $fallbackReasons,
+                $templateCandidates,
+                statusCodeOverride: $statusCodeOverride,
+            ),
         ));
     }
 }

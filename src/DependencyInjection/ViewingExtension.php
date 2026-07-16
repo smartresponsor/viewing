@@ -39,6 +39,7 @@ final class ViewingExtension extends Extension implements PrependExtensionInterf
 
         $container->setParameter('viewing.enabled', $config['enabled']);
         $container->setParameter('viewing.bot_actor_values', $config['bot_actor_values']);
+        $container->setParameter('viewing.unknown_actor_policy', $config['unknown_actor_policy']);
         $container->setParameter('viewing.actor_request_attribute', $config['actor_request_attribute']);
         $container->setParameter('viewing.controlled_route_attribute', $config['controlled_route_attribute']);
         $container->setParameter('viewing.response_guard_enabled', $config['response_guard_enabled']);

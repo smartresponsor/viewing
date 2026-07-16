@@ -1,5 +1,6 @@
 viewing:
     enabled: true
+    unknown_actor_policy: html
     local_component_fallback_enabled: true
     response_guard_enabled: true
     diagnostic_mode: safe

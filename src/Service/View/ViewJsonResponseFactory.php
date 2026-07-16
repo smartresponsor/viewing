@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Viewing\Service\View;
 
 use App\Viewing\ServiceInterface\View\ViewJsonResponseFactoryInterface;
+use App\Viewing\ServiceInterface\View\ViewStatusCodeResolverInterface;
 use App\Viewing\Value\View\ViewDecision;
 use App\Viewing\Value\View\ViewPayload;
 use App\Viewing\Value\View\ViewRequestContext;
@@ -17,6 +18,7 @@ final readonly class ViewJsonResponseFactory implements ViewJsonResponseFactoryI
     public function __construct(
         private int $fallbackStatusCode = 200,
         private string $diagnosticMode = 'safe',
+        private ?ViewStatusCodeResolverInterface $statusCodeResolver = null,
     ) {
     }
 
@@ -55,25 +57,9 @@ final readonly class ViewJsonResponseFactory implements ViewJsonResponseFactoryI
             $json = '{"ok":false,"component":"viewing","reason":"json_encode_failed"}';
         }
 
-        return new JsonResponse($json, $this->statusCode($payload), [], true);
-    }
+        $statusCode = $this->statusCodeResolver?->resolve($payload, $decision->statusCodeOverride, $this->fallbackStatusCode)
+            ?? $this->fallbackStatusCode;
 
-    private function statusCode(ViewPayload $payload): int
-    {
-        $statusCode = $payload->meta['status_code'] ?? null;
-
-        if (is_int($statusCode) && $statusCode >= 100 && $statusCode <= 599) {
-            return $statusCode;
-        }
-
-        if (is_string($statusCode) && ctype_digit($statusCode)) {
-            $statusCode = (int) $statusCode;
-
-            if ($statusCode >= 100 && $statusCode <= 599) {
-                return $statusCode;
-            }
-        }
-
-        return $this->fallbackStatusCode;
+        return new JsonResponse($json, $statusCode, [], true);
     }
 }

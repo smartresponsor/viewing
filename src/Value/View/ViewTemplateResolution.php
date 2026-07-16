@@ -17,12 +17,14 @@ final readonly class ViewTemplateResolution
      * @param list<array{template: string, exists: bool, error?: string}> $checkedCandidates
      * @param list<string>                                                $availableCandidates
      * @param list<string>                                                $missingCandidates
+     * @param list<array{template: string, exception: string}>            $loaderFailures
      */
     public function __construct(
         public ?string $selectedTemplate,
         public array $checkedCandidates,
         public array $availableCandidates,
         public array $missingCandidates,
+        public array $loaderFailures = [],
     ) {
     }
 
@@ -41,6 +43,7 @@ final readonly class ViewTemplateResolution
             'checked_candidates' => $this->checkedCandidates,
             'available_candidates' => $this->availableCandidates,
             'missing_candidates' => $this->missingCandidates,
+            'loader_failures' => $this->loaderFailures,
         ];
     }
 }

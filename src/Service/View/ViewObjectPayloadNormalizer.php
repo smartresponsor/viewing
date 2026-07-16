@@ -18,12 +18,15 @@ final class ViewObjectPayloadNormalizer implements ViewObjectPayloadNormalizerIn
 
     public function normalize(object $viewObject): ViewPayload
     {
+        $templateContext = (new \ReflectionMethod($viewObject, 'toTemplateContext'))->invoke($viewObject);
+        $fallbackData = (new \ReflectionMethod($viewObject, 'toFallbackData'))->invoke($viewObject);
+
+        if (!\is_array($templateContext) || !\is_array($fallbackData)) {
+            throw new \UnexpectedValueException('Object view payload methods must return arrays.');
+        }
+
         /** @var array<string, mixed> $templateContext */
-        $templateContext = $viewObject->toTemplateContext();
-
         /** @var array<string, mixed> $fallbackData */
-        $fallbackData = $viewObject->toFallbackData();
-
         $routeContext = $this->routeContextFrom($templateContext, $fallbackData);
         $word = $this->stringFrom($templateContext['word'] ?? $fallbackData['word'] ?? null, $this->viewFromClass($viewObject::class));
         $view = $this->stringFrom($templateContext['view'] ?? $fallbackData['view'] ?? null, 'index');
@@ -106,7 +109,7 @@ final class ViewObjectPayloadNormalizer implements ViewObjectPayloadNormalizerIn
      */
     private function viewFromRouteContext(array $routeContext, string $fallback): string
     {
-        foreach (['viewPath', 'resourcePath', 'resource', 'surfacePath'] as $key) {
+        foreach (['viewPath', 'surfacePath', 'resourcePath', 'resource'] as $key) {
             if (\is_scalar($routeContext[$key] ?? null)) {
                 $value = trim((string) $routeContext[$key]);
                 if ('' !== $value) {
@@ -146,7 +149,8 @@ final class ViewObjectPayloadNormalizer implements ViewObjectPayloadNormalizerIn
 
     private function viewFromClass(string $class): string
     {
-        $shortName = substr(strrchr('\\'.$class, '\\'), 1) ?: 'index';
+        $classTail = strrchr('\\'.$class, '\\');
+        $shortName = false !== $classTail ? substr($classTail, 1) : 'index';
         $shortName = preg_replace('/[^A-Za-z0-9]+/', '-', $shortName) ?? $shortName;
         $shortName = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '-$0', $shortName));
         $shortName = trim($shortName, '-');

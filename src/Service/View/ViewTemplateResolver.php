@@ -23,6 +23,7 @@ final readonly class ViewTemplateResolver implements ViewTemplateResolverInterfa
         $checked = [];
         $available = [];
         $missing = [];
+        $loaderFailures = [];
 
         foreach (array_values(array_unique($templateCandidates)) as $candidate) {
             if (!\is_string($candidate) || '' === trim($candidate)) {
@@ -39,7 +40,10 @@ final readonly class ViewTemplateResolver implements ViewTemplateResolverInterfa
                     'exists' => false,
                     'error' => $exception::class,
                 ];
-                $missing[] = $template;
+                $loaderFailures[] = [
+                    'template' => $template,
+                    'exception' => $exception::class,
+                ];
                 continue;
             }
 
@@ -61,6 +65,7 @@ final readonly class ViewTemplateResolver implements ViewTemplateResolverInterfa
             checkedCandidates: $checked,
             availableCandidates: $available,
             missingCandidates: $missing,
+            loaderFailures: $loaderFailures,
         );
     }
 }

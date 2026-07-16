@@ -36,4 +36,24 @@ final class ViewDecisionServiceTest extends TestCase
 
         self::assertSame(ViewDecision::MODE_HTML, $decision->mode);
     }
+
+    public function testUnknownActorCanBeConfiguredToForceJson(): void
+    {
+        $service = new ViewDecisionService(['bot'], ViewDecision::MODE_JSON);
+
+        $decision = $service->decide(
+            new ViewPayload('vendor', 'show'),
+            new ViewRequestContext('/vendor/1', 'GET', 'vendor_show', 'html', 'unknown', true, false, false),
+        );
+
+        self::assertSame(ViewDecision::MODE_JSON, $decision->mode);
+        self::assertContains('unknown_actor_forces_json', $decision->reasons);
+    }
+
+    public function testInvalidUnknownActorPolicyFailsFast(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new ViewDecisionService(['bot'], 'pass');
+    }
 }

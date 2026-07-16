@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Viewing\Service\View;
 
 use App\Viewing\ServiceInterface\View\ViewTrafficClassifierInterface;
+use App\Viewing\Value\View\ViewActorType;
 use Symfony\Component\HttpFoundation\Request;
 
 final readonly class ViewTrafficClassifier implements ViewTrafficClassifierInterface
@@ -15,14 +16,23 @@ final readonly class ViewTrafficClassifier implements ViewTrafficClassifierInter
     public function __construct(
         private array $botUserAgentPatterns = [],
     ) {
+        foreach ($this->botUserAgentPatterns as $pattern) {
+            if (!\is_string($pattern) || '' === trim($pattern)) {
+                continue;
+            }
+
+            if (false === preg_match(trim($pattern), '')) {
+                throw new \InvalidArgumentException(sprintf('Invalid bot user-agent pattern: %s', $pattern));
+            }
+        }
     }
 
-    public function classify(Request $request): ?string
+    public function classify(Request $request): string
     {
         $userAgent = (string) $request->headers->get('User-Agent', '');
 
         if ('' === trim($userAgent)) {
-            return 'unknown';
+            return ViewActorType::Unknown->value;
         }
 
         foreach ($this->botUserAgentPatterns as $pattern) {
@@ -30,20 +40,21 @@ final readonly class ViewTrafficClassifier implements ViewTrafficClassifierInter
                 continue;
             }
 
-            $result = @preg_match(trim($pattern), $userAgent);
-
-            if (1 === $result) {
-                return 'bot';
+            if (1 === preg_match(trim($pattern), $userAgent)) {
+                return ViewActorType::Bot->value;
             }
         }
 
-        $secFetchSite = (string) $request->headers->get('Sec-Fetch-Site', '');
-        $secFetchMode = (string) $request->headers->get('Sec-Fetch-Mode', '');
+        $secFetchSite = strtolower((string) $request->headers->get('Sec-Fetch-Site', ''));
+        $secFetchMode = strtolower((string) $request->headers->get('Sec-Fetch-Mode', ''));
 
-        if ('' !== $secFetchSite || '' !== $secFetchMode) {
-            return 'human';
+        if (
+            \in_array($secFetchSite, ['same-origin', 'same-site', 'cross-site', 'none'], true)
+            && \in_array($secFetchMode, ['navigate', 'same-origin', 'cors', 'no-cors'], true)
+        ) {
+            return ViewActorType::Human->value;
         }
 
-        return null;
+        return ViewActorType::Unknown->value;
     }
 }

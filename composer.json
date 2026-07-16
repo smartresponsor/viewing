@@ -34,6 +34,16 @@
       "App\\Viewing\\Test\\": "tests/"
     }
   },
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "phpstan analyse src tests --level=8",
+    "php-cs-fixer": "php-cs-fixer fix --dry-run --diff",
+    "gate": [
+      "@test",
+      "@phpstan",
+      "@php-cs-fixer"
+    ]
+  },
   "extra": {
     "symfony": {
       "allow-contrib": false,

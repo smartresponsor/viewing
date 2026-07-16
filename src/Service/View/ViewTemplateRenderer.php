@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Viewing\Service\View;
 
 use App\ServiceInterface\InterfaceLocation\AppInterfaceLocationComposeServiceInterface;
+use App\Viewing\ServiceInterface\View\ViewStatusCodeResolverInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
 use App\Viewing\Value\View\ViewDecision;
@@ -21,6 +22,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         private ViewTemplateResolverInterface $templateResolver,
         private RequestStack $requestStack,
         private ?AppInterfaceLocationComposeServiceInterface $interfaceLocationComposeService = null,
+        private ?ViewStatusCodeResolverInterface $statusCodeResolver = null,
     ) {
     }
 
@@ -29,6 +31,10 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         $resolution = $this->templateResolver->resolve($decision->templateCandidates);
         $locations = $payload->locations;
         $request = $this->requestStack->getCurrentRequest();
+
+        if (null !== $request && [] !== $resolution->loaderFailures) {
+            $request->attributes->set('_view_loader_failures', $resolution->loaderFailures);
+        }
 
         if (null !== $request && null !== $this->interfaceLocationComposeService) {
             $locations = $this->mergeLocations(
@@ -86,29 +92,12 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 continue;
             }
 
-            return new Response($content, $this->statusCode($payload), ['Content-Type' => 'text/html; charset=UTF-8']);
+            $statusCode = $this->statusCodeResolver?->resolve($payload) ?? Response::HTTP_OK;
+
+            return new Response($content, $statusCode, ['Content-Type' => 'text/html; charset=UTF-8']);
         }
 
         return null;
-    }
-
-    private function statusCode(ViewPayload $payload): int
-    {
-        $statusCode = $payload->meta['status_code'] ?? null;
-
-        if (is_int($statusCode) && $statusCode >= 100 && $statusCode <= 599) {
-            return $statusCode;
-        }
-
-        if (is_string($statusCode) && ctype_digit($statusCode)) {
-            $statusCode = (int) $statusCode;
-
-            if ($statusCode >= 100 && $statusCode <= 599) {
-                return $statusCode;
-            }
-        }
-
-        return Response::HTTP_OK;
     }
 
     /**
