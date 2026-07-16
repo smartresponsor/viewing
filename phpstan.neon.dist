@@ -3,6 +3,4 @@ parameters:
     paths:
         - src
         - tests
-    scanFiles:
-        - phpstan/InterfacingServiceInterface.stub.php
     treatPhpDocTypesAsCertain: false

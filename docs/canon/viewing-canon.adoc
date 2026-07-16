@@ -41,6 +41,7 @@ Forbidden inside producer UI controllers:
 Allowed outputs:
 
 * neutral View Payload array/DTO;
+* object payload implementing `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`;
 * explicit `JsonResponse` for API endpoints;
 * `RedirectResponse` for real redirects;
 * binary/stream/file responses for file delivery;

@@ -134,3 +134,11 @@ Actor and decision semantics are typed, unknown traffic policy is explicit, clas
 
 Remaining RC work starts at R5 and does not reopen the completed R1-R4 contract unless regression evidence requires it.
 
+### R5-R6 Producer and Interfacing Contracts
+
+Status: implemented and gate-verified.
+
+Producer object payloads now require `ViewObjectPayloadInterface`; duck typing and reflection are removed. Optional Interfacing location composition now uses the local `ViewInterfaceLocationComposeServiceInterface`, with deterministic standalone-null and host-alias modes.
+
+Remaining RC work starts at R7.
+

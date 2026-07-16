@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Service\View;
 
-use App\ServiceInterface\InterfaceLocation\AppInterfaceLocationComposeServiceInterface;
+use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewStatusCodeResolverInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
 use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
@@ -21,7 +21,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         private Environment $twig,
         private ViewTemplateResolverInterface $templateResolver,
         private RequestStack $requestStack,
-        private ?AppInterfaceLocationComposeServiceInterface $interfaceLocationComposeService = null,
+        private ?ViewInterfaceLocationComposeServiceInterface $interfaceLocationComposeService = null,
         private ?ViewStatusCodeResolverInterface $statusCodeResolver = null,
     ) {
     }

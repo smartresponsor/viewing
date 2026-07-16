@@ -6,27 +6,19 @@ namespace App\Viewing\Service\View;
 
 use App\Viewing\ServiceInterface\View\ViewObjectPayloadNormalizerInterface;
 use App\Viewing\Value\View\ViewPayload;
+use App\Viewing\ValueInterface\View\ViewObjectPayloadInterface;
 
 final class ViewObjectPayloadNormalizer implements ViewObjectPayloadNormalizerInterface
 {
     public function supports(mixed $value): bool
     {
-        return \is_object($value)
-            && method_exists($value, 'toTemplateContext')
-            && method_exists($value, 'toFallbackData');
+        return $value instanceof ViewObjectPayloadInterface;
     }
 
-    public function normalize(object $viewObject): ViewPayload
+    public function normalize(ViewObjectPayloadInterface $viewObject): ViewPayload
     {
-        $templateContext = (new \ReflectionMethod($viewObject, 'toTemplateContext'))->invoke($viewObject);
-        $fallbackData = (new \ReflectionMethod($viewObject, 'toFallbackData'))->invoke($viewObject);
-
-        if (!\is_array($templateContext) || !\is_array($fallbackData)) {
-            throw new \UnexpectedValueException('Object view payload methods must return arrays.');
-        }
-
-        /** @var array<string, mixed> $templateContext */
-        /** @var array<string, mixed> $fallbackData */
+        $templateContext = $viewObject->toTemplateContext();
+        $fallbackData = $viewObject->toFallbackData();
         $routeContext = $this->routeContextFrom($templateContext, $fallbackData);
         $word = $this->stringFrom($templateContext['word'] ?? $fallbackData['word'] ?? null, $this->viewFromClass($viewObject::class));
         $view = $this->stringFrom($templateContext['view'] ?? $fallbackData['view'] ?? null, 'index');

@@ -20,6 +20,32 @@ defaults:
 
 The normal `kernel.view` path does not require this flag when controllers return View Payload. The flag is for defensive `kernel.response` containment when a controller incorrectly returns HTML.
 
+== Producer object payload contract
+
+Producer objects must implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`. Matching method names without the interface are not accepted.
+
+[source,php]
+----
+final class VendorViewPayload implements ViewObjectPayloadInterface
+{
+    public function toTemplateContext(): array { /* ... */ }
+    public function toFallbackData(): array { /* ... */ }
+}
+----
+
+== Optional Interfacing location bridge
+
+Standalone Viewing requires no Interfacing service. A host that composes interface locations aliases its implementation to the local bridge contract:
+
+[source,yaml]
+----
+services:
+  App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface:
+    alias: App\Interfacing\Service\InterfaceLocation\AppInterfaceLocationComposeService
+----
+
+The bridge receives the current Symfony `Request` and returns canonical location blocks. Interfacing remains passive; Viewing remains the dispatcher.
+
 == Template hierarchy
 
 [source,text]

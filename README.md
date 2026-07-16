@@ -32,6 +32,8 @@ The decision order is explicit: configured bot actors, JSON request format, JSON
 
 Template absence and template failure are distinct. Missing candidates may use structured JSON fallback with the payload status. Loader or render failures use distinct reason codes and force HTTP 500 when the payload does not already provide an explicit error status. HTML and JSON responses share `ViewStatusCodeResolverInterface`.
 
+Producer objects are accepted only when they implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposeServiceInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
+
 ## Local Setup
 
 Install dependencies:

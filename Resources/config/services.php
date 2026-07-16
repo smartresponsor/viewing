@@ -15,6 +15,7 @@ use App\Viewing\Service\View\ViewStatusCodeResolver;
 use App\Viewing\Service\View\ViewTemplateResolver;
 use App\Viewing\Service\View\ViewTrafficClassifier;
 use App\Viewing\ServiceInterface\View\ViewDecisionServiceInterface;
+use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
 use App\Viewing\ServiceInterface\View\ViewJsonResponseFactoryInterface;
 use App\Viewing\ServiceInterface\View\ViewPayloadNormalizerInterface;
 use App\Viewing\ServiceInterface\View\ViewRequestContextFactoryInterface;
@@ -79,6 +80,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(ViewTemplateRenderer::class)
         ->arg('$templateResolver', service(ViewTemplateResolverInterface::class))
+        ->arg('$interfaceLocationComposeService', service(ViewInterfaceLocationComposeServiceInterface::class)->nullOnInvalid())
         ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class));
 
     $services->set(ViewJsonResponseFactory::class)
