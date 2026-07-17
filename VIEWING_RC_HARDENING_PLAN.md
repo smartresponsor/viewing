@@ -148,3 +148,9 @@ Status: implemented and gate-verified.
 
 Structured PSR-3 events cover representation decisions, JSON responses, fallbacks, serialization failures, and guard violations. JSON serialization is strict and all-or-nothing. The response guard now supports `off`, `observe`, and `enforce` rollout modes.
 
+### R10 Symfony Event Pipeline Proof
+
+Status: implemented and gate-verified.
+
+The R10 proof uses real Symfony event objects, real Viewing subscribers, real services, and Twig loaders to exercise the `kernel.request -> kernel.view -> kernel.response` chain without expanding the production route/controller surface. It covers bot JSON, human HTML, request-format JSON, unknown-policy JSON, missing-template fallback, render failure fallback, loader failure fallback, local fallback rendering, Interfacing bridge present, guard observe/enforce, ignored redirect/file/stream/no-content responses, exclusions, and subrequest classification boundaries.
+
