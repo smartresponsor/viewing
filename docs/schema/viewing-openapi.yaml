@@ -1,0 +1,173 @@
+openapi: 3.1.0
+info:
+  title: Viewing reusable schemas
+  version: 1.0.0-rc
+  description: >
+    Reusable OpenAPI and Nelmio-compatible schemas for the Viewing Symfony
+    presentation boundary. Viewing owns representation envelopes and degraded
+    response shapes only; host applications remain endpoint owners.
+paths: {}
+components:
+  schemas:
+    ViewingViewDescriptor:
+      type: object
+      additionalProperties: false
+      required:
+        - surface
+        - operation
+        - format
+      properties:
+        surface:
+          type: string
+          minLength: 1
+        operation:
+          type: string
+          minLength: 1
+        intent:
+          type:
+            - string
+            - 'null'
+        format:
+          type: string
+          enum:
+            - auto
+            - html
+            - json
+        component:
+          type:
+            - string
+            - 'null'
+    ViewingRuntimeDescriptor:
+      type: object
+      additionalProperties: true
+      required:
+        - mode
+        - reasons
+      properties:
+        mode:
+          type: string
+          enum:
+            - html
+            - json
+            - pass
+        reasons:
+          type: array
+          items:
+            type: string
+        route:
+          type:
+            - string
+            - 'null'
+        path:
+          type: string
+        method:
+          type: string
+        request_format:
+          type: string
+        actor_type:
+          type:
+            - string
+            - 'null'
+          enum:
+            - bot
+            - human
+            - unknown
+            - null
+        template_candidates:
+          type: array
+          items:
+            type: string
+    ViewingLocationItem:
+      type: object
+      additionalProperties: true
+      properties:
+        key:
+          type: string
+        component:
+          type: string
+        template:
+          type: string
+        priority:
+          type: integer
+    ViewingInterfaceLocations:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/ViewingLocationItem'
+      example:
+        shell.left.middle:
+          - key: order
+            component: Order
+            priority: 100
+    ViewingMeta:
+      type: object
+      additionalProperties: true
+      properties:
+        status_code:
+          type:
+            - integer
+            - string
+          description: Optional producer status candidate resolved by Viewing.
+    ViewingDebug:
+      type: object
+      additionalProperties: true
+      description: Diagnostic producer data. Hosts should avoid exposing sensitive values.
+    ViewingPayloadEnvelope:
+      type: object
+      additionalProperties: true
+      required:
+        - _view
+      properties:
+        _view:
+          $ref: '#/components/schemas/ViewingViewDescriptor'
+        interface:
+          type: object
+          additionalProperties: false
+          properties:
+            locations:
+              $ref: '#/components/schemas/ViewingInterfaceLocations'
+        locations:
+          $ref: '#/components/schemas/ViewingInterfaceLocations'
+        data:
+          type: object
+          additionalProperties: true
+        meta:
+          $ref: '#/components/schemas/ViewingMeta'
+        debug:
+          $ref: '#/components/schemas/ViewingDebug'
+    ViewingJsonResponseEnvelope:
+      allOf:
+        - $ref: '#/components/schemas/ViewingPayloadEnvelope'
+        - type: object
+          required:
+            - _viewing
+          properties:
+            _viewing:
+              $ref: '#/components/schemas/ViewingRuntimeDescriptor'
+    ViewingSerializationDegradedResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - ok
+        - component
+        - reason
+      properties:
+        ok:
+          type: boolean
+          const: false
+        component:
+          type: string
+          const: viewing
+        reason:
+          type: string
+          const: serialization_degraded
+    ViewingGuardViolationResponse:
+      type: object
+      additionalProperties: true
+      description: >
+        Controlled replacement body for illegal direct HTML rendering on a
+        Viewing-controlled route. Hosts must also inspect X-Viewing-Guard.
+      properties:
+        ok:
+          type: boolean

@@ -174,3 +174,9 @@ Status: implemented and gate-verified.
 
 The final RC evidence report records the R1-R11 hardened contract, deterministic gates, accepted PHPUnit warning/notices baseline, clean-workspace expectations, and remaining release-packaging/schema work.
 
+### R13 Reusable OpenAPI and Nelmio Schemas
+
+Status: implemented and gate-verified.
+
+Reusable OpenAPI 3.1 schema components are published in `docs/schema/viewing-openapi.yaml`. The schema file intentionally keeps `paths: {}` so endpoint ownership remains with the host or producer component.
+

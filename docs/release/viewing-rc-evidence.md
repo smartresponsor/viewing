@@ -46,6 +46,6 @@ After R11, running the PHPUnit suite should not leave `.phpunit.result.cache` as
 
 ## Remaining RC work
 
-- Publish reusable OpenAPI/Nelmio schemas for Viewing payload and degraded-response shapes.
+- Reusable OpenAPI/Nelmio schemas are published in `docs/schema/viewing-openapi.yaml`.
 - Finalize release packaging posture, manifest/checksum notes, and host import guidance.
 - Decide whether the accepted PHPUnit warning/notices baseline should be closed before GA.

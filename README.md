@@ -77,3 +77,4 @@ To integrate Viewing in your Symfony host application:
 - [ADR 0004: Guardrails and Traffic Policy](docs/adr/0004-guardrails-and-traffic-policy.adoc)
 - [Viewing Host Integration Checklist](docs/migration/host-integration-checklist.adoc)
 - [Viewing RC Evidence Report](docs/release/viewing-rc-evidence.md)
+- [Viewing OpenAPI/Nelmio Schemas](docs/schema/viewing-openapi.yaml)
