@@ -118,7 +118,15 @@ Exit: `kernel.request -> kernel.view -> kernel.response` is proven without relyi
 
 Exit: machine and human readers see one drift-free architecture.
 
-### R12. Publish reusable OpenAPI/Nelmio schemas
+### R12. Publish final RC evidence report
+
+- Record the hardened R1-R11 contract surface.
+- Record gate evidence, accepted PHPUnit warning/notices baseline, and RC validation posture.
+- Record remaining release-packaging and schema-publication work without reopening completed runtime contracts.
+
+Exit: the component has a reusable, human-readable RC evidence report for release review.
+
+### R13. Publish reusable OpenAPI/Nelmio schemas
 
 - Define reusable schemas for `_view`, `_viewing`, `data`, `meta`, `debug`, `interface.locations`, degraded fallback, and guard violation responses.
 - Provide host import guidance and examples.
@@ -159,4 +167,10 @@ The R10 proof uses real Symfony event objects, real Viewing subscribers, real se
 Status: implemented and gate-verified.
 
 Generated configuration reference output is treated as generated source and excluded from php-cs-fixer strict-type rewriting. PHPUnit result cache generation is disabled and ignored so timing artifacts no longer dirty the workspace after gates. The committed `config/reference.php` is aligned with Symfony-generated output rather than post-processed style output.
+
+### R12 Final RC Evidence Report
+
+Status: implemented and gate-verified.
+
+The final RC evidence report records the R1-R11 hardened contract, deterministic gates, accepted PHPUnit warning/notices baseline, clean-workspace expectations, and remaining release-packaging/schema work.
 

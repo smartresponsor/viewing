@@ -76,3 +76,4 @@ To integrate Viewing in your Symfony host application:
 - [ADR 0003: Connectable and Self-Processing Viewing](docs/adr/0003-connectable-and-self-processing.adoc)
 - [ADR 0004: Guardrails and Traffic Policy](docs/adr/0004-guardrails-and-traffic-policy.adoc)
 - [Viewing Host Integration Checklist](docs/migration/host-integration-checklist.adoc)
+- [Viewing RC Evidence Report](docs/release/viewing-rc-evidence.md)
