@@ -47,5 +47,5 @@ After R11, running the PHPUnit suite should not leave `.phpunit.result.cache` as
 ## Remaining RC work
 
 - Reusable OpenAPI/Nelmio schemas are published in `docs/schema/viewing-openapi.yaml`.
-- Finalize release packaging posture, manifest/checksum notes, and host import guidance.
+- RC packaging posture, manifest/checksum policy, and host import guidance are published in `docs/release/viewing-rc-packaging.md`.
 - Decide whether the accepted PHPUnit warning/notices baseline should be closed before GA.

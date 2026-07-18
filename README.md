@@ -78,3 +78,4 @@ To integrate Viewing in your Symfony host application:
 - [Viewing Host Integration Checklist](docs/migration/host-integration-checklist.adoc)
 - [Viewing RC Evidence Report](docs/release/viewing-rc-evidence.md)
 - [Viewing OpenAPI/Nelmio Schemas](docs/schema/viewing-openapi.yaml)
+- [Viewing RC Packaging Posture](docs/release/viewing-rc-packaging.md)

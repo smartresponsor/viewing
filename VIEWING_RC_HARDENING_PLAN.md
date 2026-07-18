@@ -180,3 +180,9 @@ Status: implemented and gate-verified.
 
 Reusable OpenAPI 3.1 schema components are published in `docs/schema/viewing-openapi.yaml`. The schema file intentionally keeps `paths: {}` so endpoint ownership remains with the host or producer component.
 
+### R14 RC Packaging Posture
+
+Status: implemented and gate-verified.
+
+The RC packaging posture is published in `docs/release/viewing-rc-packaging.md`. It defines source package families, excluded machine-local paths, manifest/checksum policy, required packaging gates, and host import posture.
+
