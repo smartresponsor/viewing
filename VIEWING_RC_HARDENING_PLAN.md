@@ -154,3 +154,9 @@ Status: implemented and gate-verified.
 
 The R10 proof uses real Symfony event objects, real Viewing subscribers, real services, and Twig loaders to exercise the `kernel.request -> kernel.view -> kernel.response` chain without expanding the production route/controller surface. It covers bot JSON, human HTML, request-format JSON, unknown-policy JSON, missing-template fallback, render failure fallback, loader failure fallback, local fallback rendering, Interfacing bridge present, guard observe/enforce, ignored redirect/file/stream/no-content responses, exclusions, and subrequest classification boundaries.
 
+### R11 Generated Drift Lock
+
+Status: implemented and gate-verified.
+
+Generated configuration reference output is treated as generated source and excluded from php-cs-fixer strict-type rewriting. PHPUnit result cache generation is disabled and ignored so timing artifacts no longer dirty the workspace after gates. The committed `config/reference.php` is aligned with Symfony-generated output rather than post-processed style output.
+
