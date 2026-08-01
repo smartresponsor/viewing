@@ -131,6 +131,12 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
             if (null !== $request) {
                 $response->headers->set('X-App-Crud-Contract-ms', (string) $request->attributes->get('_app_crud_contract_ms', ''));
                 $response->headers->set('X-App-Crud-Navigation-ms', (string) $request->attributes->get('_app_crud_navigation_ms', ''));
+                $response->headers->set('X-Crud-Context-ms', (string) $request->attributes->get('_crud_context_ms', ''));
+                $response->headers->set('X-Crud-Entrypoint-ms', (string) $request->attributes->get('_crud_entrypoint_ms', ''));
+                $response->headers->set('X-Crud-Definition-ms', (string) $request->attributes->get('_crud_definition_ms', ''));
+                $response->headers->set('X-Crud-Contract-Factory-ms', (string) $request->attributes->get('_crud_contract_factory_ms', ''));
+                $response->headers->set('X-Crud-Service-Resolution-ms', (string) $request->attributes->get('_crud_service_resolution_ms', ''));
+                $response->headers->set('X-Crud-Service-Invocation-ms', (string) $request->attributes->get('_crud_service_invocation_ms', ''));
             }
 
             return $response;
