@@ -141,6 +141,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 $response->headers->set('X-Crud-Default-Index-Definition-ms', (string) $request->attributes->get('_crud_default_index_definition_ms', ''));
                 $response->headers->set('X-Crud-Default-Index-Contract-ms', (string) $request->attributes->get('_crud_default_index_contract_ms', ''));
                 $response->headers->set('X-Crud-Object-Find-All-ms', (string) $request->attributes->get('_crud_object_find_all_ms', ''));
+                $response->headers->set('X-Crud-Collection-Projection-ms', (string) $request->attributes->get('_crud_collection_projection_ms', ''));
             }
 
             return $response;
