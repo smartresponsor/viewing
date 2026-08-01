@@ -31,7 +31,9 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
     public function render(ViewPayload $payload, ViewRequestContext $context, ViewDecision $decision): ?Response
     {
         $startedAt = microtime(true);
+        $resolutionStartedAt = microtime(true);
         $resolution = $this->templateResolver->resolve($decision->templateCandidates);
+        $resolutionMs = (microtime(true) - $resolutionStartedAt) * 1000;
         $locations = $payload->locations;
         $request = $this->requestStack->getCurrentRequest();
 
@@ -39,17 +41,21 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
             $request->attributes->set('_view_loader_failures', $resolution->loaderFailures);
         }
 
+        $compositionStartedAt = microtime(true);
         if (null !== $request && null !== $this->interfaceLocationComposeService) {
             $locations = $this->mergeLocations(
                 $locations,
                 $this->interfaceLocationComposeService->composeLocations($request),
             );
         }
+        $compositionMs = (microtime(true) - $compositionStartedAt) * 1000;
 
         foreach ($resolution->availableCandidates as $candidate) {
             try {
+                $contextStartedAt = microtime(true);
+                $payloadArray = $payload->toArray();
                 $renderContext = [
-                    'view' => $payload->toArray()['_view'],
+                    'view' => $payloadArray['_view'],
                     'interface' => [
                         'locations' => $locations,
                     ],
@@ -57,7 +63,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                     'data' => $payload->data,
                     'meta' => $payload->meta,
                     'debug' => $payload->debug,
-                    'payload' => $payload->toArray(),
+                    'payload' => $payloadArray,
                     'surface' => $payload->surface,
                     'operation' => $payload->operation,
                     'component' => $payload->component,
@@ -79,7 +85,10 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 // Viewing keeps its reserved keys authoritative, then exposes
                 // producer payload data as template context after the canonical
                 // interface.locations projection has been assembled.
+                $contextMs = (microtime(true) - $contextStartedAt) * 1000;
+                $twigStartedAt = microtime(true);
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
+                $twigMs = (microtime(true) - $twigStartedAt) * 1000;
             } catch (\Throwable $exception) {
                 $this->observability?->record('template_render_failure', [
                     'route' => $context->routeName,
@@ -114,7 +123,17 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
             ]);
 
-            return new Response($content, $statusCode, ['Content-Type' => 'text/html; charset=UTF-8']);
+            $response = new Response($content, $statusCode, ['Content-Type' => 'text/html; charset=UTF-8']);
+            $response->headers->set('X-Viewing-Resolve-ms', number_format($resolutionMs, 2, '.', ''));
+            $response->headers->set('X-Viewing-Compose-ms', number_format($compositionMs, 2, '.', ''));
+            $response->headers->set('X-Viewing-Context-ms', number_format($contextMs, 2, '.', ''));
+            $response->headers->set('X-Viewing-Twig-ms', number_format($twigMs, 2, '.', ''));
+            if (null !== $request) {
+                $response->headers->set('X-App-Crud-Contract-ms', (string) $request->attributes->get('_app_crud_contract_ms', ''));
+                $response->headers->set('X-App-Crud-Navigation-ms', (string) $request->attributes->get('_app_crud_navigation_ms', ''));
+            }
+
+            return $response;
         }
 
         return null;
