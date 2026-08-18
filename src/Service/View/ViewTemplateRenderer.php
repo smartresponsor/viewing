@@ -128,6 +128,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
             $response->headers->set('X-Viewing-Compose-ms', number_format($compositionMs, 2, '.', ''));
             $response->headers->set('X-Viewing-Context-ms', number_format($contextMs, 2, '.', ''));
             $response->headers->set('X-Viewing-Twig-ms', number_format($twigMs, 2, '.', ''));
+            $response->headers->set('X-Viewing-Template', $candidate);
             if (null !== $request) {
                 $response->headers->set('X-App-Crud-Contract-ms', (string) $request->attributes->get('_app_crud_contract_ms', ''));
                 $response->headers->set('X-App-Crud-Navigation-ms', (string) $request->attributes->get('_app_crud_navigation_ms', ''));

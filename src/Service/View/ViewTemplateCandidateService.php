@@ -21,11 +21,14 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
     public function candidates(ViewPayload $payload, ViewRequestContext $context): array
     {
         $resource = $this->slug($payload->surface);
+        $operation = $this->slug($payload->operation);
         $candidates = [];
 
-        // Interfacing owns passive noun-surface templates. Runtime lookup is
-        // intentionally folder-based: route operations are payload context, not
-        // physical template filenames.
+        // Interfacing owns visible surface templates. Resolve the concrete
+        // operation first, then fall back to the surface index.
+        // Filesystem: Interfacing/templates/<resource>/<operation>.html.twig
+        $candidates[] = sprintf('@%s/%s/%s.html.twig', $this->interfacingTwigNamespace, $resource, $operation);
+
         // Filesystem: Interfacing/templates/<resource>/index.html.twig
         $candidates[] = sprintf('@%s/%s/index.html.twig', $this->interfacingTwigNamespace, $resource);
 

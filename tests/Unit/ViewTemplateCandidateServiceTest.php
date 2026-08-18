@@ -20,6 +20,7 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
+            '@Interfacing/vendor-profile/show.html.twig',
             '@Interfacing/vendor-profile/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Cruding/index.html.twig',
@@ -52,6 +53,7 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
+            '@Interfacing/vendor/show.html.twig',
             '@Interfacing/vendor/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Viewing/view/index.html.twig',
@@ -67,6 +69,7 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
+            '@Interfacing/vendor/show.html.twig',
             '@Interfacing/vendor/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Cruding/index.html.twig',
