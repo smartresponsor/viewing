@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Service\View;
 
+use App\Interfacing\Contract\InterfaceSurfaceRenderableInterface;
 use App\Viewing\ServiceInterface\View\ViewObjectPayloadNormalizerInterface;
 use App\Viewing\Value\View\ViewPayload;
 use App\Viewing\ValueInterface\View\ViewObjectPayloadInterface;
@@ -12,10 +13,10 @@ final class ViewObjectPayloadNormalizer implements ViewObjectPayloadNormalizerIn
 {
     public function supports(mixed $value): bool
     {
-        return $value instanceof ViewObjectPayloadInterface;
+        return $value instanceof ViewObjectPayloadInterface || $value instanceof InterfaceSurfaceRenderableInterface;
     }
 
-    public function normalize(ViewObjectPayloadInterface $viewObject): ViewPayload
+    public function normalize(ViewObjectPayloadInterface|InterfaceSurfaceRenderableInterface $viewObject): ViewPayload
     {
         $templateContext = $viewObject->toTemplateContext();
         $fallbackData = $viewObject->toFallbackData();

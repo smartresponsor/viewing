@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
+use App\Interfacing\Contract\InterfaceSurfaceRenderableInterface;
 use App\Viewing\Kernel;
 use App\Viewing\Service\View\ViewDecisionService;
 use App\Viewing\Service\View\ViewJsonResponseFactory;
@@ -79,6 +80,40 @@ final class ViewKernelPipelineTest extends TestCase
         } finally {
             $kernel->shutdown();
         }
+    }
+
+    public function testInterfacingSurfaceContractTraversesViewingPipeline(): void
+    {
+        $surface = new class implements InterfaceSurfaceRenderableInterface {
+            public function toTemplateContext(): array
+            {
+                return ['word' => 'vendor', 'view' => 'index', 'label' => 'Surface contract'];
+            }
+
+            public function toFallbackData(): array
+            {
+                return ['word' => 'vendor', 'view' => 'index'];
+            }
+
+            public function templateName(): string
+            {
+                return 'vendor/index.html.twig';
+            }
+        };
+
+        $response = (new ViewPipelineProbe())->run(
+            $surface,
+            Request::create('/vendor', 'GET', server: [
+                'HTTP_ACCEPT' => 'text/html',
+                'HTTP_USER_AGENT' => 'Mozilla/5.0',
+                'HTTP_SEC_FETCH_SITE' => 'same-origin',
+                'HTTP_SEC_FETCH_MODE' => 'navigate',
+            ]),
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('1', $response->headers->get('X-Viewing-Rendered'));
+        self::assertStringContainsString('Surface contract', (string) $response->getContent());
     }
 
     public function testExplicitJsonTraversesFullPipelineWithoutTwigLookup(): void

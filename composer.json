@@ -5,6 +5,7 @@
   "license": "proprietary",
   "require": {
     "php": "^8.4",
+    "interfacing/interface": "*@dev",
     "psr/log": "^3.0",
     "symfony/config": "^8.1",
     "symfony/console": "^8.1",
@@ -56,5 +57,16 @@
     "allow-plugins": {
       "symfony/flex": true
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../Interfacing",
+      "options": {
+        "symlink": true
+      }
+    }
+  ]
 }
