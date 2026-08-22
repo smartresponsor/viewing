@@ -29,6 +29,14 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
         // Filesystem: Interfacing/templates/<resource>/<operation>.html.twig
         $candidates[] = sprintf('@%s/%s/%s.html.twig', $this->interfacingTwigNamespace, $resource, $operation);
 
+        // An explicit producer template is a more specific fallback than the
+        // generic resource index, but remains below an Interfacing-owned exact
+        // operation template.
+        $explicitTemplate = $this->explicitComponentTemplate($payload);
+        if (null !== $explicitTemplate) {
+            $candidates[] = $explicitTemplate;
+        }
+
         // Filesystem: Interfacing/templates/<resource>/index.html.twig
         $candidates[] = sprintf('@%s/%s/index.html.twig', $this->interfacingTwigNamespace, $resource);
 
@@ -46,6 +54,21 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
         }
 
         return array_values(array_unique($candidates));
+    }
+
+    private function explicitComponentTemplate(ViewPayload $payload): ?string
+    {
+        $template = $payload->data['templateName'] ?? null;
+        if (!\is_string($template)) {
+            return null;
+        }
+
+        $template = trim($template);
+        if ('' === $template || str_contains($template, '..') || str_contains($template, "\0")) {
+            return null;
+        }
+
+        return $template;
     }
 
     /**
