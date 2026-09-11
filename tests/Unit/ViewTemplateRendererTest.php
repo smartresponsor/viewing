@@ -21,10 +21,10 @@ final class ViewTemplateRendererTest extends TestCase
 {
     public function testTemplateThrowableFallsBackToJsonPath(): void
     {
-        $twig = $this->createMock(Environment::class);
+        $twig = $this->createStub(Environment::class);
         $twig->method('render')->willThrowException(new \RuntimeException('twig boom'));
 
-        $resolver = $this->createMock(ViewTemplateResolverInterface::class);
+        $resolver = $this->createStub(ViewTemplateResolverInterface::class);
         $resolver->method('resolve')->willReturn(new ViewTemplateResolution(
             selectedTemplate: 'vendor/index.html.twig',
             checkedCandidates: [['template' => 'vendor/index.html.twig', 'exists' => true]],
@@ -42,10 +42,10 @@ final class ViewTemplateRendererTest extends TestCase
 
     public function testStatusCodeDefaultsToOkWhenPayloadHasNoExplicitCode(): void
     {
-        $twig = $this->createMock(Environment::class);
+        $twig = $this->createStub(Environment::class);
         $twig->method('render')->willReturn('<html></html>');
 
-        $resolver = $this->createMock(ViewTemplateResolverInterface::class);
+        $resolver = $this->createStub(ViewTemplateResolverInterface::class);
         $resolver->method('resolve')->willReturn(new ViewTemplateResolution(
             selectedTemplate: 'vendor/index.html.twig',
             checkedCandidates: [['template' => 'vendor/index.html.twig', 'exists' => true]],
@@ -66,8 +66,8 @@ final class ViewTemplateRendererTest extends TestCase
 
     public function testAppComposedLocationReplacesProducerLocationWithoutDuplicatingItems(): void
     {
-        $twig = $this->createMock(Environment::class);
-        $resolver = $this->createMock(ViewTemplateResolverInterface::class);
+        $twig = $this->createStub(Environment::class);
+        $resolver = $this->createStub(ViewTemplateResolverInterface::class);
         $renderer = new ViewTemplateRenderer($twig, $resolver, new RequestStack());
 
         $method = new \ReflectionMethod($renderer, 'mergeLocations');
@@ -104,7 +104,7 @@ final class ViewTemplateRendererTest extends TestCase
             ->with('vendor/index.html.twig', self::callback(static fn (array $context): bool => 'order' === ($context['locations']['shell.left.middle'][0]['key'] ?? null)))
             ->willReturn('<html></html>');
 
-        $resolver = $this->createMock(ViewTemplateResolverInterface::class);
+        $resolver = $this->createStub(ViewTemplateResolverInterface::class);
         $resolver->method('resolve')->willReturn(new ViewTemplateResolution(
             selectedTemplate: 'vendor/index.html.twig',
             checkedCandidates: [['template' => 'vendor/index.html.twig', 'exists' => true]],

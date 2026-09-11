@@ -21,7 +21,7 @@ final readonly class ViewTrafficClassifier implements ViewTrafficClassifierInter
                 continue;
             }
 
-            if (false === preg_match(trim($pattern), '')) {
+            if (false === @preg_match(trim($pattern), '')) {
                 throw new \InvalidArgumentException(sprintf('Invalid bot user-agent pattern: %s', $pattern));
             }
         }

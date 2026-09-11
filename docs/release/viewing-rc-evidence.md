@@ -29,16 +29,16 @@ R11 treats `config/reference.php` as generated output, excludes it from php-cs-f
 | Gate | Current result | Evidence note |
 | --- | --- | --- |
 | PHP lint | PASS | Changed PHP files lint clean. |
-| PHPUnit | PASS with accepted baseline | 47 tests, 104 assertions, 1 warning, 4 PHPUnit notices. |
+| PHPUnit | PASS | 48 tests, 107 assertions, no warnings or PHPUnit notices. |
 | PHPStan | PASS | Level 8, no errors. |
 | PHP-CS-Fixer | PASS | Dry-run diff reports no fixable files. |
 | Composer validate/check-lock | PASS | `composer.json` valid. |
 | Composer audit | PASS | No security vulnerability advisories found. |
 | RC validate | PASS checks/canon, pre-commit dirty expected | Composer validate, PHPStan, PHPUnit pass; canon issue count is 0. |
 
-## Accepted PHPUnit baseline
+## PHPUnit baseline
 
-The current PHPUnit result is accepted for RC evidence because the suite completes without failures, errors, or risky tests. The known baseline remains one PHPUnit warning and four PHPUnit notices. These should either be closed or explicitly re-accepted during final GA hardening.
+The PHPUnit suite is clean for RC evidence: 48 tests and 107 assertions complete without failures, errors, warnings, risky tests, or PHPUnit notices. Expectation-less test doubles use stubs, while interaction verification remains on mocks with explicit expectations. Invalid configured bot user-agent patterns still fail fast through `InvalidArgumentException` without leaking a lower-level regex-engine warning.
 
 ## Clean-workspace expectation
 
@@ -48,4 +48,4 @@ After R11, running the PHPUnit suite should not leave `.phpunit.result.cache` as
 
 - Reusable OpenAPI/Nelmio schemas are published in `docs/schema/viewing-openapi.yaml`.
 - RC packaging posture, manifest/checksum policy, and host import guidance are published in `docs/release/viewing-rc-packaging.md`.
-- Decide whether the accepted PHPUnit warning/notices baseline should be closed before GA.
+- PHPUnit warning/notices baseline is closed; keep the suite clean during packaging and GA hardening.

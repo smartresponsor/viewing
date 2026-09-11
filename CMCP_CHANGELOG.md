@@ -1,0 +1,41 @@
+# CMCP Execution Journal
+
+## Task
+
+- Task: `engine-20260911144233-viewing-7b3039`
+- Component: `Viewing`
+- Workspace: `D:\PhpstormProjects\www\Viewing`
+- Authority: `WRITE_ALLOWED`
+
+## Baseline
+
+- Read repository guidance: `AGENTS.md`, `README.md`, `MANIFEST.json`, `composer.json`, Viewing canon and RC evidence.
+- Confirmed local branch `master`; pre-task worktree contained untracked `.gating/` only.
+- Composer gate passed with 48 tests / 107 assertions, PHPStan level 8 clean, and CS Fixer clean, but PHPUnit reported 1 warning and 4 notices.
+- RC-critical workstream: remove PHPUnit test-double notices without changing runtime behavior, then identify the remaining warning.
+- Growth workstream: presentation capability/UX maturity remains post-RC and must not move template design, CRUD, authorization, or producer business behavior into Viewing.
+
+## Canonization Mapping
+
+- `Canon001TechnicalRoleFirstRule.md`: current `Service/View`, `ServiceInterface/View`, `Subscriber/View`, and `Value/View` trees keep technical role first; this task does not introduce a new source role.
+- `Canon002InterfaceTreeMirrorsImplementationRule.md`: `Service/View/*` and `ServiceInterface/View/*Interface` remain mirrored; this task does not alter public contracts.
+- `Canon011NoSilentFailureRule.md`: invalid regex configuration remains explicitly observable as `InvalidArgumentException`; only the lower-level validation probe warning is suppressed.
+- `Canon023DevelopmentComposerSymlinkRule.md`: development `composer.json` correctly uses the local `../Interfacing` path repository with `symlink: true`.
+- `Canon024ProductionComposerBundleRule.md`: a path-independent `composer.prod.json` is required by canon but is not present; production package/version resolution is not established by this bounded task, so no speculative manifest is created.
+- `Canon025ComponentDualRuntimeModeRule.md`: existing standalone boot surfaces and bundle mode remain unchanged.
+- Viewing canon: keep `kernel.view` as the active presentation boundary and `kernel.response` as defensive containment; no CRUD or template-design ownership changes.
+
+## Risks
+
+- Do not modify sibling repositories; Objecting, Cruding, Interfacing, Canonization, and Gating are reference-only for this task.
+- Preserve the existing local `.gating/` state and do not stage unrelated files.
+- Test-double cleanup must not weaken interaction assertions where communication is explicitly under test.
+
+## Execution Result
+
+- PHPUnit warning/notices baseline closed: 48 tests / 107 assertions pass cleanly.
+- Expectation-less `ViewTemplateRendererTest` collaborators use stubs; the explicit Twig interaction remains a mock with `expects()`.
+- Invalid configured bot user-agent regexes translate validation failure to the existing `InvalidArgumentException` without emitting a lower-level regex-engine warning.
+- Full Composer `gate` passes: PHPUnit clean, PHPStan level 8 clean, and CS Fixer dry-run clean.
+- `composer validate --check-lock` passes with the existing `interfacing/interface: *@dev` unbound-constraint warning; `--strict` exits 1 on that warning.
+- Changed PHP files lint clean. The pre-existing untracked `.gating/` tree was not modified or selected for Git integration.
