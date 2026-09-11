@@ -26,7 +26,7 @@ final readonly class ViewRequestContextFactory implements ViewRequestContextFact
             path: $request->getPathInfo(),
             method: $request->getMethod(),
             routeName: \is_string($routeName) ? $routeName : null,
-            requestFormat: $request->getRequestFormat('html'),
+            requestFormat: $request->getRequestFormat('html') ?? 'html',
             actorType: \is_string($actorType) && '' !== trim($actorType) ? trim($actorType) : null,
             prefersHtml: str_contains($firstAccept, 'text/html') || [] === $acceptable,
             prefersJson: str_contains($firstAccept, 'application/json') || str_contains($firstAccept, 'application/problem+json'),

@@ -17,11 +17,24 @@ This bundle is **not** a direct template design catalog (which belongs in the In
 
 ## Runtime Surface & Entrypoints
 
-The bundle acts as a Symfony middleware/listener:
-- `App\Viewing\ViewingBundle` - Wire the compiler passes and event listeners.
-- `src/EventListener/` - Contains the `kernel.view` and `kernel.response` interceptors.
-- `src/Fallback/` - Fallback chain evaluation strategy.
-- `src/Payload/` - Core DTO wrappers for returning data from controllers.
+The bundle acts as a Symfony event-driven presentation boundary:
+- `App\Viewing\ViewingBundle` wires the bundle and service configuration.
+- `src/Subscriber/View/` contains the `kernel.request`, `kernel.view`, and `kernel.response` subscribers.
+- `src/Service/View/` contains classification, decision, template resolution/rendering, status resolution, and JSON fallback services.
+- `src/ServiceInterface/View/` mirrors the public service contracts.
+- `src/Value/View/` contains immutable payload, request context, decision, actor, reason, and template-resolution values.
+
+## Decision and Failure Contract
+
+The decision order is explicit: configured bot actors, JSON request format, JSON payload format, controlled HTML routes, JSON-preferring `Accept`, XHR without HTML preference, configured unknown-actor policy, then HTML candidate allowance.
+
+`unknown_actor_policy` accepts `html` or `json` and defaults to `html`. Traffic classification is presentation policy, not a security boundary. Invalid bot user-agent regular expressions fail during service construction instead of being silently ignored.
+
+Template absence and template failure are distinct. Missing candidates may use structured JSON fallback with the payload status. Loader or render failures use distinct reason codes and force HTTP 500 when the payload does not already provide an explicit error status. HTML and JSON responses share `ViewStatusCodeResolverInterface`.
+
+Producer objects are accepted only when they implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposeServiceInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
+
+Structured observability uses optional PSR-3 logging with stable event and metric fields; payload content, stack traces, and filesystem paths are not logged. JSON serialization is all-or-nothing with UTF-8 substitution and explicit `serialization_degraded` HTTP 500 fallback. Response guard rollout is configured with `response_guard_mode: off|observe|enforce`; observe preserves the original response and adds `X-Viewing-Guard`.
 
 ## Local Setup
 
@@ -63,3 +76,6 @@ To integrate Viewing in your Symfony host application:
 - [ADR 0003: Connectable and Self-Processing Viewing](docs/adr/0003-connectable-and-self-processing.adoc)
 - [ADR 0004: Guardrails and Traffic Policy](docs/adr/0004-guardrails-and-traffic-policy.adoc)
 - [Viewing Host Integration Checklist](docs/migration/host-integration-checklist.adoc)
+- [Viewing RC Evidence Report](docs/release/viewing-rc-evidence.md)
+- [Viewing OpenAPI/Nelmio Schemas](docs/schema/viewing-openapi.yaml)
+- [Viewing RC Packaging Posture](docs/release/viewing-rc-packaging.md)

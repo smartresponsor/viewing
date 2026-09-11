@@ -41,6 +41,7 @@ Forbidden inside producer UI controllers:
 Allowed outputs:
 
 * neutral View Payload array/DTO;
+* object payload implementing `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`;
 * explicit `JsonResponse` for API endpoints;
 * `RedirectResponse` for real redirects;
 * binary/stream/file responses for file delivery;
@@ -50,7 +51,9 @@ Allowed outputs:
 
 The normal path is `kernel.view`. The defensive path is `kernel.response`.
 
-The defensive path does not replace the normal path. It only contains drift when a controlled producer route illegally returns pre-rendered HTML.
+The defensive path does not replace the normal path. It only contains drift when a controlled producer route illegally returns pre-rendered HTML. Hosts roll it out with `response_guard_mode`: `off`, `observe`, or `enforce`.
+
+Viewing emits safe structured PSR-3 evidence for decisions, JSON responses, fallbacks, serialization failures, and guard violations. Event records contain stable metric names and scalar request context only. JSON output is never partial: serialization succeeds completely or returns the controlled `serialization_degraded` 500 envelope.
 
 == Template fallback chain
 
@@ -78,11 +81,13 @@ to the producer controller.
 
 == Traffic policy
 
-Bot traffic should return structured JSON and avoid template lookup.
+Bot traffic returns structured JSON and avoids template lookup.
 
 Human HTML traffic may resolve templates.
 
-Unknown traffic may be allowed, observed, or downgraded based on host policy.
+Unknown traffic follows the explicit `unknown_actor_policy`: `html` by default or `json` when the host requires conservative machine output. Actor values and decision reasons are stable typed contracts. Invalid bot user-agent patterns fail visibly and are never suppressed.
+
+Template absence, loader failure, render failure, and an empty candidate chain are distinct diagnostic states. Loader and render failures force a 500 JSON fallback unless the payload already carries an explicit error status. HTML and JSON representations share one status-code resolver.
 
 == Bundle and self-processing canon
 

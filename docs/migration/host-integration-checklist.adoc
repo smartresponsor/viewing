@@ -20,6 +20,32 @@ defaults:
 
 The normal `kernel.view` path does not require this flag when controllers return View Payload. The flag is for defensive `kernel.response` containment when a controller incorrectly returns HTML.
 
+== Producer object payload contract
+
+Producer objects must implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`. Matching method names without the interface are not accepted.
+
+[source,php]
+----
+final class VendorViewPayload implements ViewObjectPayloadInterface
+{
+    public function toTemplateContext(): array { /* ... */ }
+    public function toFallbackData(): array { /* ... */ }
+}
+----
+
+== Optional Interfacing location bridge
+
+Standalone Viewing requires no Interfacing service. A host that composes interface locations aliases its implementation to the local bridge contract:
+
+[source,yaml]
+----
+services:
+  App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface:
+    alias: App\Interfacing\Service\InterfaceLocation\AppInterfaceLocationComposeService
+----
+
+The bridge receives the current Symfony `Request` and returns canonical location blocks. Interfacing remains passive; Viewing remains the dispatcher.
+
 == Template hierarchy
 
 [source,text]
@@ -36,6 +62,20 @@ The producer local fallback is rendered only by Viewing.
 == Traffic behavior
 
 Bot actor values force JSON and skip template lookup. The default request attribute is `_view_actor_type`.
+
+== Observability and guard rollout
+
+Provide a PSR-3 logger through the normal Symfony `Psr\Log\LoggerInterface` alias to receive Viewing events. Without a logger, Viewing remains operational and silently uses the no-op path.
+
+Start migrations with `response_guard_mode: observe`; verify `viewing.guard_violation` events and the `X-Viewing-Guard` response header, then move to `enforce`. Use `off` only for explicitly unmanaged hosts.
+
+JSON serialization is strict. Recursive or unsupported payloads return HTTP 500 with `serialization_degraded`; partial JSON is never emitted.
+
+== Reusable OpenAPI and Nelmio schemas
+
+Viewing publishes reusable schema components in `docs/schema/viewing-openapi.yaml`. Host applications may import these schemas into their own OpenAPI/Nelmio documentation, but endpoint ownership stays with the host or producer component.
+
+The schema file intentionally keeps `paths: {}` and provides only reusable `components.schemas` and `components.responses` for `_view`, `_viewing`, `interface.locations`, degraded serialization fallback, and guard violation responses.
 
 == Drift check
 

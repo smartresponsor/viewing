@@ -1,4 +1,4 @@
-#AGENT.md
+# AGENTS.md
 
 # SmartResponsor Platform Rules
 
@@ -363,6 +363,15 @@ Doctrine mapping/schema validation
 - Avoid touching `vendor/`, generated artifacts, and unrelated project trees unless the task explicitly requires it.
 - Prefer project-local scripts and configs over ad hoc one-off commands.
 - Keep secrets out of git-tracked files. Use Windows user env vars for runtime secrets.
+
+## Console MCP patch rules
+
+- Inspect the current target file and workspace status before any write.
+- Send `console.apply_patch` only a unified diff that starts with `diff --git`.
+- Run `console.apply_patch` with `dryRun=true` before applying the same patch with `dryRun=false`.
+- Keep hunk ranges, hunk context, and `expectedChangedFiles` exact for the current tree.
+- If a hunk fails, re-read the target file and regenerate the diff from current content.
+- Do not include generated, dependency, cache, log, archive, binary, or unrelated files in patch scope.
 
 ## Cloudflare AI Gateway
 

@@ -1,5 +1,7 @@
 /vendor/
+/.gating/
 /.phpunit.cache/
+/.phpunit.result.cache
 /var/
 /.idea/
 .DS_Store

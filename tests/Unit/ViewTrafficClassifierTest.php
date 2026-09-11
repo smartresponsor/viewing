@@ -37,4 +37,30 @@ final class ViewTrafficClassifierTest extends TestCase
 
         self::assertSame('unknown', $classifier->classify($request));
     }
+
+    public function testNonBrowserHeadersRemainUnknown(): void
+    {
+        $classifier = new ViewTrafficClassifier(['/bot/i']);
+        $request = Request::create('/vendor/1', server: ['HTTP_USER_AGENT' => 'ExampleClient/1.0']);
+
+        self::assertSame('unknown', $classifier->classify($request));
+    }
+
+    public function testIncompleteFetchHeadersRemainUnknown(): void
+    {
+        $classifier = new ViewTrafficClassifier(['/bot/i']);
+        $request = Request::create('/vendor/1', server: [
+            'HTTP_USER_AGENT' => 'Mozilla/5.0',
+            'HTTP_SEC_FETCH_SITE' => 'same-origin',
+        ]);
+
+        self::assertSame('unknown', $classifier->classify($request));
+    }
+
+    public function testInvalidPatternFailsFast(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new ViewTrafficClassifier(['/[invalid/']);
+    }
 }
