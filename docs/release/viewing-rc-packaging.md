@@ -55,13 +55,14 @@ The package archive itself should receive a SHA-256 checksum beside the archive.
 The packaging gate must run from a clean working tree and pass:
 
 - `composer validate --strict --check-lock`;
+- `composer run-script validate:prod`;
 - `composer audit`;
 - `composer run-script test`;
 - `composer run-script phpstan`;
 - `composer run-script php-cs-fixer`;
 - RC validate with canon issue count equal to zero.
 
-The current accepted test baseline is one PHPUnit warning and four PHPUnit notices, with no failures, errors, or risky tests. This baseline must be either re-accepted in RC notes or closed before GA.
+The PHPUnit baseline is clean: 48 tests and 107 assertions complete without failures, errors, warnings, risky tests, or PHPUnit notices. Packaging must preserve that clean baseline.
 
 ## Host import posture
 
