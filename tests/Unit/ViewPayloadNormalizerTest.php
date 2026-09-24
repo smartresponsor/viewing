@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewPayloadNormalizer;
-use App\Viewing\ValueInterface\View\ViewObjectPayloadInterface;
+use App\Viewing\Normalizer\ViewPayloadNormalizer;
+use App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ViewPayloadNormalizerTest extends TestCase

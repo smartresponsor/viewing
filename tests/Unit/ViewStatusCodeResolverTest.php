@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewStatusCodeResolver;
-use App\Viewing\Value\View\ViewPayload;
+use App\Viewing\Resolver\ViewStatusCodeResolver;
+use App\Viewing\Value\ViewPayload;
 use PHPUnit\Framework\TestCase;
 
 final class ViewStatusCodeResolverTest extends TestCase

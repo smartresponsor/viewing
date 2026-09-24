@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewJsonResponseFactory;
-use App\Viewing\ServiceInterface\View\ViewJsonSerializerInterface;
-use App\Viewing\ServiceInterface\View\ViewObservabilityServiceInterface;
-use App\Viewing\Value\View\ViewDecision;
-use App\Viewing\Value\View\ViewPayload;
-use App\Viewing\Value\View\ViewRequestContext;
+use App\Viewing\Factory\ViewJsonResponseFactory;
+use App\Viewing\ServiceInterface\ViewJsonSerializerInterface;
+use App\Viewing\ServiceInterface\ViewObservabilityServiceInterface;
+use App\Viewing\Value\ViewDecision;
+use App\Viewing\Value\ViewPayload;
+use App\Viewing\Value\ViewRequestContext;
 use PHPUnit\Framework\TestCase;
 
 final class ViewJsonResponseFactoryTest extends TestCase

@@ -19,10 +19,10 @@ This bundle is **not** a direct template design catalog (which belongs in the In
 
 The bundle acts as a Symfony event-driven presentation boundary:
 - `App\Viewing\ViewingBundle` wires the bundle and service configuration.
-- `src/Subscriber/View/` contains the `kernel.request`, `kernel.view`, and `kernel.response` subscribers.
-- `src/Service/View/` contains classification, decision, template resolution/rendering, status resolution, and JSON fallback services.
-- `src/ServiceInterface/View/` mirrors the public service contracts.
-- `src/Value/View/` contains immutable payload, request context, decision, actor, reason, and template-resolution values.
+- `src/EventSubscriber/` contains the `kernel.request`, `kernel.view`, and `kernel.response` subscribers.
+- `src/Service/` contains orchestration services whose dominant role is service logic; factories, normalizers, resolvers, and renderers live in their canonical typed roots.
+- `src/ServiceInterface/` mirrors public service contracts; cross-component optional bridges live under `src/Contract/`.
+- `src/Value/` contains immutable payload, request context, decision, actor, reason, and template-resolution values.
 
 ## Decision and Failure Contract
 
@@ -32,7 +32,7 @@ The decision order is explicit: configured bot actors, JSON request format, JSON
 
 Template absence and template failure are distinct. Missing candidates may use structured JSON fallback with the payload status. Loader or render failures use distinct reason codes and force HTTP 500 when the payload does not already provide an explicit error status. HTML and JSON responses share `ViewStatusCodeResolverInterface`.
 
-Producer objects are accepted only when they implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposeServiceInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
+Producer objects are accepted only when they implement `App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposerInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
 
 Structured observability uses optional PSR-3 logging with stable event and metric fields; payload content, stack traces, and filesystem paths are not logged. JSON serialization is all-or-nothing with UTF-8 substitution and explicit `serialization_degraded` HTTP 500 fallback. Response guard rollout is configured with `response_guard_mode: off|observe|enforce`; observe preserves the original response and adds `X-Viewing-Guard`.
 
@@ -64,7 +64,7 @@ To integrate Viewing in your Symfony host application:
     }
   ],
   "require": {
-    "viewing/view": "*@dev"
+    "viewing/view": "dev-master"
   }
 }
 ```

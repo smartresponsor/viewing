@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Controller\View\ViewHomeController;
+use App\Viewing\Controller\ViewHomeController;
 use PHPUnit\Framework\TestCase;
 
 final class ViewHomeControllerTest extends TestCase

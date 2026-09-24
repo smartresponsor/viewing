@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewJsonSerializer;
+use App\Viewing\Service\ViewJsonSerializer;
 use PHPUnit\Framework\TestCase;
 
 final class ViewJsonSerializerTest extends TestCase

@@ -146,7 +146,7 @@ Remaining RC work starts at R5 and does not reopen the completed R1-R4 contract 
 
 Status: implemented and gate-verified.
 
-Producer object payloads now require `ViewObjectPayloadInterface`; duck typing and reflection are removed. Optional Interfacing location composition now uses the local `ViewInterfaceLocationComposeServiceInterface`, with deterministic standalone-null and host-alias modes.
+Producer object payloads now require `ViewObjectPayloadInterface`; duck typing and reflection are removed. Optional Interfacing location composition now uses the local `ViewInterfaceLocationComposerInterface`, with deterministic standalone-null and host-alias modes.
 
 Remaining RC work starts at R7.
 
