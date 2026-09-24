@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewObservabilityService;
+use App\Viewing\Service\ViewObservabilityService;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 

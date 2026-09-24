@@ -22,7 +22,7 @@ The normal `kernel.view` path does not require this flag when controllers return
 
 == Producer object payload contract
 
-Producer objects must implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`. Matching method names without the interface are not accepted.
+Producer objects must implement `App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface`. Matching method names without the interface are not accepted.
 
 [source,php]
 ----
@@ -40,7 +40,7 @@ Standalone Viewing requires no Interfacing service. A host that composes interfa
 [source,yaml]
 ----
 services:
-  App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface:
+  App\Viewing\Contract\ViewInterfaceLocationComposerInterface:
     alias: App\Interfacing\Service\InterfaceLocation\AppInterfaceLocationComposeService
 ----
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewTemplateCandidateService;
-use App\Viewing\Value\View\ViewPayload;
-use App\Viewing\Value\View\ViewRequestContext;
+use App\Viewing\Service\ViewTemplateCandidateService;
+use App\Viewing\Value\ViewPayload;
+use App\Viewing\Value\ViewRequestContext;
 use PHPUnit\Framework\TestCase;
 
 final class ViewTemplateCandidateServiceTest extends TestCase
@@ -20,7 +20,6 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
-            '@Interfacing/vendor-profile/show.html.twig',
             '@Interfacing/vendor-profile/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Cruding/index.html.twig',
@@ -53,7 +52,6 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
-            '@Interfacing/vendor/show.html.twig',
             '@Interfacing/vendor/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Viewing/view/index.html.twig',
@@ -69,7 +67,6 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
-            '@Interfacing/vendor/show.html.twig',
             '@Interfacing/vendor/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Cruding/index.html.twig',

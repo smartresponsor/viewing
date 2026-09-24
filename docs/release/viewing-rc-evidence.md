@@ -16,13 +16,13 @@ This report captures release-candidate evidence for the `viewing/view` Symfony b
 
 R1-R4 hardened decision reasons, actor classification, unknown-traffic policy, template failure taxonomy, and shared status-code resolution.
 
-R5-R6 require producer object payloads to implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface` and expose optional Interfacing location composition through `App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface`.
+R5-R6 require producer object payloads to implement `App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface` and expose optional Interfacing location composition through `App\Viewing\Contract\ViewInterfaceLocationComposerInterface`.
 
 R7-R9 added safe PSR-3 structured observability, strict JSON serialization, degraded serialization fallback, and response-guard rollout modes: `off`, `observe`, and `enforce`.
 
 R10 proves the request, view, and response event chain with real Symfony event objects, real Viewing subscribers, real services, and Twig loaders.
 
-R11 treats `config/reference.php` as generated output, excludes it from php-cs-fixer strict-type rewriting, disables PHPUnit result caching, and ignores PHPUnit timing cache output.
+R11 treats `config/reference.php` as generated output that is ignored and not tracked as repository source, disables PHPUnit result caching, and ignores PHPUnit timing cache output. Current RC hardening also adds canonical role-root placement, Playwright browser evidence, and reproducible behavioral/UI coverage evidence.
 
 ## Gate matrix
 
@@ -34,7 +34,10 @@ R11 treats `config/reference.php` as generated output, excludes it from php-cs-f
 | PHP-CS-Fixer | PASS | Dry-run diff reports no fixable files. |
 | Composer validate/check-lock | PASS | `composer.json` valid. |
 | Composer audit | PASS | No security vulnerability advisories found. |
-| RC validate | PASS checks/canon, pre-commit dirty expected | Composer validate, PHPStan, PHPUnit pass; canon issue count is 0. |
+| Playwright | PASS | Standalone human HTML path renders in Chromium; headless/bot JSON behavior remains separately covered by PHPUnit. |
+| Behavioral/UI coverage | PASS | Canon042 evidence: functional 2/2, behavioral 5/5, UI 1/1, critical 1/1. |
+| npm audit | PASS | `package-lock.json` present; 0 vulnerabilities. |
+| Gating | BLOCKED externally | All in-scope hard rules pass; Canon022 still requires the root package `viewing/view` to require itself. Canon031 and Canon040 remain warnings. |
 
 ## PHPUnit baseline
 
@@ -42,7 +45,7 @@ The PHPUnit suite is clean for RC evidence: 48 tests and 107 assertions complete
 
 ## Clean-workspace expectation
 
-After R11, running the PHPUnit suite should not leave `.phpunit.result.cache` as source drift. `config/reference.php` is committed in Symfony-generated form and excluded from style rewriting to avoid conflict between generated output and project style policy.
+Running the PHPUnit suite should not leave `.phpunit.result.cache` as source drift. `config/reference.php` may be generated locally by Symfony tooling but remains ignored and untracked; authoritative configuration stays in `src/DependencyInjection/Configuration.php` and repository config.
 
 ## Remaining RC work
 

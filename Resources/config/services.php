@@ -2,38 +2,38 @@
 
 declare(strict_types=1);
 
-use App\Viewing\Service\View\ViewDecisionService;
-use App\Viewing\Service\View\ViewJsonResponseFactory;
-use App\Viewing\Service\View\ViewJsonSerializer;
-use App\Viewing\Service\View\ViewObservabilityService;
-use App\Viewing\Service\View\ViewPayloadNormalizer;
-use App\Viewing\Service\View\ViewRequestContextFactory;
-use App\Viewing\Service\View\ViewResponseGuardService;
-use App\Viewing\Service\View\ViewRouteExclusionService;
-use App\Viewing\Service\View\ViewTemplateCandidateService;
-use App\Viewing\Service\View\ViewTemplateRenderer;
-use App\Viewing\Service\View\ViewObjectPayloadNormalizer;
-use App\Viewing\Service\View\ViewStatusCodeResolver;
-use App\Viewing\Service\View\ViewTemplateResolver;
-use App\Viewing\Service\View\ViewTrafficClassifier;
-use App\Viewing\ServiceInterface\View\ViewDecisionServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewJsonResponseFactoryInterface;
-use App\Viewing\ServiceInterface\View\ViewJsonSerializerInterface;
-use App\Viewing\ServiceInterface\View\ViewObservabilityServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewPayloadNormalizerInterface;
-use App\Viewing\ServiceInterface\View\ViewRequestContextFactoryInterface;
-use App\Viewing\ServiceInterface\View\ViewResponseGuardServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewRouteExclusionServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewTemplateCandidateServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewObjectPayloadNormalizerInterface;
-use App\Viewing\ServiceInterface\View\ViewStatusCodeResolverInterface;
-use App\Viewing\ServiceInterface\View\ViewTemplateRendererInterface;
-use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
-use App\Viewing\ServiceInterface\View\ViewTrafficClassifierInterface;
-use App\Viewing\Subscriber\View\ViewKernelResponseGuardSubscriber;
-use App\Viewing\Subscriber\View\ViewKernelViewSubscriber;
-use App\Viewing\Subscriber\View\ViewTrafficRequestSubscriber;
+use App\Viewing\Service\ViewDecisionService;
+use App\Viewing\Factory\ViewJsonResponseFactory;
+use App\Viewing\Service\ViewJsonSerializer;
+use App\Viewing\Service\ViewObservabilityService;
+use App\Viewing\Normalizer\ViewPayloadNormalizer;
+use App\Viewing\Factory\ViewRequestContextFactory;
+use App\Viewing\Service\ViewResponseGuardService;
+use App\Viewing\Service\ViewRouteExclusionService;
+use App\Viewing\Service\ViewTemplateCandidateService;
+use App\Viewing\Renderer\ViewTemplateRenderer;
+use App\Viewing\Normalizer\ViewObjectPayloadNormalizer;
+use App\Viewing\Resolver\ViewStatusCodeResolver;
+use App\Viewing\Resolver\ViewTemplateResolver;
+use App\Viewing\Service\ViewTrafficClassifier;
+use App\Viewing\ServiceInterface\ViewDecisionServiceInterface;
+use App\Viewing\Contract\ViewInterfaceLocationComposerInterface;
+use App\Viewing\ServiceInterface\ViewJsonResponseFactoryInterface;
+use App\Viewing\ServiceInterface\ViewJsonSerializerInterface;
+use App\Viewing\ServiceInterface\ViewObservabilityServiceInterface;
+use App\Viewing\ServiceInterface\ViewPayloadNormalizerInterface;
+use App\Viewing\ServiceInterface\ViewRequestContextFactoryInterface;
+use App\Viewing\ServiceInterface\ViewResponseGuardServiceInterface;
+use App\Viewing\ServiceInterface\ViewRouteExclusionServiceInterface;
+use App\Viewing\ServiceInterface\ViewTemplateCandidateServiceInterface;
+use App\Viewing\ServiceInterface\ViewObjectPayloadNormalizerInterface;
+use App\Viewing\ServiceInterface\ViewStatusCodeResolverInterface;
+use App\Viewing\ServiceInterface\ViewTemplateRendererInterface;
+use App\Viewing\ServiceInterface\ViewTemplateResolverInterface;
+use App\Viewing\ServiceInterface\ViewTrafficClassifierInterface;
+use App\Viewing\EventSubscriber\ViewKernelResponseGuardSubscriber;
+use App\Viewing\EventSubscriber\ViewKernelViewSubscriber;
+use App\Viewing\EventSubscriber\ViewTrafficRequestSubscriber;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -92,7 +92,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(ViewTemplateRenderer::class)
         ->arg('$templateResolver', service(ViewTemplateResolverInterface::class))
-        ->arg('$interfaceLocationComposeService', service(ViewInterfaceLocationComposeServiceInterface::class)->nullOnInvalid())
+        ->arg('$interfaceLocationComposeService', service(ViewInterfaceLocationComposerInterface::class)->nullOnInvalid())
         ->arg('$statusCodeResolver', service(ViewStatusCodeResolverInterface::class))
         ->arg('$observability', service(ViewObservabilityServiceInterface::class));
 

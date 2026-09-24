@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewRouteExclusionService;
+use App\Viewing\Service\ViewRouteExclusionService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 

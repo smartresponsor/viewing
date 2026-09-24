@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace App\Viewing\Test\Unit;
 
 use App\Interfacing\Contract\InterfaceSurfaceRenderableInterface;
+use App\Viewing\Contract\ViewInterfaceLocationComposerInterface;
+use App\Viewing\EventSubscriber\ViewKernelResponseGuardSubscriber;
+use App\Viewing\EventSubscriber\ViewKernelViewSubscriber;
+use App\Viewing\EventSubscriber\ViewTrafficRequestSubscriber;
+use App\Viewing\Factory\ViewJsonResponseFactory;
+use App\Viewing\Factory\ViewRequestContextFactory;
 use App\Viewing\Kernel;
-use App\Viewing\Service\View\ViewDecisionService;
-use App\Viewing\Service\View\ViewJsonResponseFactory;
-use App\Viewing\Service\View\ViewJsonSerializer;
-use App\Viewing\Service\View\ViewObjectPayloadNormalizer;
-use App\Viewing\Service\View\ViewPayloadNormalizer;
-use App\Viewing\Service\View\ViewRequestContextFactory;
-use App\Viewing\Service\View\ViewResponseGuardService;
-use App\Viewing\Service\View\ViewRouteExclusionService;
-use App\Viewing\Service\View\ViewStatusCodeResolver;
-use App\Viewing\Service\View\ViewTemplateCandidateService;
-use App\Viewing\Service\View\ViewTemplateRenderer;
-use App\Viewing\Service\View\ViewTemplateResolver;
-use App\Viewing\Service\View\ViewTrafficClassifier;
-use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
-use App\Viewing\Subscriber\View\ViewKernelResponseGuardSubscriber;
-use App\Viewing\Subscriber\View\ViewKernelViewSubscriber;
-use App\Viewing\Subscriber\View\ViewTrafficRequestSubscriber;
+use App\Viewing\Normalizer\ViewObjectPayloadNormalizer;
+use App\Viewing\Normalizer\ViewPayloadNormalizer;
+use App\Viewing\Renderer\ViewTemplateRenderer;
+use App\Viewing\Resolver\ViewStatusCodeResolver;
+use App\Viewing\Resolver\ViewTemplateResolver;
+use App\Viewing\Service\ViewDecisionService;
+use App\Viewing\Service\ViewJsonSerializer;
+use App\Viewing\Service\ViewResponseGuardService;
+use App\Viewing\Service\ViewRouteExclusionService;
+use App\Viewing\Service\ViewTemplateCandidateService;
+use App\Viewing\Service\ViewTrafficClassifier;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -316,7 +316,7 @@ final class ViewPipelineProbe
         array $templates = ['@Interfacing/vendor/index.html.twig' => '<html>{{ data.label|default("ok") }}</html>'],
         string $diagnosticMode = 'safe',
         ?LoaderInterface $loader = null,
-        ?ViewInterfaceLocationComposeServiceInterface $bridge = null,
+        ?ViewInterfaceLocationComposerInterface $bridge = null,
     ) {
         $this->kernel = new Kernel('test', true);
         $routeExclusion = new ViewRouteExclusionService(['#^/_profiler(?:/|$)#'], ['#^_profiler#']);
@@ -396,7 +396,7 @@ final class ViewPipelineProbe
     }
 }
 
-final class ViewPipelineBridge implements ViewInterfaceLocationComposeServiceInterface
+final class ViewPipelineBridge implements ViewInterfaceLocationComposerInterface
 {
     public function composeLocations(Request $request): array
     {

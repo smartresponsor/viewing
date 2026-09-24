@@ -1,5 +1,5 @@
 framework:
-    secret: 'viewing-standalone-dev-secret-change-me'
+    secret: '%env(APP_SECRET)%'
     http_method_override: false
     handle_all_throwables: true
     php_errors:

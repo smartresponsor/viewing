@@ -4,9 +4,14 @@
   "type": "symfony-bundle",
   "license": "proprietary",
   "require": {
+    "collectioning/collection": "dev-master",
+    "cruding/crud": "dev-master",
+    "easycorp/easyadmin-bundle": "^5.5",
     "php": "^8.4",
     "interfacing/interface": "dev-master",
+    "objecting/object": "dev-master",
     "psr/log": "^3.0",
+    "tabling/table": "dev-master",
     "symfony/config": "^8.1",
     "symfony/console": "^8.1",
     "symfony/dependency-injection": "^8.1",
@@ -24,7 +29,11 @@
     "friendsofphp/php-cs-fixer": "^3.95",
     "squizlabs/php_codesniffer": "^3.10",
     "symfony/framework-bundle": "^8.1",
-    "symfony/var-dumper": "^8.1"
+    "symfony/var-dumper": "^8.1",
+    "gating/gate": "dev-master",
+    "symfony/browser-kit": "^8.1",
+    "symfony/css-selector": "^8.1",
+    "symfony/panther": "^2.4"
   },
   "autoload": {
     "psr-4": {
@@ -64,6 +73,31 @@
     {
       "type": "vcs",
       "url": "git@github.com:smartresponsor/interfacing.git",
+      "no-api": true
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:smartresponsor/collectioning.git",
+      "no-api": true
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:smartresponsor/cruding.git",
+      "no-api": true
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:smartresponsor/objecting.git",
+      "no-api": true
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:smartresponsor/tabling-.git",
+      "no-api": true
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/smartresponsor/gating.git",
       "no-api": true
     }
   ]

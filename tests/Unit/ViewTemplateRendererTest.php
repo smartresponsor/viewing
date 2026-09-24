@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewTemplateRenderer;
-use App\Viewing\ServiceInterface\View\ViewInterfaceLocationComposeServiceInterface;
-use App\Viewing\ServiceInterface\View\ViewTemplateResolverInterface;
-use App\Viewing\Value\View\ViewDecision;
-use App\Viewing\Value\View\ViewPayload;
-use App\Viewing\Value\View\ViewRequestContext;
-use App\Viewing\Value\View\ViewTemplateResolution;
+use App\Viewing\Contract\ViewInterfaceLocationComposerInterface;
+use App\Viewing\Renderer\ViewTemplateRenderer;
+use App\Viewing\ServiceInterface\ViewTemplateResolverInterface;
+use App\Viewing\Value\ViewDecision;
+use App\Viewing\Value\ViewPayload;
+use App\Viewing\Value\ViewRequestContext;
+use App\Viewing\Value\ViewTemplateResolution;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -114,7 +114,7 @@ final class ViewTemplateRendererTest extends TestCase
 
         $requestStack = new RequestStack();
         $requestStack->push(Request::create('/vendor'));
-        $bridge = new class implements ViewInterfaceLocationComposeServiceInterface {
+        $bridge = new class implements ViewInterfaceLocationComposerInterface {
             public function composeLocations(Request $request): array
             {
                 return ['shell.left.middle' => [['key' => 'order']]];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewTemplateResolver;
+use App\Viewing\Resolver\ViewTemplateResolver;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;

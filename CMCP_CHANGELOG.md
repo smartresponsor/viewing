@@ -41,3 +41,60 @@
 - Development Composer constraint is now `interfacing/interface: dev-master`; local path+symlink wiring remains intact and `composer validate --strict --check-lock` passes cleanly.
 - `composer run-script validate:prod` passes strict validation for `composer.prod.json`; Canon033 identity parity is preserved for name, type, PSR-4, PHP baseline, and Symfony baseline.
 - Changed PHP files lint clean. The pre-existing untracked `.gating/` tree was not modified or selected for Git integration.
+
+## 2026-09-23 — Repository implementation and RC hardening
+
+### Baseline
+
+- Branch: `rc/viewing-master-sync-20260911`; reconnaissance HEAD: `108a01f71bbc6ac59d07414a681d2a762c97753f`.
+- Existing dirty files before this run: `.gating/README.md`, `composer.json`, and `composer.prod.json`.
+- PHPStan level 8 passed and PHPUnit passed 48 tests / 107 assertions before changes.
+- Composer validation reported the lock was stale; the configured Gating executable was not installed in `vendor/bin`.
+
+### Read contour
+
+- Viewing: AGENTS, README/AsciiDoc, Composer manifests, MANIFEST, ADR/canon/migration/release documentation, source topology, tests, PHPUnit configuration, and current Git diff.
+- Dependency contour: Objecting, Cruding, Interfacing, Collectioning, and Tabling package contracts relevant to Viewing.
+- Gating: package contract plus executable Canon022/043/045/053 rules.
+- Canonization: architecture README plus textual Canon007, Canon008, Canon017, Canon019, Canon020, Canon022, Canon023, Canon024, Canon033, Canon034, Canon039, Canon043, Canon045, and Canon053.
+
+### Target-to-canon mapping
+
+- Canon007/019/020: retain `App\\Viewing\\...` PSR-4 identity and technical-role Symfony topology; no Domain/Port/Adapter/Adaptor roots.
+- Canon008: Interfacing production namespace use remains backed by `interfacing/interface`; standalone external platform packages are explicit runtime dependencies.
+- Canon017: the runtime candidate order is aligned to Viewing's documented exact fallback chain; operation-specific and producer-supplied physical template candidates are removed.
+- Canon022: Viewing exposes standalone Symfony boot surfaces, so external platform baseline packages are direct runtime dependencies. A literal `viewing/view` self-dependency is intentionally not added because a Composer root package cannot validly require itself; any executable requirement for that edge is a Canon022/Gating self-applicability defect outside Viewing.
+- Canon023/043/045/053: local first-party development repositories use sibling path symlinks with explicit `dev-master` identity and only canonical helper/foundation siblings.
+- Canon024/033: production stays path-independent and preserves package/type/PSR-4/PHP/Symfony identity.
+- Canon034: local environment, generated coverage, and OS noise are ignored.
+- Canon039: PHPUnit declares the production source population and persistent branch-aware coverage execution.
+
+### RC-critical workstream
+
+- Align template candidate resolution with the exact Viewing fallback chain.
+- Normalize local Composer dependency/repository closure and remove the self path repository.
+- Align production package repositories with the external standalone dependency contour.
+- Add PHPUnit coverage tooling and re-run Composer validation, PHP lint/style/static analysis/tests/coverage/Gating/audit.
+
+### Growth workstream
+
+- Post-RC only: evaluate Symfony UX Twig Components / Live Components as optional consumer composition capabilities. Template design ownership stays in Interfacing; Viewing stays the representation-decision/rendering boundary.
+
+### Material risks
+
+- Canon022 currently includes `viewing/view` in the mandatory list for every standalone application and its Gating implementation has no root-package self exemption.
+- Existing dirty Gating-adoption work predates this run and is preserved for validation rather than overwritten.
+
+### Verification and integration preparation — 2026-09-24
+
+- Canonical role-tree migration completed: controller flattened, subscribers moved to `EventSubscriber/`, factories/normalizers/resolvers/renderers moved to typed roots, values and service interfaces flattened, and the optional Interfacing bridge moved to `Contract/ViewInterfaceLocationComposerInterface.php`.
+- Canon017 runtime candidate chain aligned to the documented folder-based fallback order; producer-controlled physical template selection and operation-specific template candidates were removed.
+- Composer development and production dependency contours were normalized; local first-party path repositories use symlinks and `dev-master`; BrowserKit, CSS Selector, Panther, and Playwright tooling are present.
+- Generated `config/reference.php` is ignored and untracked; `.gating/` was returned to canonical consumer artifact state.
+- PHPUnit: PASS, 48 tests / 107 assertions. PHPStan level 8: PASS. PHP-CS-Fixer dry-run: PASS.
+- Playwright: PASS for the standalone human HTML path. Headless Chromium is intentionally classified as bot by `/headless/i`, so the browser test uses a normal human browser UA; bot JSON behavior remains separately covered by PHPUnit.
+- Canon042 behavioral/UI evidence is generated by repository script `test:behavioral-coverage` and passes at functional 2/2, behavioral 5/5, UI 1/1, critical 1/1.
+- Composer validate/check-lock: PASS. Production Composer validate: PASS. Composer audit: 0 advisories. npm audit with committed `package-lock.json`: 0 vulnerabilities.
+- Fresh Gating: every in-scope hard rule passes. The sole hard failure is Canon022 requiring root package `viewing/view` to require itself; this is an external Canonization/Gating self-applicability defect and is intentionally not implemented in Viewing.
+- Remaining warnings are Canon031 PHPDoc coverage and Canon040 PHP coverage debt (lines 76.2%, methods 42.3%, branches 78.8%); these are recorded debt, not hidden or suppressed.
+- Root `MANIFEST.json` remains historical Wave 4 metadata by explicit release-packaging policy and is not rewritten as a current RC manifest.

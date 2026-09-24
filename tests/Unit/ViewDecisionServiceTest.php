@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewDecisionService;
-use App\Viewing\Value\View\ViewDecision;
-use App\Viewing\Value\View\ViewPayload;
-use App\Viewing\Value\View\ViewRequestContext;
+use App\Viewing\Service\ViewDecisionService;
+use App\Viewing\Value\ViewDecision;
+use App\Viewing\Value\ViewPayload;
+use App\Viewing\Value\ViewRequestContext;
 use PHPUnit\Framework\TestCase;
 
 final class ViewDecisionServiceTest extends TestCase
