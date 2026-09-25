@@ -1,6 +1,6 @@
 {
   "name": "viewing/view",
-  "description": "Smart Responsor Viewing/View component: central Symfony view boundary for neutral controller payloads, template fallback, and JSON fallback.",
+  "description": "Viewing/View component: central Symfony view boundary for neutral controller payloads, template fallback, and JSON fallback.",
   "type": "symfony-bundle",
   "license": "PolyForm-Noncommercial-1.0.0",
   "require": {

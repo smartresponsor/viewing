@@ -110,3 +110,42 @@
 - Playwright remains green. Its local server port is now configurable through `VIEWING_PLAYWRIGHT_PORT` and defaults to component-specific port `19081`, avoiding collisions with sibling Symfony applications.
 - Current sibling Gating default rule-set changed concurrently and now executes a smaller generic set; direct Canon022/031/040 rule execution was used to preserve canonical evidence.
 - Direct Canon022 remains the sole external hard failure because it requires Composer root package `viewing/view` to require itself; no invalid self-dependency was introduced.
+
+## 2026-09-25 — Canon055 RC terminology closure
+
+### Baseline
+
+- Task: `engine-20260925220345-viewing-26779a`; branch `rc/viewing-master-sync-20260911`; reconnaissance HEAD `50a07fccc04af40d85a8430b6af44f087adeefb4`.
+- Pre-existing worktree state preserved: modified `.gating/README.md`; untracked `bin/cmcp-*-paths.*` helpers and `tests/Fixture/`.
+- Repository/dependency contour read: Viewing, Objecting, Cruding, Interfacing, Gating, and Canonization contracts; Viewing docs/ADRs/canon/release surfaces and core presentation pipeline were inspected.
+- Market/architecture baseline: Symfony `kernel.view` remains the framework-native response conversion boundary; Viewing therefore remains a presentation/responder boundary and does not absorb Interfacing design ownership or Cruding generic CRUD ownership.
+
+### Canonization mapping
+
+- `Canon019NoAlternativeLayerTaxonomyRule`: current role-first `App\\Viewing\\...` topology is compliant; no Domain/Application/Infrastructure/Port/Adapter/Adaptor roots introduced.
+- `Canon043DevelopmentComposerDependencyVersionRule`: first-party sibling path dependencies remain exact `dev-master` with pinned path-repository identities.
+- `Canon052GatingIntegrationRule`: `gating/gate` remains a development dependency and `@gate` remains part of `quality`; production stays free of local Gating path repositories.
+- `Canon055PlatformIdentityTerminologyRule`: Gating surfaced four current human-facing consumer-identity candidates. The corresponding AGENTS/README/composer descriptions were neutralized; `composer.prod.json` was aligned to the same neutral package description.
+- Historical records and machine locators remain unchanged where Canon055 explicitly permits them.
+
+### RC-critical workstream
+
+- Reproduce the current deterministic gate.
+- Close only the Canon055 terminology failure with exact-text edits.
+- Re-run Composer validation, PHP-CS-Fixer, PHPStan, PHPUnit, behavioral coverage, and Gating; inspect final Git state.
+- No runtime rendering, navigation, form, or user-flow behavior is changed, so new visual screenshots are not applicable to this patch.
+
+### Growth workstream
+
+- Post-RC only: evaluate optional Symfony UX/Twig composition capabilities at consumer boundaries without moving template design ownership from Interfacing or generic CRUD ownership from Cruding.
+
+### Verification
+
+- `composer validate --strict`: PASS.
+- `composer run-script validate:prod`: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 82 tests / 234 assertions, Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS; evidence regenerated.
+- `composer audit --format=summary`: PASS; no security vulnerability advisories.
+- Canon055 now reports no consumer identity promoted to platform identity.
+- No browser/mobile behavior or visual surface changed; runtime restart and new visual screenshots are not applicable.
+- Pre-existing `.gating/README.md`, `bin/cmcp-*-paths.*`, and `tests/Fixture/` remain outside this task's integration set.
