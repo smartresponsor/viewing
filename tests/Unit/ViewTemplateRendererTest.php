@@ -130,4 +130,72 @@ final class ViewTemplateRendererTest extends TestCase
 
         self::assertInstanceOf(Response::class, $response);
     }
+
+    public function testRendererKeepsFailureTraceAndFallsThroughToNextCandidate(): void
+    {
+        $twig = $this->createMock(Environment::class);
+        $twig->expects(self::exactly(2))
+            ->method('render')
+            ->willReturnCallback(static function (string $template): string {
+                if ('broken.html.twig' === $template) {
+                    throw new \RuntimeException('broken template');
+                }
+
+                return '<html>ok</html>';
+            });
+
+        $resolver = $this->createStub(ViewTemplateResolverInterface::class);
+        $resolver->method('resolve')->willReturn(new ViewTemplateResolution(
+            selectedTemplate: 'broken.html.twig',
+            checkedCandidates: [
+                ['template' => 'loader-failed.html.twig', 'exists' => false, 'error' => \RuntimeException::class],
+                ['template' => 'broken.html.twig', 'exists' => true],
+                ['template' => 'working.html.twig', 'exists' => true],
+            ],
+            availableCandidates: ['broken.html.twig', 'working.html.twig'],
+            missingCandidates: [],
+            loaderFailures: [
+                ['template' => 'loader-failed.html.twig', 'exception' => \RuntimeException::class],
+            ],
+        ));
+
+        $statusResolver = $this->createStub(\App\Viewing\ServiceInterface\ViewStatusCodeResolverInterface::class);
+        $statusResolver->method('resolve')->willReturn(Response::HTTP_CREATED);
+
+        $observability = $this->createStub(\App\Viewing\ServiceInterface\ViewObservabilityServiceInterface::class);
+
+        $request = Request::create('/vendor');
+        $request->attributes->set('_app_crud_contract_ms', '1.23');
+        $request->attributes->set('_view_render_failures', [[
+            'template' => 'prior.html.twig',
+            'exception' => \RuntimeException::class,
+            'message' => 'prior failure',
+        ]]);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $renderer = new ViewTemplateRenderer(
+            $twig,
+            $resolver,
+            $requestStack,
+            statusCodeResolver: $statusResolver,
+            observability: $observability,
+        );
+
+        $response = $renderer->render(
+            new ViewPayload('vendor', 'index'),
+            new ViewRequestContext('/vendor', 'GET'),
+            new ViewDecision(
+                ViewDecision::MODE_HTML,
+                templateCandidates: ['loader-failed.html.twig', 'broken.html.twig', 'working.html.twig'],
+            ),
+        );
+
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        self::assertSame('working.html.twig', $response->headers->get('X-Viewing-Template'));
+        self::assertSame('1.23', $response->headers->get('X-App-Crud-Contract-ms'));
+        self::assertNotEmpty($request->attributes->get('_view_loader_failures'));
+        self::assertCount(2, $request->attributes->get('_view_render_failures'));
+    }
 }

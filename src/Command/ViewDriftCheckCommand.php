@@ -14,6 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
     name: 'viewing:drift:check',
     description: 'Checks controlled Symfony controllers for direct rendering/template lookup drift.'
 )]
+/**
+ * Provides the ViewDriftCheck operator command for inspecting Viewing repository state.
+ */
 final class ViewDriftCheckCommand extends Command
 {
     /**
@@ -27,6 +30,9 @@ final class ViewDriftCheckCommand extends Command
         'custom_template_provider' => '/TemplateProvider|TemplateResolver|TemplateAdapter|RenderProvider|RenderAdapter/',
     ];
 
+    /**
+     * Configures the console command definition used to inspect Viewing presentation drift.
+     */
     protected function configure(): void
     {
         $this->addArgument(
@@ -37,6 +43,9 @@ final class ViewDriftCheckCommand extends Command
         );
     }
 
+    /**
+     * Executes the drift inspection and returns the command status for repository operators.
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $path = (string) $input->getArgument('path');

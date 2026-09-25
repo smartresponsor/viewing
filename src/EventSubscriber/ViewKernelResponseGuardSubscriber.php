@@ -11,6 +11,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Coordinates the ViewKernelResponseGuardSubscriber Symfony event responsibility inside the Viewing presentation pipeline.
+ */
 final readonly class ViewKernelResponseGuardSubscriber implements EventSubscriberInterface
 {
     public function __construct(
@@ -27,6 +30,9 @@ final readonly class ViewKernelResponseGuardSubscriber implements EventSubscribe
         ];
     }
 
+    /**
+     * Applies the defensive response guard to controlled requests after response creation.
+     */
     public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();

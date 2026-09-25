@@ -17,6 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Coordinates the ViewKernelViewSubscriber Symfony event responsibility inside the Viewing presentation pipeline.
+ */
 final readonly class ViewKernelViewSubscriber implements EventSubscriberInterface
 {
     public function __construct(
@@ -38,6 +41,9 @@ final readonly class ViewKernelViewSubscriber implements EventSubscriberInterfac
         ];
     }
 
+    /**
+     * Transforms neutral controller results into the final HTML or JSON representation.
+     */
     public function onKernelView(ViewEvent $event): void
     {
         if (!$this->enabled) {

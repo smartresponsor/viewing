@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Viewing\Value;
 
+/**
+ * Represents the DecisionReason immutable value used by the Viewing presentation decision pipeline.
+ */
 enum ViewDecisionReason: string
 {
     case ActorTypeForcesJson = 'actor_type_forces_json';

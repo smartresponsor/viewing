@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * Owns the ResponseGuard service responsibility inside the Viewing presentation boundary.
+ */
 final readonly class ViewResponseGuardService implements ViewResponseGuardServiceInterface
 {
     public function __construct(
@@ -24,6 +27,9 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
         }
     }
 
+    /**
+     * Returns the configured response-guard mode that controls drift observation or enforcement.
+     */
     public function mode(): string
     {
         return $this->guardMode;
@@ -62,6 +68,9 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
         return true;
     }
 
+    /**
+     * Builds the non-destructive response used to expose an observed presentation-boundary violation.
+     */
     public function observe(Response $response): Response
     {
         $response->headers->set('X-Viewing-Guard', 'observed-illegal-controller-render');
@@ -69,6 +78,9 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
         return $response;
     }
 
+    /**
+     * Builds the controlled replacement response used when an illegal HTML response is enforced.
+     */
     public function replacement(Request $request, Response $response): Response
     {
         $payload = [

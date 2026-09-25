@@ -8,6 +8,9 @@ use App\Viewing\ServiceInterface\ViewTemplateCandidateServiceInterface;
 use App\Viewing\Value\ViewPayload;
 use App\Viewing\Value\ViewRequestContext;
 
+/**
+ * Owns the TemplateCandidate service responsibility inside the Viewing presentation boundary.
+ */
 final readonly class ViewTemplateCandidateService implements ViewTemplateCandidateServiceInterface
 {
     public function __construct(
@@ -18,6 +21,9 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
     ) {
     }
 
+    /**
+     * Builds the ordered canonical template candidate chain for the normalized view payload.
+     */
     public function candidates(ViewPayload $payload, ViewRequestContext $context): array
     {
         $resource = $this->slug($payload->surface);

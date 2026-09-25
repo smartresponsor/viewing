@@ -9,6 +9,9 @@ use App\Viewing\ServiceInterface\ViewObjectPayloadNormalizerInterface;
 use App\Viewing\ServiceInterface\ViewPayloadNormalizerInterface;
 use App\Viewing\Value\ViewPayload;
 
+/**
+ * Normalizes Payload input into the canonical data shape consumed by Viewing.
+ */
 final class ViewPayloadNormalizer implements ViewPayloadNormalizerInterface
 {
     private readonly ViewObjectPayloadNormalizerInterface $objectPayloadNormalizer;
@@ -18,6 +21,9 @@ final class ViewPayloadNormalizer implements ViewPayloadNormalizerInterface
         $this->objectPayloadNormalizer = $objectPayloadNormalizer ?? new ViewObjectPayloadNormalizer();
     }
 
+    /**
+     * Reports whether this normalizer can safely handle the supplied Viewing payload representation.
+     */
     public function supports(mixed $controllerResult): bool
     {
         if ($controllerResult instanceof ViewPayload) {
@@ -35,6 +41,9 @@ final class ViewPayloadNormalizer implements ViewPayloadNormalizerInterface
         return isset($controllerResult['_view']) || isset($controllerResult['_surface']);
     }
 
+    /**
+     * Normalizes the supported input into the stable neutral payload consumed by the Viewing pipeline.
+     */
     public function normalize(mixed $controllerResult): ViewPayload
     {
         if ($controllerResult instanceof ViewPayload) {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Viewing\Value;
 
+/**
+ * Represents the RequestContext immutable value used by the Viewing presentation decision pipeline.
+ */
 final readonly class ViewRequestContext
 {
     /**

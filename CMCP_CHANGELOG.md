@@ -98,3 +98,15 @@
 - Fresh Gating: every in-scope hard rule passes. The sole hard failure is Canon022 requiring root package `viewing/view` to require itself; this is an external Canonization/Gating self-applicability defect and is intentionally not implemented in Viewing.
 - Remaining warnings are Canon031 PHPDoc coverage and Canon040 PHP coverage debt (lines 76.2%, methods 42.3%, branches 78.8%); these are recorded debt, not hidden or suppressed.
 - Root `MANIFEST.json` remains historical Wave 4 metadata by explicit release-packaging policy and is not rewritten as a current RC manifest.
+
+### Coverage debt closure — 2026-09-24
+
+- Canon031 is fully closed: direct rule execution reports classes 47/47 (100.0%) and contract methods 49/49 (100.0%), above the 70% threshold.
+- Public and protected production contracts now carry semantic PHPDoc that describes responsibilities instead of placeholder/tag-only blocks.
+- PHPUnit regression coverage expanded from 48 tests / 107 assertions to 82 tests / 234 assertions.
+- Canon040 is closed by direct rule execution: lines 99.2%, methods 80.8%, and branches 87.8% against 80/80/70 targets.
+- Added regression coverage for infrastructure surfaces, request-context creation, payload/object normalization fallback sources, subscriber event registration, response-guard edge behavior, observability no-op behavior, traffic-classifier defensive inputs, and renderer failure-trace continuation.
+- Renderer fallback now explicitly proves that existing render-failure traces are appended rather than overwritten; this closed the final Canon040 method/branch gap.
+- Playwright remains green. Its local server port is now configurable through `VIEWING_PLAYWRIGHT_PORT` and defaults to component-specific port `19081`, avoiding collisions with sibling Symfony applications.
+- Current sibling Gating default rule-set changed concurrently and now executes a smaller generic set; direct Canon022/031/040 rule execution was used to preserve canonical evidence.
+- Direct Canon022 remains the sole external hard failure because it requires Composer root package `viewing/view` to require itself; no invalid self-dependency was introduced.

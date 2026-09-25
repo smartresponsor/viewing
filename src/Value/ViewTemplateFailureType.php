@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Viewing\Value;
 
+/**
+ * Represents the TemplateFailureType immutable value used by the Viewing presentation decision pipeline.
+ */
 enum ViewTemplateFailureType: string
 {
     case EmptyCandidateChain = 'empty_candidate_chain';

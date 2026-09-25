@@ -9,13 +9,22 @@ use App\Viewing\ServiceInterface\ViewObjectPayloadNormalizerInterface;
 use App\Viewing\Value\ViewPayload;
 use App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface;
 
+/**
+ * Normalizes ObjectPayload input into the canonical data shape consumed by Viewing.
+ */
 final class ViewObjectPayloadNormalizer implements ViewObjectPayloadNormalizerInterface
 {
+    /**
+     * Reports whether this normalizer can safely handle the supplied Viewing payload representation.
+     */
     public function supports(mixed $value): bool
     {
         return $value instanceof ViewObjectPayloadInterface || $value instanceof InterfaceSurfaceRenderableInterface;
     }
 
+    /**
+     * Normalizes the supported input into the stable neutral payload consumed by the Viewing pipeline.
+     */
     public function normalize(ViewObjectPayloadInterface|InterfaceSurfaceRenderableInterface $viewObject): ViewPayload
     {
         $templateContext = $viewObject->toTemplateContext();

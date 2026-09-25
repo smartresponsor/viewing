@@ -8,6 +8,9 @@ use App\Viewing\ServiceInterface\ViewTemplateResolverInterface;
 use App\Viewing\Value\ViewTemplateResolution;
 use Twig\Environment;
 
+/**
+ * Resolves Template decisions without transferring presentation ownership outside Viewing.
+ */
 final readonly class ViewTemplateResolver implements ViewTemplateResolverInterface
 {
     public function __construct(
@@ -16,6 +19,8 @@ final readonly class ViewTemplateResolver implements ViewTemplateResolverInterfa
     }
 
     /**
+     * Resolves the canonical Viewing value for the supplied payload and request context.
+     *
      * @param list<string> $templateCandidates
      */
     public function resolve(array $templateCandidates): ViewTemplateResolution

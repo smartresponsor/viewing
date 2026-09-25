@@ -6,8 +6,15 @@ namespace App\Viewing\Contract;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Defines the public ViewInterfaceLocationComposer contract used across the Viewing presentation boundary.
+ */
 interface ViewInterfaceLocationComposerInterface
 {
-    /** @return array<string, list<array<string, mixed>>> */
+    /**
+     * Composes Interfacing location data for the current request without transferring rendering ownership.
+     *
+     * @return array<string, list<array<string, mixed>>>
+     */
     public function composeLocations(Request $request): array;
 }

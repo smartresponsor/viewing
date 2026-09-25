@@ -45,4 +45,32 @@ final class ViewJsonResponseFactoryTest extends TestCase
         self::assertSame(500, $response->getStatusCode());
         self::assertStringContainsString('serialization_degraded', (string) $response->getContent());
     }
+
+    public function testSafeAndDebugDiagnosticsProduceCompleteJsonResponses(): void
+    {
+        $payload = new ViewPayload('vendor', 'show', data: ['label' => 'Vendor']);
+        $context = new ViewRequestContext('/vendor/1', 'GET', 'vendor_show', 'html', 'human');
+
+        $safe = (new ViewJsonResponseFactory())->create(
+            $payload,
+            $context,
+            new ViewDecision(ViewDecision::MODE_JSON, ['fallback']),
+        );
+        self::assertSame(200, $safe->getStatusCode());
+        self::assertStringContainsString('"route":"vendor_show"', (string) $safe->getContent());
+
+        $debug = (new ViewJsonResponseFactory(diagnosticMode: 'debug'))->create(
+            $payload,
+            $context,
+            new ViewDecision(ViewDecision::MODE_JSON, ['fallback'], ['@Interfacing/vendor/index.html.twig']),
+        );
+        self::assertStringContainsString('template_candidates', (string) $debug->getContent());
+
+        $off = (new ViewJsonResponseFactory(diagnosticMode: 'off'))->create(
+            $payload,
+            $context,
+            new ViewDecision(ViewDecision::MODE_JSON),
+        );
+        self::assertStringNotContainsString('"route"', (string) $off->getContent());
+    }
 }

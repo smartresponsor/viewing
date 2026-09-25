@@ -10,8 +10,14 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
+/**
+ * Integrates Viewing configuration and services with the Symfony dependency injection container.
+ */
 final class ViewingExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * Prepends host configuration needed before the Viewing service container is compiled.
+     */
     public function prepend(ContainerBuilder $container): void
     {
         $configs = $container->getExtensionConfig($this->getAlias());
@@ -30,6 +36,8 @@ final class ViewingExtension extends Extension implements PrependExtensionInterf
     }
 
     /**
+     * Loads Viewing service configuration and normalized extension options into the dependency injection container.
+     *
      * @param array<int, array<string, mixed>> $configs
      */
     public function load(array $configs, ContainerBuilder $container): void

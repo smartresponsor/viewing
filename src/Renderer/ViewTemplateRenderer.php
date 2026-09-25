@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
+/**
+ * Renders the first viable canonical Twig candidate and preserves controlled fallback diagnostics across template failures.
+ */
 final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterface
 {
     public function __construct(
@@ -28,6 +31,9 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
     ) {
     }
 
+    /**
+     * Renders the selected template with normalized context while preserving Viewing fallback semantics.
+     */
     public function render(ViewPayload $payload, ViewRequestContext $context, ViewDecision $decision): ?Response
     {
         $startedAt = microtime(true);

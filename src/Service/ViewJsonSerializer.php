@@ -6,8 +6,14 @@ namespace App\Viewing\Service;
 
 use App\Viewing\ServiceInterface\ViewJsonSerializerInterface;
 
+/**
+ * Serializes normalized Viewing fallback payloads with the component's strict JSON encoding contract.
+ */
 final readonly class ViewJsonSerializer implements ViewJsonSerializerInterface
 {
+    /**
+     * Serializes normalized fallback data into a complete JSON payload without partial output.
+     */
     public function serialize(array $data): string
     {
         return json_encode(
