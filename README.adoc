@@ -1,7 +1,7 @@
 = Viewing / View
 :toc:
 
-`viewing/view` is the Smart Responsor component responsible for the central Symfony view boundary.
+`viewing/view` is the platform component responsible for the central Symfony view boundary.
 
 It keeps producer components from rendering templates directly. Producer controllers return a neutral View Payload. Viewing decides whether the final response is structured JSON or HTML rendered through a template fallback chain.
 

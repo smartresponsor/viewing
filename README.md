@@ -1,6 +1,6 @@
 # Viewing
 
-Viewing is the central view boundary and rendering manager for the Smart Responsor platform. Hooking directly into the Symfony `kernel.view` event, it intercept controllers returning neutral data payloads and processes them into final HTTP responses using template fallback chains, guardrails, and JSON formats.
+Viewing is the central view boundary and rendering manager for the multi-domain SaaS platform. Hooking directly into the Symfony `kernel.view` event, it intercepts controllers returning neutral data payloads and processes them into final HTTP responses using template fallback chains, guardrails, and JSON formats.
 
 This bundle is **not** a direct template design catalog (which belongs in the Interfacing layer). It owns the rendering boundary logic, fallback decisions, and template dispatching.
 
