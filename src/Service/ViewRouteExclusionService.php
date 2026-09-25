@@ -7,6 +7,9 @@ namespace App\Viewing\Service;
 use App\Viewing\ServiceInterface\ViewRouteExclusionServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Owns the RouteExclusion service responsibility inside the Viewing presentation boundary.
+ */
 final readonly class ViewRouteExclusionService implements ViewRouteExclusionServiceInterface
 {
     /**
@@ -36,19 +39,11 @@ final readonly class ViewRouteExclusionService implements ViewRouteExclusionServ
      */
     private function matchesAny(string $value, array $patterns): bool
     {
-        foreach ($patterns as $pattern) {
-            if (!\is_string($pattern) || '' === trim($pattern)) {
-                continue;
-            }
-
-            $pattern = trim($pattern);
-            $result = @preg_match($pattern, $value);
-
-            if (1 === $result) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $patterns,
+            static fn (mixed $pattern): bool => \is_string($pattern)
+                && '' !== trim($pattern)
+                && 1 === @preg_match(trim($pattern), $value),
+        );
     }
 }

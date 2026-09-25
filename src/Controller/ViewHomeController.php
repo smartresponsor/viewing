@@ -6,6 +6,9 @@ namespace App\Viewing\Controller;
 
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Exposes the ViewHome standalone route while returning only neutral Viewing payload data.
+ */
 final readonly class ViewHomeController
 {
     /**

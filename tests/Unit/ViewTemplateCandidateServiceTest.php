@@ -72,4 +72,27 @@ final class ViewTemplateCandidateServiceTest extends TestCase
             '@Cruding/index.html.twig',
         ], $candidates);
     }
+
+    public function testMissingOrBlankComponentSkipsLocalFallbackAndEmptySlugUsesIndex(): void
+    {
+        $service = new ViewTemplateCandidateService();
+        $context = new ViewRequestContext('/viewing', 'GET');
+
+        $withoutComponent = $service->candidates(new ViewPayload('---', 'index'), $context);
+        self::assertSame('@Interfacing/index/index.html.twig', $withoutComponent[0]);
+        self::assertNotContains('@Component/index.html.twig', $withoutComponent);
+
+        $blankComponent = $service->candidates(new ViewPayload('Vendor', 'index', component: '   '), $context);
+        self::assertNotContains('@Component/index.html.twig', $blankComponent);
+    }
+
+    public function testInvalidComponentCharactersUseComponentNamespaceFallback(): void
+    {
+        $service = new ViewTemplateCandidateService();
+        $context = new ViewRequestContext('/vendor', 'GET');
+
+        $candidates = $service->candidates(new ViewPayload('Vendor', 'index', component: '---'), $context);
+
+        self::assertContains('@Component/index.html.twig', $candidates);
+    }
 }

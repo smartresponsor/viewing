@@ -10,6 +10,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Coordinates the ViewTrafficRequestSubscriber Symfony event responsibility inside the Viewing presentation pipeline.
+ */
 final readonly class ViewTrafficRequestSubscriber implements EventSubscriberInterface
 {
     public function __construct(
@@ -27,6 +30,9 @@ final readonly class ViewTrafficRequestSubscriber implements EventSubscriberInte
         ];
     }
 
+    /**
+     * Classifies the incoming main request and records the Viewing actor context.
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest() || !$this->enabled) {

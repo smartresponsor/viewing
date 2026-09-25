@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Viewing\Value;
 
+/**
+ * Represents the Decision immutable value used by the Viewing presentation decision pipeline.
+ */
 final readonly class ViewDecision
 {
     public const MODE_HTML = 'html';
@@ -24,6 +27,8 @@ final readonly class ViewDecision
     }
 
     /**
+     * Returns a new immutable decision carrying the evaluated template candidate chain.
+     *
      * @param list<string> $templateCandidates
      */
     public function withTemplateCandidates(array $templateCandidates): self
@@ -31,6 +36,9 @@ final readonly class ViewDecision
         return new self($this->mode, $this->reasons, $templateCandidates, $this->selectedTemplate, $this->statusCodeOverride);
     }
 
+    /**
+     * Returns a new immutable decision carrying the template selected for HTML rendering.
+     */
     public function withSelectedTemplate(?string $selectedTemplate): self
     {
         return new self($this->mode, $this->reasons, $this->templateCandidates, $selectedTemplate, $this->statusCodeOverride);

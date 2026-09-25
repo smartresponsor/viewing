@@ -13,6 +13,9 @@ use App\Viewing\Value\ViewPayload;
 use App\Viewing\Value\ViewRequestContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Creates JsonResponse values while keeping construction policy inside the Viewing boundary.
+ */
 final readonly class ViewJsonResponseFactory implements ViewJsonResponseFactoryInterface
 {
     public function __construct(
@@ -24,6 +27,9 @@ final readonly class ViewJsonResponseFactory implements ViewJsonResponseFactoryI
     ) {
     }
 
+    /**
+     * Creates the typed Viewing result represented by this factory from normalized request data.
+     */
     public function create(ViewPayload $payload, ViewRequestContext $context, ViewDecision $decision): JsonResponse
     {
         $data = $payload->toArray();

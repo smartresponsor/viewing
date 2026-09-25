@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Viewing\Value;
 
+/**
+ * Represents the Payload immutable value used by the Viewing presentation decision pipeline.
+ */
 final readonly class ViewPayload
 {
     /**
@@ -26,6 +29,8 @@ final readonly class ViewPayload
     }
 
     /**
+     * Exports the immutable Viewing value into its stable array representation for downstream use.
+     *
      * @return array<string, mixed>
      */
     public function toArray(): array

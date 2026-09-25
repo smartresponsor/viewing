@@ -11,6 +11,9 @@ use App\Viewing\Value\ViewDecisionReason;
 use App\Viewing\Value\ViewPayload;
 use App\Viewing\Value\ViewRequestContext;
 
+/**
+ * Owns the Decision service responsibility inside the Viewing presentation boundary.
+ */
 final readonly class ViewDecisionService implements ViewDecisionServiceInterface
 {
     /**
@@ -25,6 +28,9 @@ final readonly class ViewDecisionService implements ViewDecisionServiceInterface
         }
     }
 
+    /**
+     * Selects the HTML or JSON representation policy from payload and request classification evidence.
+     */
     public function decide(ViewPayload $payload, ViewRequestContext $context): ViewDecision
     {
         $payloadFormat = strtolower($payload->format);

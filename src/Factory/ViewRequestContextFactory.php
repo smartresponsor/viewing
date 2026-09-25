@@ -8,6 +8,9 @@ use App\Viewing\ServiceInterface\ViewRequestContextFactoryInterface;
 use App\Viewing\Value\ViewRequestContext;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Creates RequestContext values while keeping construction policy inside the Viewing boundary.
+ */
 final readonly class ViewRequestContextFactory implements ViewRequestContextFactoryInterface
 {
     public function __construct(
@@ -15,6 +18,9 @@ final readonly class ViewRequestContextFactory implements ViewRequestContextFact
     ) {
     }
 
+    /**
+     * Creates the typed Viewing result represented by this factory from normalized request data.
+     */
     public function create(Request $request): ViewRequestContext
     {
         $acceptable = $request->getAcceptableContentTypes();

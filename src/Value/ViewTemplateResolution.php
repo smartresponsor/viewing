@@ -6,7 +6,6 @@ namespace App\Viewing\Value;
 
 /**
  * Immutable trace of Viewing template resolution.
- *
  * The selected template is only a rendering target chosen by Viewing. Producer
  * components never regain control and never render local fallback templates
  * themselves.
@@ -34,6 +33,8 @@ final readonly class ViewTemplateResolution
     }
 
     /**
+     * Exports the immutable Viewing value into its stable array representation for downstream use.
+     *
      * @return array<string, mixed>
      */
     public function toArray(): array
