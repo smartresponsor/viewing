@@ -3,7 +3,8 @@
 /test-results/
 /playwright-report/
 /.console-mcp/
-/.gating/
+/.gating/*
+!/.gating/README.md
 /.phpunit.cache/
 /.phpunit.result.cache
 /var/

@@ -49,6 +49,11 @@
     "test": "phpunit",
     "test:coverage": "php -d xdebug.mode=coverage vendor/bin/phpunit --path-coverage --coverage-text=coverage.txt",
     "test:behavioral-coverage": "php tool/behavioral-coverage.php",
+    "diagnose:coverage-paths": [
+      "@php -d xdebug.mode=coverage bin/cmcp-candidate-paths.php",
+      "@php -d xdebug.mode=coverage bin/cmcp-classifier-paths.php",
+      "@php -d xdebug.mode=coverage bin/cmcp-route-paths.php"
+    ],
     "validate:prod": "composer validate --strict --no-check-all composer.prod.json",
     "phpstan": "phpstan analyse src tests --level=8",
     "php-cs-fixer": "php-cs-fixer fix --dry-run --diff",

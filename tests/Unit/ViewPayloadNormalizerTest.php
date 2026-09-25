@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
+require_once \dirname(__DIR__).'/Fixture/ExternalViewObjectPayload.php';
+
 use App\Viewing\Normalizer\ViewPayloadNormalizer;
 use App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface;
+use ExternalFixture\ExternalViewObjectPayload;
 use PHPUnit\Framework\TestCase;
 
 final class ViewPayloadNormalizerTest extends TestCase
@@ -217,6 +220,16 @@ final class ViewPayloadNormalizerTest extends TestCase
         ]);
 
         self::assertSame([], $payload->locations);
+    }
+
+    public function testForeignContractPayloadRemainsOutsidePlatformComponentIdentity(): void
+    {
+        $payload = (new ViewPayloadNormalizer())->normalize(new ExternalViewObjectPayload());
+
+        self::assertSame('external', $payload->surface);
+        self::assertSame('index', $payload->operation);
+        self::assertNull($payload->component);
+        self::assertSame(ExternalViewObjectPayload::class, $payload->data['objectClass'] ?? null);
     }
 
     public function testObjectNormalizerClassIdentityHelpersCoverPlatformAndForeignClasses(): void
