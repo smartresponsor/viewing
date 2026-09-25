@@ -149,3 +149,19 @@
 - Canon055 now reports no consumer identity promoted to platform identity.
 - No browser/mobile behavior or visual surface changed; runtime restart and new visual screenshots are not applicable.
 - Pre-existing `.gating/README.md`, `bin/cmcp-*-paths.*`, and `tests/Fixture/` remain outside this task's integration set.
+
+## 2026-09-25 — Work 3 value integration
+
+### Intent
+
+- Reassessed the remaining dirty Work 3 paths instead of committing them mechanically.
+- Preserved the Xdebug path probes as explicit optional coverage diagnostics and exposed them through Composer as `diagnose:coverage-paths`.
+- Promoted `tests/Fixture/ExternalViewObjectPayload.php` into an exercised regression fixture proving that a foreign producer contract remains outside `App\\<Component>\\...` component identity while preserving its explicit payload vocabulary.
+- Restored `.gating/README.md` to the consumer-artifact boundary required by Canon052 rather than committing a copied owner-repository README.
+
+### Verification
+
+- First regression run intentionally failed on an incorrect expected surface (`external-view-object-payload`); the fixture's explicit `word=external` contract was then honored.
+- `composer run-script diagnose:coverage-paths`: PASS; candidate, traffic-classifier, and route-exclusion path diagnostics all execute under Xdebug.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83 tests / 238 assertions, Gating 0 failed / 0 warnings.
+- No runtime/UI implementation changed; new visual evidence remains not applicable.
