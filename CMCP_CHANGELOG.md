@@ -165,3 +165,54 @@
 - `composer run-script diagnose:coverage-paths`: PASS; candidate, traffic-classifier, and route-exclusion path diagnostics all execute under Xdebug.
 - `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83 tests / 238 assertions, Gating 0 failed / 0 warnings.
 - No runtime/UI implementation changed; new visual evidence remains not applicable.
+
+## 2026-09-26 — RC boundary and verification hardening
+
+### Baseline
+
+- Task: `engine-20260926083034-viewing-a68725`; branch `rc/viewing-master-sync-20260911`; reconnaissance HEAD `323d37b1c41a27b21e2082c0e73f9ae921a2a400`.
+- Pre-existing dirty state is limited to `.gating/README.md`; its diff copies owner-side Gating documentation into the consumer artifact surface and is preserved as unrelated work rather than absorbed.
+- Composer validate/check-lock passed. Gating passed with 0 failed / 0 warning. PHPUnit passed 83 tests / 238 assertions.
+- PHPStan did not reach a code verdict because Windows user-temp writes failed; repository-local ignored `var/` is available for deterministic PHPStan temporary/cache state.
+
+### Read contour and market baseline
+
+- Viewing: repository instructions, Markdown/AsciiDoc canon, Composer/test manifests, core kernel.view decision/candidate/resolver/renderer flow, renderer regression tests, and current Git state.
+- Dependency contour: Objecting, Cruding, Interfacing, Gating, and Canonization repository contracts were consulted as read-only references; development Composer wiring confirms first-party sibling path repositories.
+- Symfony HttpKernel documents `kernel.view` as the standard transformation point from non-Response controller results to final responses. Mature DTO/output pipelines such as API Platform similarly isolate representation contracts from internal models. Symfony UX Twig/Live Components are a growth option for consumer UI composition, not a reason to move design/interactivity ownership into Viewing.
+
+### Canonization mapping
+
+- `Canon017DocumentationMatchesRuntimeRule`: authoritative README text must describe the current folder-based fallback chain; the stale locale/layout dynamic-path claim is removed.
+- `Canon019NoAlternativeLayerTaxonomyRule`: no competing Domain/Application/Infrastructure/Port/Adapter/Adaptor roots are introduced.
+- `Canon022StandaloneApplicationDependencyBaselineRule`: existing standalone dependency contour remains unchanged by this task.
+- `Canon039PhpTestToolingRule`: PHPUnit contract remains unchanged; PHPStan temp/cache hardening is verification infrastructure, not a replacement test runner.
+- `Canon040PhpTestCoverageRule` and `Canon042BehavioralUiCoverageRule`: existing PHPUnit and behavioral/UI evidence contracts remain authoritative and will be regenerated/rechecked.
+- `Canon052GatingIntegrationRule`: consumer `.gating/` remains artifact-only; the pre-existing owner README copy is explicitly excluded from this task.
+- `Canon055PlatformIdentityTerminologyRule`: current Gating result is green and this task introduces no consumer-as-platform naming.
+
+### RC-critical workstream
+
+- Remove Cruding-specific private timing attributes/headers from the shared Viewing renderer so the presentation boundary stays producer-agnostic.
+- Add a regression assertion that producer-specific Cruding diagnostics are not projected as Viewing response headers.
+- Align README fallback wording with the implemented canonical chain.
+- Move PHPStan temporary/cache state to ignored repository-local `var/phpstan` to avoid system-temp capacity failures.
+- Re-run static analysis, tests, style, Gating, behavioral/browser evidence as applicable, then inspect final Git integration state.
+
+### Growth workstream
+
+- Post-RC only: evaluate Symfony UX Twig Components / Live Components at consumer/Interfacing composition boundaries. Do not move template design, CRUD behavior, or producer-specific diagnostics into Viewing.
+
+### Verification
+
+- `composer validate --strict --check-lock`: PASS.
+- `composer run-script validate:prod`: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83 tests / 239 assertions, Gating 0 failed / 0 warnings.
+- `composer run-script test:coverage`: PASS; lines 99.17% (713/719), methods 80.82% (59/73), branches 90.70% (478/527), above Canon040 thresholds.
+- `composer run-script test:behavioral-coverage`: PASS; repository-owned Canon042 evidence regenerated.
+- PHP syntax lint for changed PHP files: PASS.
+- `composer audit --format=summary`: PASS; no security vulnerability advisories.
+- `npm audit --audit-level=high`: PASS; 0 vulnerabilities.
+- Existing managed runtime on port 19081 was probed first and was not running. No browser-visible HTML, navigation, form, or interaction behavior changed in this task, so runtime restart, new Playwright execution, and visual screenshots are not required for the response-header/tooling/documentation patch.
+- Playwright was nevertheless considered as an extra smoke; the asynchronous runner declined a new heavy process under shared runtime-capacity pressure before starting anything. This is not used as RC evidence and did not trigger a runtime restart.
+- Pre-existing `.gating/README.md` remains untouched and outside this task's integration set.

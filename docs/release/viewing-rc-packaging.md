@@ -62,7 +62,7 @@ The packaging gate must run from a clean working tree and pass:
 - `composer run-script php-cs-fixer`;
 - RC validate with canon issue count equal to zero.
 
-The PHPUnit baseline is clean: 48 tests and 107 assertions complete without failures, errors, warnings, risky tests, or PHPUnit notices. Packaging must preserve that clean baseline.
+The PHPUnit baseline is clean: 83 tests and 239 assertions complete without failures, errors, warnings, risky tests, or PHPUnit notices. Packaging must preserve that clean baseline.
 
 ## Host import posture
 

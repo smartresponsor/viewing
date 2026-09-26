@@ -29,7 +29,7 @@ R11 treats `config/reference.php` as generated output that is ignored and not tr
 | Gate | Current result | Evidence note |
 | --- | --- | --- |
 | PHP lint | PASS | Changed PHP files lint clean. |
-| PHPUnit | PASS | 82 tests, 234 assertions, no failures or errors. |
+| PHPUnit | PASS | 83 tests, 239 assertions, no failures or errors. |
 | PHPStan | PASS | Level 8, no errors. |
 | PHP-CS-Fixer | PASS | Dry-run diff reports no fixable files. |
 | Composer validate/check-lock | PASS | `composer.json` valid. |
@@ -43,7 +43,7 @@ R11 treats `config/reference.php` as generated output that is ignored and not tr
 
 ## PHPUnit baseline
 
-The PHPUnit suite is clean for RC evidence: 82 tests and 234 assertions complete without failures or errors. Expectation-less test doubles use stubs, while interaction verification remains on mocks with explicit expectations. Invalid configured bot user-agent patterns still fail fast through `InvalidArgumentException` without leaking a lower-level regex-engine warning.
+The PHPUnit suite is clean for RC evidence: 83 tests and 239 assertions complete without failures or errors. Expectation-less test doubles use stubs, while interaction verification remains on mocks with explicit expectations. Invalid configured bot user-agent patterns still fail fast through `InvalidArgumentException` without leaking a lower-level regex-engine warning.
 
 ## Clean-workspace expectation
 

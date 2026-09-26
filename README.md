@@ -8,7 +8,7 @@ This bundle is **not** a direct template design catalog (which belongs in the In
 
 ### What the component already does
 - Intercepts controller payloads on `kernel.view` to unify response generation.
-- Enforces template fallback chains (resolving template paths dynamically by locale, resource, or layout).
+- Enforces the canonical folder-based template fallback chain from neutral resource metadata; producer components never select physical Twig paths.
 - Operates a self-processing connectable view architecture.
 - Enforces guardrails and traffic policies (e.g. blocking template engine rendering for crawler/bot requests to serve lightweight formats).
 

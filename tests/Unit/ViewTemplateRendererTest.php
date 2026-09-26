@@ -194,7 +194,8 @@ final class ViewTemplateRendererTest extends TestCase
         self::assertInstanceOf(Response::class, $response);
         self::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         self::assertSame('working.html.twig', $response->headers->get('X-Viewing-Template'));
-        self::assertSame('1.23', $response->headers->get('X-App-Crud-Contract-ms'));
+        self::assertFalse($response->headers->has('X-App-Crud-Contract-ms'));
+        self::assertFalse($response->headers->has('X-Crud-Context-ms'));
         self::assertNotEmpty($request->attributes->get('_view_loader_failures'));
         self::assertCount(2, $request->attributes->get('_view_render_failures'));
     }
