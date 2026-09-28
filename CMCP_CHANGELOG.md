@@ -257,4 +257,14 @@
 - Post-mutation Inspecting remains five medium, zero autofixable findings; no new high-severity finding was introduced. Semgrep remains observationally unavailable because its 60-second analyzer timeout persists.
 - No browser/mobile UI, navigation, form, interaction, or user flow changed; no runtime restart or screenshot is applicable.
 
+### Follow-up producer contradiction
+
+- Canon052 was rechecked after relocating the generated owner-tree out of `.gating/` into ignored `var/` backup state while preserving the pre-existing modified `.gating/README.md`.
+- The repository-owned `composer gate` is GREEN with `.gating/` reduced to the allowed README-only consumer surface.
+- A forced CanonScanning run immediately recreated the forbidden owner-tree because `CanonScanning/bin/canon-scan.ps1` removes target `.gating/` and mirrors the sibling Gating repository into it before canon-check (producer lines 1409-1419). This makes Canon052 fail due to producer-injected state rather than Viewing-owned state.
+- After the scan, the producer-created tree was relocated again into ignored `var/cmcp-gating-owner-backup-postscan-20260928`; the user-modified README was restored and `.gating/AGENTS.md` is absent.
+- Canon022 remains a producer/rule applicability contradiction for the `viewing/view` owner: the rule requires the root package to declare `viewing/view` as a direct dependency of itself. No invalid Composer self-require was introduced.
+- Safe in-scope Viewing remediation is exhausted; closing the remaining full-scan RED requires producer/rule changes outside the permitted repository boundary.
+
+
 
