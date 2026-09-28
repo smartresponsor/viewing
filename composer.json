@@ -7,8 +7,10 @@
     "collectioning/collection": "dev-master",
     "cruding/crud": "dev-master",
     "easycorp/easyadmin-bundle": "^5.5",
+    "failing/failure": "dev-master",
     "php": "^8.4",
     "interfacing/interface": "dev-master",
+    "nelmio/api-doc-bundle": "^5.0",
     "objecting/object": "dev-master",
     "psr/log": "^3.0",
     "tabling/table": "dev-master",
@@ -116,6 +118,16 @@
         "symlink": true,
         "versions": {
           "cruding/crud": "dev-master"
+        }
+      }
+    },
+    {
+      "type": "path",
+      "url": "../Failing",
+      "options": {
+        "symlink": true,
+        "versions": {
+          "failing/failure": "dev-master"
         }
       }
     },
