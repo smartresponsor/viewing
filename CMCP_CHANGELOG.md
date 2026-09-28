@@ -216,3 +216,45 @@
 - Existing managed runtime on port 19081 was probed first and was not running. No browser-visible HTML, navigation, form, or interaction behavior changed in this task, so runtime restart, new Playwright execution, and visual screenshots are not required for the response-header/tooling/documentation patch.
 - Playwright was nevertheless considered as an extra smoke; the asynchronous runner declined a new heavy process under shared runtime-capacity pressure before starting anything. This is not used as RC evidence and did not trigger a runtime restart.
 - Pre-existing `.gating/README.md` remains untouched and outside this task's integration set.
+
+## 2026-09-28 — Canon remediation baseline
+
+### Baseline
+
+- Task: `engine-20260928100331-viewing-50065f`; branch `rc/viewing-master-sync-20260911`; reconnaissance HEAD `3faba854b38eafa31900cd3fa763260207a2d596`.
+- Pre-existing dirty state: modified `.gating/README.md`; preserved as unrelated work.
+- Fresh CanonScanning fingerprint: `84e233d7ff4d203692990d0691e4372ce5b548b534bb7aea80cc8fe52f2e54ba`.
+- RED canon evidence: Canon022 standalone dependency baseline, Canon045 development repository closure, Canon052 consumer Gating artifact topology, and Canon058 non-canonical OpenAPI source.
+- Fresh Inspecting evidence contains five medium findings only; no high-severity Inspecting blocker is part of the current canon remediation front.
+
+### Canonization mapping
+
+- `Canon022StandaloneApplicationDependencyBaselineRule.md`: add direct `failing/failure` runtime dependency in development and production and register `App\\Failing\\FailingBundle`. The rule also demands a literal `viewing/view` self-dependency; that remains intentionally unimplemented because a Composer root package cannot validly require itself.
+- `Canon045DevelopmentComposerRepositoryClosureRule.md`: expose `../Failing` as a development path repository with `symlink: true` and `dev-master`.
+- `Canon052GatingIntegrationRule.md`: consumer `.gating/` is artifact-only. Current ignored generated owner-tree files violate this rule, but deleting them is outside this run because destructive operations are explicitly forbidden.
+- `Canon058CanonicalOpenApiSourceRule.md`: upstream evidence observed `docs/schema/viewing-openapi.yaml`; immediately before remediation the path no longer existed in the current workspace and Git showed no deletion. Do not recreate or relocate an absent artifact without current repository evidence.
+- Objecting, Cruding, Interfacing, Failing, Canonization, and Gating contracts were consulted as read-only references; no sibling repository is mutated.
+
+### Workstreams
+
+- RC-critical: close every safe actionable canon finding, then rerun deterministic gates and post-mutation Inspecting.
+- Growth: Symfony UX Twig/Live Components remain post-RC consumer/Interfacing composition options; Viewing stays the neutral presentation decision/rendering boundary.
+
+### Risks and gates
+
+- Preserve unrelated `.gating/README.md` user work.
+- Do not delete generated `.gating/` owner-tree files under the task's destructive-operation prohibition.
+- Gates: Composer development/production validation, PHPUnit, PHPStan, CS fixer, behavioral coverage, Gating, Composer audit, post-mutation Inspecting, final Git branch/status/diff.
+
+### Remediation and verification
+
+- Added `failing/failure` as a direct runtime dependency in development and production, exposed `../Failing` as a symlinked development path repository, and registered `App\\Failing\\FailingBundle`.
+- Renamed the OpenAPI source without content loss to `config/openapi/view_openapi.yaml`; added `nelmio/api-doc-bundle:^5.0` as the direct runtime producer dependency required by Canon061.
+- CanonScanning post-remediation report `20260928-053100`: 68 rules, 45 passed, 2 failed, 21 skipped. Canon045, Canon058, and Canon061 are green.
+- Residual Canon022 is the known self-application defect requiring `viewing/view` to require itself in both Composer manifests; no invalid self-dependency was introduced.
+- Residual Canon052 is generated/ignored Gating owner-tree state under `.gating/`; cleanup would require deletion, which is forbidden for this execution. The pre-existing tracked `.gating/README.md` edit remains unrelated and unstaged.
+- Deterministic gates: Composer development and production validation GREEN; PHPUnit 83/83, 239 assertions GREEN; coverage run GREEN; PHPStan level 8 GREEN; PHP-CS-Fixer dry-run GREEN; Symfony container and YAML lint GREEN; behavioral/UI coverage evidence GREEN; Composer audit GREEN.
+- Post-mutation Inspecting remains five medium, zero autofixable findings; no new high-severity finding was introduced. Semgrep remains observationally unavailable because its 60-second analyzer timeout persists.
+- No browser/mobile UI, navigation, form, interaction, or user flow changed; no runtime restart or screenshot is applicable.
+
+
