@@ -266,5 +266,40 @@
 - Canon022 remains a producer/rule applicability contradiction for the `viewing/view` owner: the rule requires the root package to declare `viewing/view` as a direct dependency of itself. No invalid Composer self-require was introduced.
 - Safe in-scope Viewing remediation is exhausted; closing the remaining full-scan RED requires producer/rule changes outside the permitted repository boundary.
 
+## 2026-09-29 — CanonScanning RED reconciliation
+
+### Reconnaissance
+
+- Task `engine-20260930015905-viewing-5aa34c`; branch `rc/viewing-master-sync-20260911`; HEAD `b425e8ca0569e99f6bd40df4f7af4370a6a274ac`; upstream synchronized at reconnaissance (`ahead 0`, `behind 0`).
+- Pre-existing dirty state is only `.gating/README.md`; its diff replaces the canonical consumer-artifact README with owner-side Gating documentation. This user/unrelated change is preserved and is not silently overwritten.
+- Fresh CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` reports exactly two hard failures: Canon022 and Canon052.
+- Mandatory dependency contour and contracts were re-read for Viewing, Objecting, Cruding, Interfacing, Gating, and Canonization. Viewing remains the Symfony `kernel.view` presentation/response boundary; generic CRUD remains in Cruding and visual/template-design ownership remains in Interfacing.
+
+### Canonization mapping
+
+- `Canon022StandaloneApplicationDependencyBaselineRule.md`: standalone applications must require `viewing/view` among the baseline packages. Applied literally to the `viewing/view` owner, this demands a Composer self-dependency in both development and production manifests. The current rule has no Viewing-owner exception, so the remaining finding is an upstream applicability contradiction rather than a valid package remediation.
+- `Canon052GatingIntegrationRule.md`: consumer `.gating/` must be artifact-only and may contain a non-executable boundary README. CanonScanning has materialized the Gating owner tree under `.gating/`; the task forbids destructive cleanup, and the only tracked dirty README is pre-existing protected work.
+- Gating's owner README independently confirms that consumer `.gating/` is generated artifact state only and normative executable policy stays in the Gating package.
+
+### RC-critical workstream
+
+1. Do not add the invalid `viewing/view` self-dependency merely to satisfy Canon022.
+2. Do not delete or overwrite the CanonScanning-materialized `.gating/` owner tree or the pre-existing modified `.gating/README.md` under the destructive-operation/user-work preservation constraints.
+3. Re-run repository-owned deterministic verification and inspect final Git state; treat the two producer/rule contradictions as external blockers if they remain reproducible.
+
+### Growth workstream
+
+- Post-RC only: continue presentation-boundary DX/observability and optional Symfony UX integration at the consumer/Interfacing composition edge; do not move generic CRUD, navigation ownership, or template-design catalog responsibility into Viewing.
+
+### Verification
+
+- `composer validate --strict --check-lock`: PASS.
+- `composer run-script validate:prod`: PASS.
+- `composer run-script quality`: PASS; PHPStan clean, PHPUnit 83 tests / 239 assertions, repository-owned Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS; repository-owned behavioral/UI evidence regenerated.
+- `composer audit --format=summary`: PASS; no security vulnerability advisories.
+- No browser/mobile UI, navigation, form, interaction, or user-flow implementation changed. Runtime restart and new screenshots are therefore not applicable.
+- Post-verification worktree contains only the pre-existing `.gating/README.md` modification plus this journal update; no product/runtime files changed.
+
 
 
