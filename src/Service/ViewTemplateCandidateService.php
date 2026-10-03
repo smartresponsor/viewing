@@ -34,6 +34,13 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
         // Filesystem: Interfacing/templates/<resource>/index.html.twig
         $candidates[] = sprintf('@%s/%s/index.html.twig', $this->interfacingTwigNamespace, $resource);
 
+        // Cruding emits neutral resource contracts. Interfacing owns the generic
+        // CRUD workbench and must get a chance to render it before the root
+        // diagnostic fallback is considered.
+        if ('cruding' === strtolower(trim((string) $payload->component))) {
+            $candidates[] = sprintf('@%s/crud/index.html.twig', $this->interfacingTwigNamespace);
+        }
+
         // Filesystem: Interfacing/templates/index.html.twig
         $candidates[] = sprintf('@%s/index.html.twig', $this->interfacingTwigNamespace);
 
