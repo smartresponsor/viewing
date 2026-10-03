@@ -301,5 +301,125 @@
 - No browser/mobile UI, navigation, form, interaction, or user-flow implementation changed. Runtime restart and new screenshots are therefore not applicable.
 - Post-verification worktree contains only the pre-existing `.gating/README.md` modification plus this journal update; no product/runtime files changed.
 
+## 2026-10-03 — Autonomous RC reconciliation
 
+### Baseline
+
+- Task: `engine-20261003195636-viewing-76a8ed`; branch `rc/viewing-master-sync-20260911`; reconnaissance HEAD `14872bdb40d7ace831585c42e7409d20cca32cf3`; upstream synchronized (`ahead 0`, `behind 0`).
+- Pre-existing dirty state before this run: deleted `.gating/README.md`, modified `AGENTS.md`, `src/Service/ViewTemplateCandidateService.php`, and `tests/Unit/ViewTemplateCandidateServiceTest.php`. These paths are treated as protected existing work and are not overwritten blindly.
+- Fresh supplied CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` had Canon022 and Canon052 RED; fresh Inspecting evidence had five medium findings and no high-severity finding.
+- Current Canon022 textual rule now explicitly excludes a baseline package from requiring itself, so the old Viewing self-dependency finding is stale against current Canonization and must be rechecked with current Gating rather than implemented literally.
+- Canon052 textual rule keeps consumer `.gating/` artifact-only and permits a non-executable boundary README; current tracked deletion therefore requires reconciliation rather than assuming the old generated-owner-tree evidence still describes the workspace.
+- Existing managed PHP runtime on port 19081 was probed first and is not running; no restart has been performed.
+
+### Read contour and market baseline
+
+- Viewing remains the Symfony `kernel.view` representation boundary: neutral controller results are transformed into final HTML/JSON responses, matching Symfony's native view-event responsibility. Mature Symfony UX composition belongs in Twig/Live Component/template ownership rather than this routing/representation boundary.
+- Mandatory local contour consulted: Viewing runtime/docs/manifests, Objecting and Cruding package contracts, Interfacing generic CRUD template existence, Canonization Canon021/022/052 textual rules, supplied Inspecting report, and supplied CanonScanning RED report. Gating remains the executable companion to textual canon.
+- Baseline expectation: deterministic candidate selection, explicit failure semantics, producer-neutral rendering, direct dependency integrity, reproducible quality gates, and no copied policy engine in consumer `.gating/`.
+- Growth-only expectation: richer Twig/Live Component composition and presentation DX stay in Interfacing/consumer UI ownership and must not block Viewing RC.
+
+### Target-to-canon mapping
+
+- Canon021: generic application CRUD processing stays in Cruding; Viewing may only select presentation candidates for neutral Cruding payloads and must not implement CRUD routing/processing.
+- Canon022: Viewing is itself `viewing/view`, so its own package is excluded from the mandatory dependency set; current manifests must not add a self-dependency.
+- Canon052: `gating/gate` remains development tooling; consumer `.gating/` is artifact-only and may retain only generated artifacts/evidence/cache plus a non-executable boundary README.
+- Existing `@Interfacing/crud/index.html.twig` is a real Interfacing-owned presentation surface; the dirty candidate-service change is therefore boundary-compatible in principle and requires deterministic regression verification before integration.
+
+### RC-critical workstream
+
+1. Reconcile protected dirty work semantically rather than overwrite it.
+2. Run current Composer/Gating verification to determine whether stale Canon022/052 evidence remains reproducible.
+3. Verify the Cruding-to-Interfacing candidate fallback change with unit, static-analysis, style, behavioral/UI, and Inspecting evidence as applicable.
+4. Reconcile Git state and publish only coherent verified in-scope work; preserve unrelated work.
+
+### Growth workstream
+
+- Post-RC: optional Symfony UX Twig/Live Component adoption at Interfacing/consumer composition boundaries, richer diagnostics, and view DX. None of these is required for correctness of the current candidate-selection remediation.
+
+### Risks and gates
+
+- Do not add a Composer self-dependency.
+- Do not delete or reset protected dirty work merely to obtain cleanliness.
+- Required deterministic gates: Composer validation, `quality`, behavioral coverage, PHP lint for changed PHP, security audit, post-mutation Inspecting, and final branch/status/diff inspection. Browser/visual verification becomes required only if the current changes materially alter user-observable UI behavior.
+
+### Verification checkpoint
+
+- `composer validate --strict --check-lock`: PASS; `composer.prod.json` strict validation: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83 tests / 239 assertions, current repository-owned Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS; repository behavioral/UI evidence regenerated.
+- Playwright: PASS, 1/1 standalone browser test; `/viewing` returned HTTP 200 HTML through `ViewKernelViewSubscriber` on `kernel.view`.
+- Changed PHP lint: PASS. Composer audit: 0 advisories. npm audit at high threshold: 0 vulnerabilities.
+- Current Canon022 executable mirror now filters the root Composer package name from the required baseline, matching current Canonization; no `viewing/view` self-dependency is required or added.
+- Current Canon052 executable mirror permits README-only/generated-artifact `.gating/` state. The old copied owner-tree paths `.gating/composer.json` and `.gating/AGENTS.md` are absent in the present workspace.
+- Post-mutation Inspecting: phpstan errors 0; five unchanged medium structural observations, zero autofixable findings, no new high-severity finding.
+- Visual Gallery server is healthy, but screenshot capture for the changed Cruding fallback is NOT_VERIFIED: the standalone `/viewing` route does not exercise a Cruding payload and supervised-browser CDP binding timed out. A textual/browser smoke alone is not promoted to visual acceptance evidence.
+- A second concurrent Viewing execution journal section (`engine-20261003200255-viewing-d1a028`) appeared in the same dirty `CMCP_CHANGELOG.md` during this execution while HEAD remained unchanged. To avoid silently absorbing or publishing concurrent protected work, this run does not stage/commit/push the shared dirty set at this checkpoint.
+
+## 2026-10-03 — Canon RC execution `engine-20261003200255-viewing-d1a028`
+
+### Baseline
+
+- Workspace resolved through Console MCP as `D:\PhpstormProjects\www\Viewing`; branch `rc/viewing-master-sync-20260911`, HEAD `14872bdb40d7ace831585c42e7409d20cca32cf3`, upstream synchronized at reconnaissance.
+- Pre-existing dirty state: deleted `.gating/README.md`; modified `AGENTS.md`, `src/Service/ViewTemplateCandidateService.php`, and `tests/Unit/ViewTemplateCandidateServiceTest.php`. These are protected existing changes and are reconciled semantically, not reset or overwritten.
+- Supplied CanonScanning RED report (fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1`) contains Canon022 and Canon052 failures from 2026-09-29.
+
+### Canonization mapping
+
+- `Canon022StandaloneApplicationDependencyBaselineRule.md`: current textual canon excludes the baseline package itself from its mandatory dependency set; `viewing/view` must not require itself. The supplied Canon022 finding is stale against the current canonical rule.
+- `Canon052GatingIntegrationRule.md`: consumer `.gating/` is artifact-only; executable policy belongs to `gating/gate`. Current repository-owned Gating must verify the present tree.
+- Viewing fallback canon keeps final template selection in Viewing, template ownership in Interfacing, and generic CRUD behavior in Cruding. The existing dirty Cruding-specific candidate addition is presentation selection only and points to the real Interfacing-owned `templates/crud/index.html.twig` surface.
+- Symfony `kernel.view` remains the framework-native conversion point from neutral controller return values to a final `Response`; richer Twig/Live Component composition remains a growth concern outside the Viewing RC boundary.
+
+### Workstreams
+
+- RC-critical: reproduce current deterministic gates, verify the dirty candidate-selection change and current Gating behavior, run post-change Inspecting, reconcile `.gating/README.md`, and integrate only coherent verified work.
+- Growth: optional Twig/Live Component composition and richer presentation DX remain post-RC and must stay in Interfacing/consumer UI ownership.
+
+### Initial verification
+
+- `composer validate --strict --check-lock`: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83 tests / 239 assertions, repository-owned Gating 0 failed / 0 warnings.
+
+## 2026-10-03 — Canon RC execution `engine-20261003203032-viewing-2fe880`
+
+### Baseline and reconciliation
+
+- Workspace resolved through Console MCP as `D:\\PhpstormProjects\\www\\Viewing`; active branch is `rc/viewing-master-sync-20260911`.
+- Protected pre-existing dirty work at reconnaissance: modified `AGENTS.md`, `src/Service/ViewTemplateCandidateService.php`, `tests/Unit/ViewTemplateCandidateServiceTest.php`, and this orchestration journal; `.gating/README.md` was tracked but deleted.
+- Supplied CanonScanning report from fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` had Canon022 and Canon052 RED. Supplied Inspecting evidence had five medium, non-autofixable structural findings and no high-severity finding.
+- Current Canonization `Canon022StandaloneApplicationDependencyBaselineRule.md` explicitly excludes a baseline package from requiring itself. Current Gating mirrors that exclusion, so the historical `viewing/view` self-dependency finding is stale and no invalid self-dependency is introduced.
+- Current Canonization `Canon052GatingIntegrationRule.md` permits generated artifact directories plus a non-executable boundary README under consumer `.gating/`. The tracked README deletion was therefore restored exactly; no copied Gating owner runtime or policy tree was introduced.
+- Mandatory contour read in this execution: Viewing repository instructions/manifests/runtime candidate service/tests; Objecting, Cruding, and Interfacing contracts/manifests; Canonization Canon021/022/052 textual rules; Gating executable Canon022/052 mirrors; supplied CanonScanning and Inspecting reports.
+
+### Target-to-canon mapping
+
+- Canon021: Viewing may decide presentation candidates for neutral Cruding payloads but does not own generic CRUD routing, mutation, or operation dispatch.
+- Canon022: Viewing is itself `viewing/view`; self-dependency is excluded while the remaining standalone baseline remains direct in development/production manifests.
+- Canon052: `gating/gate` is development tooling and consumer `.gating/` remains artifact-only; `.gating/README.md` is documentation of that boundary, not executable policy.
+- The protected candidate change points Cruding payloads to `@Interfacing/crud/index.html.twig`, which exists and delegates to Interfacing's CRUD workbench. This is template selection inside Viewing; template ownership remains in Interfacing and CRUD behavior remains in Cruding.
+
+### Workstreams
+
+- RC-critical: preserve/reconcile protected useful work, restore Canon052 README state, reproduce deterministic quality gates, run behavioral/browser verification for the changed presentation fallback, and inspect final Git/integration state without absorbing concurrent work unsafely.
+- Growth: richer Twig/Live Component composition, presentation DX, and additional observability remain post-RC concerns owned by Interfacing/consumer composition boundaries.
+
+### Runtime and risks
+
+- Managed PHP runtime on port 19081 existed at reconnaissance but `/viewing` health probing timed out; restart is permitted only because the reused runtime is unhealthy.
+- The candidate fallback can alter user-visible rendering for Cruding payloads, so behavioral/browser verification and visual evidence are required before factual completion.
+- Do not reset, delete, or overwrite concurrent/protected dirty work merely to obtain a clean tree.
+
+### Final verification and acceptance
+
+- Development Composer validation: PASS (`--strict --check-lock`); production manifest validation: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, repository-owned Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS.
+- Changed PHP lint: PASS for the candidate service and its regression test.
+- Composer audit: PASS, no advisories. npm audit at high threshold: PASS, 0 vulnerabilities.
+- Post-change Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261003-235049.json`: phpstan errors 0; five unchanged medium structural observations; zero autofixable findings and no high-severity regression.
+- Managed runtime `127.0.0.1:19081/viewing`: HTTP 200 after restart of the previously unhealthy managed process. Playwright: PASS, 1/1 standalone browser test.
+- Central visual artifact produced at `D:\\PhpstormProjects\\www\\var\\Viewing\\2026-10-03\\run-23-52-29\\screenshots\\web\\unspecified\\page.png`; Visual Gallery server is healthy.
+- Visual acceptance remains ATTENTION rather than GREEN for the Cruding-specific branch: this repository exposes only the `/viewing` standalone route, which exercises Viewing self-processing, while Cruding payloads are represented here by candidate-service fixtures/tests rather than a dedicated HTTP route. Exact Cruding fallback behavior is deterministically covered by `ViewTemplateCandidateServiceTest`; a host-level Cruding visual scenario would require an external application route and is not invented inside Viewing.
+- The coherent integration set is `AGENTS.md`, `CMCP_CHANGELOG.md`, `src/Service/ViewTemplateCandidateService.php`, and `tests/Unit/ViewTemplateCandidateServiceTest.php`; `.gating/README.md` was restored to its canonical tracked content and has no textual diff.
 
