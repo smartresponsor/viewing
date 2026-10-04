@@ -77,6 +77,10 @@ final readonly class ViewTemplateCandidateService implements ViewTemplateCandida
             return [];
         }
 
+        if ('cruding' === strtolower(trim($payload->component))) {
+            return [];
+        }
+
         return [sprintf('@%s/index.html.twig', $this->twigNamespace($payload->component))];
     }
 
