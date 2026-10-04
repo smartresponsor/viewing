@@ -423,3 +423,17 @@
 - Visual acceptance remains ATTENTION rather than GREEN for the Cruding-specific branch: this repository exposes only the `/viewing` standalone route, which exercises Viewing self-processing, while Cruding payloads are represented here by candidate-service fixtures/tests rather than a dedicated HTTP route. Exact Cruding fallback behavior is deterministically covered by `ViewTemplateCandidateServiceTest`; a host-level Cruding visual scenario would require an external application route and is not invented inside Viewing.
 - The coherent integration set is `AGENTS.md`, `CMCP_CHANGELOG.md`, `src/Service/ViewTemplateCandidateService.php`, and `tests/Unit/ViewTemplateCandidateServiceTest.php`; `.gating/README.md` was restored to its canonical tracked content and has no textual diff.
 
+## 2026-10-03 — Execution checkpoint `engine-20261003234109-viewing-6413b8`
+
+### Completion reconciliation
+
+- Continued from the same authoritative Viewing workspace after Console MCP capacity recovered; no repository/container path substitution was used.
+- Revalidated current Canon021/022/052 textual rules and executable mirrors. Canon022 excludes `viewing/view` from requiring itself; Canon052 permits the non-executable consumer `.gating/README.md` boundary surface.
+- `composer validate --strict --check-lock`: PASS. `composer run-script quality`: PASS with PHPStan clean, PHPUnit 83/83 and 239 assertions, and Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS. Playwright: PASS, 1/1. Composer audit: PASS with no advisories. npm audit at high threshold: PASS with 0 vulnerabilities.
+- Post-change Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261003-235025.json`: PHPStan errors 0; five unchanged medium structural observations; zero autofixable findings and no high-severity regression.
+- Reused the healthy managed Viewing runtime on `127.0.0.1:19081`; no unnecessary restart was performed. A central screenshot was produced under `D:\\PhpstormProjects\\www\\var\\Viewing\\2026-10-03\\run-23-51-48\\screenshots\\web\\unspecified\\page.png`.
+- Host-level linked-environment verification used the existing App Cruding route contour after its stale managed runtime was proven unhealthy and restarted. `/product/index` and `/category/index` returned HTTP 200 through Viewing with Interfacing-owned resource templates; an attempted unsupported `/access/index` returned a host Doctrine mapping error and was not treated as Viewing acceptance evidence.
+- Exact Cruding generic-fallback visual evidence remains ATTENTION rather than GREEN because sampled active host resources resolve higher-priority resource-specific Interfacing templates. The fallback branch itself remains deterministically covered by `ViewTemplateCandidateServiceTest`; no debug-only production route was invented merely to force a screenshot.
+- During this execution, the coherent product change was concurrently integrated as commit `bf3d48f` (`Harden Viewing CRUD template fallback`) and published to `origin/rc/viewing-master-sync-20260911`. The repository was confirmed clean and synchronized before this journal-only checkpoint.
+
