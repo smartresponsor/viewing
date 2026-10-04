@@ -465,6 +465,14 @@
 - Visual acceptance remains ATTENTION rather than GREEN for the Cruding-specific branch: this repository exposes only the `/viewing` standalone route, which exercises Viewing self-processing, while Cruding payloads are represented here by candidate-service fixtures/tests rather than a dedicated HTTP route. Exact Cruding fallback behavior is deterministically covered by `ViewTemplateCandidateServiceTest`; a host-level Cruding visual scenario would require an external application route and is not invented inside Viewing.
 - The coherent integration set is `AGENTS.md`, `CMCP_CHANGELOG.md`, `src/Service/ViewTemplateCandidateService.php`, and `tests/Unit/ViewTemplateCandidateServiceTest.php`; `.gating/README.md` was restored to its canonical tracked content and has no textual diff.
 
+### Host-level visual acceptance closure
+
+- Existing host application `D:\\PhpstormProjects\\www\\App` exposes the real `cruding_tokenized_catch_all` route. Its managed runtime was probed first on port 18080 and was unhealthy; restart was therefore permitted by the REUSE_EXISTING_FIRST policy.
+- `GET /product/index`: HTTP 200 through `cruding_tokenized_catch_all`, payload component `Cruding`, Viewing rendered response (`x-viewing-rendered: 1`), Interfacing owns the rendered workbench, and `x-viewing-template` is the existing resource-specific `@Interfacing/product/index.html.twig`. Screenshot: `D:\\PhpstormProjects\\www\\var\\Viewing\\2026-10-04\\run-00-09-16\\screenshots\\web\\unspecified\\page.png`.
+- `GET /vendor/index`: HTTP 200 through the same Cruding→Viewing pipeline with payload component `Cruding`, `x-viewing-rendered: 1`, and existing resource-specific `@Interfacing/vendor/index.html.twig`. Screenshot: `D:\\PhpstormProjects\\www\\var\\Viewing\\2026-10-04\\run-00-09-36\\screenshots\\web\\unspecified\\page.png`.
+- `GET /review/index` matches Cruding grammar but returns the expected 404 `crud_runtime_resource_not_allowed`; it is not a configured Cruding resource and therefore cannot be used to manufacture generic-fallback visual evidence.
+- Conclusion: current host cohorts demonstrably exercise Cruding→Viewing→Interfacing successfully, but all verified allowed resources use existing resource-specific Interfacing templates. The newly added `@Interfacing/crud/index.html.twig` candidate is therefore not currently activated by an existing host route. Its exact branch is deterministically covered by unit tests; a synthetic resource/route is intentionally not invented solely for screenshot production. Visual acceptance for applicable existing host UI is GREEN, while the generic fallback branch is presently non-applicable to configured host routes.
+
 ## 2026-10-03 — Execution checkpoint `engine-20261003234109-viewing-6413b8`
 
 ### Completion reconciliation
