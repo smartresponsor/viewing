@@ -24,16 +24,19 @@ Viewing resolves templates in this exact order:
 1. @Interfacing/<resource>/index.html.twig
    Filesystem: Interfacing/templates/<resource>/index.html.twig
 
-2. @Interfacing/index.html.twig
+2. @Interfacing/crud/index.html.twig for Cruding payloads
+   Filesystem: Interfacing/templates/crud/index.html.twig
+
+3. @Interfacing/index.html.twig
    Filesystem: Interfacing/templates/index.html.twig
 
-3. @<Component>/index.html.twig
+4. @<Component>/index.html.twig for non-Cruding payloads
    Filesystem: <Component>/templates/index.html.twig
 
-4. @Viewing/view/index.html.twig
+5. @Viewing/view/index.html.twig
    Filesystem: Viewing/templates/view/index.html.twig
 
-5. Structured JSON fallback
+6. Structured JSON fallback
 ----
 
 The local component template is not rendered by the component controller. It is
