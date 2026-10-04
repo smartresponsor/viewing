@@ -744,3 +744,64 @@
 - Stage/commit/push only this journal entry if the post-write worktree contains no unrelated concurrent changes.
 - Recheck branch/upstream state after publication and do not absorb any new concurrent dirty paths.
 
+## 2026-10-03 — Canon/documentation reconciliation `engine-20261004014025-viewing-af022f`
+
+### Baseline and market posture
+
+- Console MCP resolved the authoritative workspace as `D:\\PhpstormProjects\\www\\Viewing`; reconnaissance began from clean synchronized HEAD `eac4257597033ad1fb43f66fefbe8bec06838a1c` on `rc/viewing-master-sync-20260911`.
+- Supplied CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` contained historical Canon022 and Canon052 failures from 2026-09-29. Current Canonization Canon022 excludes a baseline package from requiring itself; Canon052 permits an artifact-only consumer `.gating/` surface with a non-executable README.
+- Mandatory dependency/read contour was rechecked against Viewing, Objecting, Cruding, Interfacing, Gating, and Canonization. Viewing remains the Symfony `kernel.view` representation boundary; Cruding owns generic CRUD behavior, Interfacing owns visible template composition, and Objecting owns reusable system-field packs.
+- Current Symfony UX maturity reinforces the boundary: reusable Twig Components/Live Components belong to template/UI composition, while Viewing remains responsible for deterministic representation selection, fallback, guardrails, and response construction.
+
+### Target-to-canon mapping and material work
+
+- Canon022: no invalid `viewing/view` self-dependency is added; the historical RED is stale against current normative text and current repository-owned Gating.
+- Canon052: current `composer gate` is GREEN with 0 failed / 0 warnings and no copied Gating owner runtime/policy tree is required under consumer `.gating/`.
+- Canon058/documentation parity: current canonical OpenAPI source is `config/openapi/view_openapi.yaml`. Concurrent in-scope edits corrected stale references in `README.md`, `VIEWING_RC_HARDENING_PLAN.md`, `docs/migration/host-integration-checklist.adoc`, and `docs/release/viewing-rc-packaging.md`; the host checklist also reflects the implemented Cruding-specific Interfacing fallback and skips local Cruding template fallback.
+- The concurrent documentation edits were semantically reviewed and preserved rather than overwritten. No runtime PHP, template markup, route, navigation, form, CSS, or user interaction behavior was changed by this reconciliation.
+
+### Verification
+
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, Gating 0 failed / 0 warnings.
+- `composer run-script validate:prod`: PASS.
+- Composer audit: PASS; no security vulnerability advisories.
+- Fresh Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-014550.json`: finding count 0, PHPStan errors 0, autofixable count 0.
+- Because the effective change is documentation-only and does not alter user-observable UI/runtime behavior, a new runtime restart, Playwright pass, or screenshot is not applicable. Existing central visual evidence remains relevant.
+
+### Integration intent
+
+- Treat the four documentation corrections plus this orchestration journal entry as the coherent in-scope set, provided final Git inspection shows no new unrelated/concurrent paths.
+- Stage/commit/push only after rechecking current status/diff/upstream; do not absorb any newly appearing concurrent work.
+
+## 2026-10-03 — Canon017 documentation drift closure `engine-20261004013341-viewing-3d0b36`
+
+### Baseline and market posture
+
+- Console MCP resolved the authoritative workspace as `D:\\PhpstormProjects\\www\\Viewing`; reconnaissance HEAD was `eac4257597033ad1fb43f66fefbe8bec06838a1c` on `rc/viewing-master-sync-20260911`, with a clean worktree and upstream ahead/behind `0/0`.
+- The supplied CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` was consumed before remediation. Its Canon022 and Canon052 failures describe historical self-dependency and copied `.gating/` owner-tree state; current Canonization and Gating no longer require either condition.
+- The supplied Inspecting baseline was also consumed. Its five medium structural findings have been closed by later integrated Viewing hardening; this task does not reopen runtime structure without new evidence.
+- Market/framework baseline: Symfony's native `kernel.view` event remains the response-conversion boundary for non-`Response` controller results. Reusable/reactive Twig composition belongs in Twig Components/Live Components and the Interfacing/host composition layer, not in Viewing's representation-decision boundary.
+- RC-critical workstream: close authoritative documentation drift that can regenerate obsolete OpenAPI paths or an incomplete Cruding presentation fallback contract. Growth workstream: richer Twig/Live Component composition and UI DX remain post-RC outside Viewing ownership.
+
+### Canonization mapping
+
+- `Canon017DocumentationMatchesRuntimeRule.md`: current documentation must describe the actual runtime and canonical paths; stale `docs/schema/viewing-openapi.yaml` references are actionable drift.
+- `Canon021CrudingOwnsGenericCrudRule.md`: Cruding retains generic CRUD semantics; Viewing may choose presentation candidates but does not acquire CRUD routing or processing.
+- `Canon022StandaloneApplicationDependencyBaselineRule.md`: current canon excludes the root baseline package from requiring itself; no `viewing/view` self-dependency is added.
+- `Canon052GatingIntegrationRule.md`: consumer `.gating/` remains artifact-only and executable policy stays in `gating/gate`; the historical copied owner-tree RED is not reproduced by the current repository contract.
+- `Canon058CanonicalOpenApiSourceRule.md`: Viewing's current canonical OpenAPI source is `config/openapi/view_openapi.yaml`; `docs/**` cannot be the canonical source.
+
+### Material remediation
+
+- Corrected the README OpenAPI link to `config/openapi/view_openapi.yaml`.
+- Updated the host integration checklist to include the actual Cruding-specific `Interfacing/templates/crud/index.html.twig` candidate and to mark the producer-local candidate as non-Cruding only.
+- Corrected the host integration OpenAPI source path to `config/openapi/view_openapi.yaml`.
+- Updated the RC hardening plan and RC packaging posture so they no longer advertise the retired `docs/schema/` source location.
+- No PHP, Twig, route, configuration, browser behavior, navigation, form, or user-flow implementation changed; runtime restart and new screenshot capture are not applicable to this remediation.
+
+### Verification plan
+
+- Search authoritative current documentation for residual retired `docs/schema` references outside historical orchestration records.
+- Run Composer development/production validation, aggregate quality/Gating, behavioral evidence, security audit, and npm audit.
+- Inspect final Git diff/status/upstream state and publish only this coherent documentation/journal set if verification remains green.
+
