@@ -710,3 +710,37 @@
 - Final Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-010929.json`: PHPStan errors 0; the renderer long-method and response-guard type-dispatch findings are closed. One medium, non-autofixable SRP cohesion observation remains in `ViewTemplateRenderer`; it is architectural guidance rather than an RC correctness failure and further class-splitting would be speculative growth.
 - No intentional user-observable template, navigation, form, CSS, or interaction change was introduced, so no new screenshot is required; existing central visual evidence remains applicable.
 
+## 2026-10-03 — Canon reconciliation `engine-20261004012643-viewing-d2b749`
+
+### Baseline and current canon
+
+- Console MCP resolved the authoritative workspace as `D:\\PhpstormProjects\\www\\Viewing`; reconnaissance started from clean synchronized HEAD `6599548a80d06a98142f58b3d74a8e5b2f7d2d79` on `rc/viewing-master-sync-20260911`.
+- Supplied CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` contained historical Canon022 and Canon052 failures from 2026-09-29; supplied Inspecting evidence contained five medium structural findings.
+- Current Canonization `Canon022StandaloneApplicationDependencyBaselineRule.md` explicitly excludes the root baseline package from requiring itself, so `viewing/view` must not self-require. Current `Canon052GatingIntegrationRule.md` keeps consumer `.gating/` artifact-only with executable policy in `gating/gate`.
+- Mandatory dependency/read contour was rechecked against Viewing, Objecting, Cruding, Interfacing, Gating, and Canonization. Viewing remains the Symfony `kernel.view` representation boundary; Cruding owns generic CRUD processing, Interfacing owns reusable visible templates/composition, and Objecting owns reusable system-field packs.
+
+### Market and maturity posture
+
+- Symfony documents `kernel.view` as the native conversion point from non-`Response` controller results into final responses; mature content-negotiation stacks likewise separate representation negotiation from domain/CRUD mechanics.
+- RC-critical work remains deterministic rendering/response correctness, canonical dependency/gate compliance, and inspectable verification. Richer Twig/Live Component composition and broader presentation DX remain post-RC growth work in Interfacing/host ownership.
+
+### Canon mapping and material result
+
+- Canon022: current target manifests intentionally do not add `viewing/view` as a self-dependency; the historical RED is stale against current normative text and current executable mirror.
+- Canon052: current repository-owned Gating passes and no copied Gating owner policy/runtime tree is required inside consumer `.gating/`.
+- Existing structural hardening from prior integrated Viewing work was re-evaluated instead of duplicated. Fresh Inspecting on the current repository fingerprint reports zero findings and zero PHPStan errors, so no further behavior-preserving source split is justified in this execution window.
+- No runtime/UI implementation mutation was required; the only repository mutation for this task is this required orchestration journal entry.
+
+### Verification
+
+- Fresh Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-012926.json`: finding count 0, PHPStan errors 0, autofixable count 0.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, repository Gating 0 failed / 0 warnings.
+- `composer run-script validate:prod`: PASS.
+- `composer run-script test:behavioral-coverage`: PASS; evidence regenerated.
+- No browser-visible UI, navigation, form, template output, CSS, or interaction behavior changed in this task; new screenshot capture is therefore not applicable. Existing central visual acceptance remains relevant.
+
+### Integration tail
+
+- Stage/commit/push only this journal entry if the post-write worktree contains no unrelated concurrent changes.
+- Recheck branch/upstream state after publication and do not absorb any new concurrent dirty paths.
+
