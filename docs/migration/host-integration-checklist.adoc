@@ -51,8 +51,9 @@ The bridge receives the current Symfony `Request` and returns canonical location
 [source,text]
 ----
 Interfacing/templates/<resource>/index.html.twig
+Interfacing/templates/crud/index.html.twig for Cruding payloads
 Interfacing/templates/index.html.twig
-<Component>/templates/index.html.twig
+<Component>/templates/index.html.twig for non-Cruding payloads
 Viewing/templates/view/index.html.twig
 structured JSON fallback
 ----
@@ -73,7 +74,7 @@ JSON serialization is strict. Recursive or unsupported payloads return HTTP 500 
 
 == Reusable OpenAPI and Nelmio schemas
 
-Viewing publishes reusable schema components in `docs/schema/viewing-openapi.yaml`. Host applications may import these schemas into their own OpenAPI/Nelmio documentation, but endpoint ownership stays with the host or producer component.
+Viewing publishes reusable schema components in `config/openapi/view_openapi.yaml`. Host applications may import these schemas into their own OpenAPI/Nelmio documentation, but endpoint ownership stays with the host or producer component.
 
 The schema file intentionally keeps `paths: {}` and provides only reusable `components.schemas` and `components.responses` for `_view`, `_viewing`, `interface.locations`, degraded serialization fallback, and guard violation responses.
 

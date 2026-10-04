@@ -178,7 +178,7 @@ The final RC evidence report records the R1-R11 hardened contract, deterministic
 
 Status: implemented and gate-verified.
 
-Reusable OpenAPI 3.1 schema components are published in `docs/schema/viewing-openapi.yaml`. The schema file intentionally keeps `paths: {}` so endpoint ownership remains with the host or producer component.
+Reusable OpenAPI 3.1 schema components are published from the canonical source `config/openapi/view_openapi.yaml`. The schema file intentionally keeps `paths: {}` so endpoint ownership remains with the host or producer component.
 
 ### R14 RC Packaging Posture
 
