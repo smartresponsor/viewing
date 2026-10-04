@@ -625,3 +625,26 @@
 
 - Commit only `src/Service/ViewResponseGuardService.php` plus this journal entry if the shared journal remains conflict-free. Preserve the concurrent renderer diff unstaged unless its owning execution integrates it first.
 
+## 2026-10-03 — Autonomous RC renderer closure `engine-20261004004259-viewing-72760e`
+
+### Baseline and canon mapping
+
+- Console MCP resolved `D:\\PhpstormProjects\\www\\Viewing`; reconnaissance consumed the supplied CanonScanning RED and Inspecting evidence, Viewing repository contracts, Objecting/Cruding/Interfacing dependency contour, current Canonization Canon019/020/022/052 textual rules, and Gating executable mirrors.
+- Historical Canon022/052 RED evidence is stale against current canon and current repository-owned Gating: Viewing is excluded from self-requiring `viewing/view`, and consumer `.gating/` remains artifact-only.
+- Market/framework posture remains unchanged: Viewing owns deterministic `kernel.view` representation/render mechanics, Interfacing owns visible Twig composition, and Cruding owns generic CRUD semantics. Growth work such as richer Twig/Live Component composition remains post-RC outside the Viewing renderer responsibility.
+- Fresh pre-remediation Inspecting on the current repository fingerprint reported two medium observations: `ViewTemplateRenderer::render()` long-method and response-guard repeated-type-dispatch; PHPStan errors were zero.
+
+### Material implementation
+
+- Refactored `ViewTemplateRenderer::render()` into focused helpers for render-context construction, successful response construction/observability, failure trace recording, and optional Interfacing location composition.
+- Preserved candidate order, Twig context keys, App-over-producer location precedence, render-failure continuation, status-code resolution, observability events, timing headers, `X-Viewing-Template`, and null fallback semantics.
+- Concurrent verified work closed the response-guard type-dispatch observation without altering its exempt response set; this execution preserved and reverified that integrated state rather than overwriting it.
+
+### Verification and acceptance
+
+- Final `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, repository Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS after the renderer extraction.
+- A Playwright run passed 1/1 after the primary renderer extraction. Subsequent retries after the final location-composition extraction encountered browser-worker setup timeouts; the managed PHP runtime was first proven unhealthy, then restarted under REUSE_EXISTING_FIRST and returned HTTP 200 at `/viewing`. The Console-owned supervised browser also opened `/viewing` successfully. No assertion-level Viewing regression was observed.
+- Final Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-010929.json`: PHPStan errors 0; the renderer long-method and response-guard type-dispatch findings are closed. One medium, non-autofixable SRP cohesion observation remains in `ViewTemplateRenderer`; it is architectural guidance rather than an RC correctness failure and further class-splitting would be speculative growth.
+- No intentional user-observable template, navigation, form, CSS, or interaction change was introduced, so no new screenshot is required; existing central visual evidence remains applicable.
+
