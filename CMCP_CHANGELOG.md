@@ -596,3 +596,32 @@
 
 - Integrate only the coherent source changes owned by this run (`src/Normalizer/ViewPayloadNormalizer.php` and `src/DependencyInjection/Configuration.php`). Keep the shared dirty `CMCP_CHANGELOG.md` unstaged because it contains concurrent protected orchestration content from other executions.
 
+## 2026-10-03 — Autonomous RC structural closure `engine-20261004005425-viewing-30f79b`
+
+### Baseline and canon mapping
+
+- Console MCP resolved `D:\\PhpstormProjects\\www\\Viewing`; initial branch state was clean and synchronized before concurrent renderer work appeared.
+- Read the authoritative task specification, Viewing README/manifests/runtime hotspots, Objecting/Cruding/Interfacing contracts, current Gating contract, Canonization Canon022/052 normative rules and guard matrix, plus supplied CanonScanning and Inspecting reports.
+- Current Canon022 explicitly excludes the baseline package itself, so Viewing must not require `viewing/view`; current Gating is GREEN and the historical self-dependency RED is stale.
+- Canon052 requires consumer `.gating/` to remain artifact-only. Current repository Gating reports 0 failed / 0 warnings; no copied owner policy tree was introduced by this run.
+- RC-critical workstream: close the remaining response-guard type-dispatch hotspot while preserving behavior and verify the concurrently refactored renderer without overwriting it. Growth work remains post-RC presentation DX/Twig composition in Interfacing/host ownership.
+
+### Material implementation
+
+- Replaced four explicit `instanceof` checks in `ViewResponseGuardService::isViolation()` with one declarative `EXEMPT_RESPONSE_TYPES` set and a focused `isExemptResponseType()` helper. The exempt response classes and public guard semantics are unchanged.
+- A concurrent protected change in `src/Renderer/ViewTemplateRenderer.php` extracted render-context and failure-recording helpers. This run inspected and verified that diff but did not overwrite or claim ownership of it.
+
+### Verification
+
+- Changed PHP syntax lint: PASS for renderer and response guard.
+- PHPUnit: PASS, 83/83 tests and 239 assertions.
+- PHPStan level 8: PASS, no errors.
+- Repository Gating: PASS, 0 failed / 0 warnings.
+- PHP-CS-Fixer dry-run: response-guard change itself is clean; aggregate style check is currently blocked only by a one-line PHPDoc alignment issue in the concurrently modified renderer.
+- Fresh Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-010702.json`: PHPStan errors 0; historical long-method and repeated-type-dispatch findings are closed. One medium SRP cohesion observation remains in the concurrently modified renderer; zero high-severity findings and zero autofixable findings.
+- No intentional user-observable UI/navigation/form/interaction behavior changed in this run, so no new visual capture is required; existing visual acceptance remains applicable.
+
+### Integration policy
+
+- Commit only `src/Service/ViewResponseGuardService.php` plus this journal entry if the shared journal remains conflict-free. Preserve the concurrent renderer diff unstaged unless its owning execution integrates it first.
+
