@@ -48,13 +48,13 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         }
 
         $compositionStartedAt = microtime(true);
-        $locations = $this->composedLocations($request, $locations);
+        $locations = self::composedLocations($this->interfaceLocationComposeService, $request, $locations);
         $compositionMs = (microtime(true) - $compositionStartedAt) * 1000;
 
         foreach ($resolution->availableCandidates as $candidate) {
             try {
                 $contextStartedAt = microtime(true);
-                $renderContext = $this->renderContext(
+                $renderContext = self::renderContext(
                     $payload,
                     $context,
                     $decision,
@@ -71,12 +71,14 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
                 $twigMs = (microtime(true) - $twigStartedAt) * 1000;
             } catch (\Throwable $exception) {
-                $this->recordRenderFailure($exception, $context, $decision, $candidate, $startedAt, $request);
+                self::recordRenderFailure($this->observability, $exception, $context, $decision, $candidate, $startedAt, $request);
 
                 continue;
             }
 
-            return $this->renderedResponse(
+            return self::renderedResponse(
+                $this->statusCodeResolver,
+                $this->observability,
                 $content,
                 $payload,
                 $context,
@@ -93,7 +95,9 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         return null;
     }
 
-    private function renderedResponse(
+    private static function renderedResponse(
+        ?ViewStatusCodeResolverInterface $statusCodeResolver,
+        ?ViewObservabilityServiceInterface $observability,
         string $content,
         ViewPayload $payload,
         ViewRequestContext $context,
@@ -105,8 +109,8 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         float $contextMs,
         float $twigMs,
     ): Response {
-        $statusCode = $this->statusCodeResolver?->resolve($payload) ?? Response::HTTP_OK;
-        $this->observability?->record('template_render', [
+        $statusCode = $statusCodeResolver?->resolve($payload) ?? Response::HTTP_OK;
+        $observability?->record('template_render', [
             'route' => $context->routeName,
             'path' => $context->path,
             'actor_type' => $context->actorType,
@@ -125,7 +129,8 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         return $response;
     }
 
-    private function recordRenderFailure(
+    private static function recordRenderFailure(
+        ?ViewObservabilityServiceInterface $observability,
         \Throwable $exception,
         ViewRequestContext $context,
         ViewDecision $decision,
@@ -133,7 +138,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         float $startedAt,
         ?\Symfony\Component\HttpFoundation\Request $request,
     ): void {
-        $this->observability?->record('template_render_failure', [
+        $observability?->record('template_render_failure', [
             'route' => $context->routeName,
             'path' => $context->path,
             'actor_type' => $context->actorType,
@@ -162,7 +167,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
      *
      * @return array<string, mixed>
      */
-    private function renderContext(
+    private static function renderContext(
         ViewPayload $payload,
         ViewRequestContext $context,
         ViewDecision $decision,
@@ -204,15 +209,18 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
      *
      * @return array<string, list<array<string, mixed>>>
      */
-    private function composedLocations(?\Symfony\Component\HttpFoundation\Request $request, array $locations): array
-    {
-        if (null === $request || null === $this->interfaceLocationComposeService) {
+    private static function composedLocations(
+        ?ViewInterfaceLocationComposerInterface $interfaceLocationComposeService,
+        ?\Symfony\Component\HttpFoundation\Request $request,
+        array $locations,
+    ): array {
+        if (null === $request || null === $interfaceLocationComposeService) {
             return $locations;
         }
 
-        return $this->mergeLocations(
+        return self::mergeLocations(
             $locations,
-            $this->interfaceLocationComposeService->composeLocations($request),
+            $interfaceLocationComposeService->composeLocations($request),
         );
     }
 
@@ -225,7 +233,7 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
      *
      * @return array<string, list<array<string, mixed>>>
      */
-    private function mergeLocations(array $left, array $right): array
+    private static function mergeLocations(array $left, array $right): array
     {
         foreach ($right as $location => $blocks) {
             $left[$location] = array_values($blocks);
