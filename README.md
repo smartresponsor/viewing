@@ -1,6 +1,6 @@
 # Viewing
 
-Viewing is the central view boundary and rendering manager for the Smart Responsor platform. Hooking directly into the Symfony `kernel.view` event, it intercept controllers returning neutral data payloads and processes them into final HTTP responses using template fallback chains, guardrails, and JSON formats.
+Viewing is the central view boundary and rendering manager for the multi-domain SaaS platform. Hooking directly into the Symfony `kernel.view` event, it intercepts controllers returning neutral data payloads and processes them into final HTTP responses using template fallback chains, guardrails, and JSON formats.
 
 This bundle is **not** a direct template design catalog (which belongs in the Interfacing layer). It owns the rendering boundary logic, fallback decisions, and template dispatching.
 
@@ -8,7 +8,7 @@ This bundle is **not** a direct template design catalog (which belongs in the In
 
 ### What the component already does
 - Intercepts controller payloads on `kernel.view` to unify response generation.
-- Enforces template fallback chains (resolving template paths dynamically by locale, resource, or layout).
+- Enforces the canonical folder-based template fallback chain from neutral resource metadata; producer components never select physical Twig paths.
 - Operates a self-processing connectable view architecture.
 - Enforces guardrails and traffic policies (e.g. blocking template engine rendering for crawler/bot requests to serve lightweight formats).
 
@@ -19,10 +19,10 @@ This bundle is **not** a direct template design catalog (which belongs in the In
 
 The bundle acts as a Symfony event-driven presentation boundary:
 - `App\Viewing\ViewingBundle` wires the bundle and service configuration.
-- `src/Subscriber/View/` contains the `kernel.request`, `kernel.view`, and `kernel.response` subscribers.
-- `src/Service/View/` contains classification, decision, template resolution/rendering, status resolution, and JSON fallback services.
-- `src/ServiceInterface/View/` mirrors the public service contracts.
-- `src/Value/View/` contains immutable payload, request context, decision, actor, reason, and template-resolution values.
+- `src/EventSubscriber/` contains the `kernel.request`, `kernel.view`, and `kernel.response` subscribers.
+- `src/Service/` contains orchestration services whose dominant role is service logic; factories, normalizers, resolvers, and renderers live in their canonical typed roots.
+- `src/ServiceInterface/` mirrors public service contracts; cross-component optional bridges live under `src/Contract/`.
+- `src/Value/` contains immutable payload, request context, decision, actor, reason, and template-resolution values.
 
 ## Decision and Failure Contract
 
@@ -32,7 +32,7 @@ The decision order is explicit: configured bot actors, JSON request format, JSON
 
 Template absence and template failure are distinct. Missing candidates may use structured JSON fallback with the payload status. Loader or render failures use distinct reason codes and force HTTP 500 when the payload does not already provide an explicit error status. HTML and JSON responses share `ViewStatusCodeResolverInterface`.
 
-Producer objects are accepted only when they implement `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposeServiceInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
+Producer objects are accepted only when they implement `App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface`; method-name duck typing is not supported. Optional Interfacing location composition is exposed through `ViewInterfaceLocationComposerInterface`. Standalone mode injects `null`; host applications may alias their Interfacing implementation to the local bridge contract.
 
 Structured observability uses optional PSR-3 logging with stable event and metric fields; payload content, stack traces, and filesystem paths are not logged. JSON serialization is all-or-nothing with UTF-8 substitution and explicit `serialization_degraded` HTTP 500 fallback. Response guard rollout is configured with `response_guard_mode: off|observe|enforce`; observe preserves the original response and adds `X-Viewing-Guard`.
 
@@ -64,7 +64,7 @@ To integrate Viewing in your Symfony host application:
     }
   ],
   "require": {
-    "viewing/view": "*@dev"
+    "viewing/view": "dev-master"
   }
 }
 ```
@@ -77,5 +77,5 @@ To integrate Viewing in your Symfony host application:
 - [ADR 0004: Guardrails and Traffic Policy](docs/adr/0004-guardrails-and-traffic-policy.adoc)
 - [Viewing Host Integration Checklist](docs/migration/host-integration-checklist.adoc)
 - [Viewing RC Evidence Report](docs/release/viewing-rc-evidence.md)
-- [Viewing OpenAPI/Nelmio Schemas](docs/schema/viewing-openapi.yaml)
+- [Viewing OpenAPI/Nelmio Schemas](config/openapi/view_openapi.yaml)
 - [Viewing RC Packaging Posture](docs/release/viewing-rc-packaging.md)

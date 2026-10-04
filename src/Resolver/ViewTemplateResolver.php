@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Viewing\Resolver;
+
+use App\Viewing\ServiceInterface\ViewTemplateResolverInterface;
+use App\Viewing\Value\ViewTemplateResolution;
+use Twig\Environment;
+
+/**
+ * Resolves Template decisions without transferring presentation ownership outside Viewing.
+ */
+final readonly class ViewTemplateResolver implements ViewTemplateResolverInterface
+{
+    public function __construct(
+        private Environment $twig,
+    ) {
+    }
+
+    /**
+     * Resolves the canonical Viewing value for the supplied payload and request context.
+     *
+     * @param list<string> $templateCandidates
+     */
+    public function resolve(array $templateCandidates): ViewTemplateResolution
+    {
+        $checked = [];
+        $available = [];
+        $missing = [];
+        $loaderFailures = [];
+
+        foreach (array_values(array_unique($templateCandidates)) as $candidate) {
+            if (!\is_string($candidate) || '' === trim($candidate)) {
+                continue;
+            }
+
+            $template = trim($candidate);
+
+            try {
+                $exists = $this->twig->getLoader()->exists($template);
+            } catch (\Throwable $exception) {
+                $checked[] = [
+                    'template' => $template,
+                    'exists' => false,
+                    'error' => $exception::class,
+                ];
+                $loaderFailures[] = [
+                    'template' => $template,
+                    'exception' => $exception::class,
+                ];
+                continue;
+            }
+
+            $checked[] = [
+                'template' => $template,
+                'exists' => $exists,
+            ];
+
+            if ($exists) {
+                $available[] = $template;
+                continue;
+            }
+
+            $missing[] = $template;
+        }
+
+        return new ViewTemplateResolution(
+            selectedTemplate: $available[0] ?? null,
+            checkedCandidates: $checked,
+            availableCandidates: $available,
+            missingCandidates: $missing,
+            loaderFailures: $loaderFailures,
+        );
+    }
+}

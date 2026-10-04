@@ -41,7 +41,7 @@ Forbidden inside producer UI controllers:
 Allowed outputs:
 
 * neutral View Payload array/DTO;
-* object payload implementing `App\Viewing\ValueInterface\View\ViewObjectPayloadInterface`;
+* object payload implementing `App\Viewing\ValueObjectInterface\ViewObjectPayloadInterface`;
 * explicit `JsonResponse` for API endpoints;
 * `RedirectResponse` for real redirects;
 * binary/stream/file responses for file delivery;
@@ -64,16 +64,19 @@ The canonical order is intentionally short and folder-based:
 1. Interfacing/templates/<resource>/index.html.twig
    Twig: @Interfacing/<resource>/index.html.twig
 
-2. Interfacing/templates/index.html.twig
+2. Interfacing/templates/crud/index.html.twig for Cruding payloads
+   Twig: @Interfacing/crud/index.html.twig
+
+3. Interfacing/templates/index.html.twig
    Twig: @Interfacing/index.html.twig
 
-3. <Component>/templates/index.html.twig
+4. <Component>/templates/index.html.twig for non-Cruding payloads
    Twig: @<Component>/index.html.twig
 
-4. Viewing/templates/view/index.html.twig
+5. Viewing/templates/view/index.html.twig
    Twig: @Viewing/view/index.html.twig
 
-5. Structured JSON fallback
+6. Structured JSON fallback
 ----
 
 The local component fallback is rendered by Viewing. It does not return control

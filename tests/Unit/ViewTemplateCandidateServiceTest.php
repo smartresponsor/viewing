@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Viewing\Test\Unit;
 
-use App\Viewing\Service\View\ViewTemplateCandidateService;
-use App\Viewing\Value\View\ViewPayload;
-use App\Viewing\Value\View\ViewRequestContext;
+use App\Viewing\Service\ViewTemplateCandidateService;
+use App\Viewing\Value\ViewPayload;
+use App\Viewing\Value\ViewRequestContext;
 use PHPUnit\Framework\TestCase;
 
 final class ViewTemplateCandidateServiceTest extends TestCase
 {
-    public function testCanonicalTemplateHierarchyIsResourceIndexThenInterfacingRootThenLocalIndex(): void
+    public function testCrudingCanonicalTemplateHierarchyNeverReturnsToProducerUi(): void
     {
         $service = new ViewTemplateCandidateService();
         $payload = new ViewPayload(surface: 'Vendor Profile', operation: 'Show', intent: 'Profile', component: 'Cruding');
@@ -20,10 +20,9 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
-            '@Interfacing/vendor-profile/show.html.twig',
             '@Interfacing/vendor-profile/index.html.twig',
+            '@Interfacing/crud/index.html.twig',
             '@Interfacing/index.html.twig',
-            '@Cruding/index.html.twig',
             '@Viewing/view/index.html.twig',
         ], $candidates);
     }
@@ -53,8 +52,8 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
-            '@Interfacing/vendor/show.html.twig',
             '@Interfacing/vendor/index.html.twig',
+            '@Interfacing/crud/index.html.twig',
             '@Interfacing/index.html.twig',
             '@Viewing/view/index.html.twig',
         ], $candidates);
@@ -69,10 +68,32 @@ final class ViewTemplateCandidateServiceTest extends TestCase
         $candidates = $service->candidates($payload, $context);
 
         self::assertSame([
-            '@Interfacing/vendor/show.html.twig',
             '@Interfacing/vendor/index.html.twig',
+            '@Interfacing/crud/index.html.twig',
             '@Interfacing/index.html.twig',
-            '@Cruding/index.html.twig',
         ], $candidates);
+    }
+
+    public function testMissingOrBlankComponentSkipsLocalFallbackAndEmptySlugUsesIndex(): void
+    {
+        $service = new ViewTemplateCandidateService();
+        $context = new ViewRequestContext('/viewing', 'GET');
+
+        $withoutComponent = $service->candidates(new ViewPayload('---', 'index'), $context);
+        self::assertSame('@Interfacing/index/index.html.twig', $withoutComponent[0]);
+        self::assertNotContains('@Component/index.html.twig', $withoutComponent);
+
+        $blankComponent = $service->candidates(new ViewPayload('Vendor', 'index', component: '   '), $context);
+        self::assertNotContains('@Component/index.html.twig', $blankComponent);
+    }
+
+    public function testInvalidComponentCharactersUseComponentNamespaceFallback(): void
+    {
+        $service = new ViewTemplateCandidateService();
+        $context = new ViewRequestContext('/vendor', 'GET');
+
+        $candidates = $service->candidates(new ViewPayload('Vendor', 'index', component: '---'), $context);
+
+        self::assertContains('@Component/index.html.twig', $candidates);
     }
 }

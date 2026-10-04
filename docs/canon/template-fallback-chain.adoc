@@ -19,19 +19,23 @@ segment.
    Interfacing/templates/<resource>/index.html.twig
    Twig candidate: @Interfacing/<resource>/index.html.twig
 
-2. Interfacing root index
+2. Interfacing generic CRUD workbench for Cruding payloads
+   Interfacing/templates/crud/index.html.twig
+   Twig candidate: @Interfacing/crud/index.html.twig
+
+3. Interfacing root index
    Interfacing/templates/index.html.twig
    Twig candidate: @Interfacing/index.html.twig
 
-3. Local producer/component home index fallback
+4. Local producer/component home index fallback for non-Cruding payloads
    <Component>/templates/index.html.twig
    Twig candidate: @<Component>/index.html.twig
 
-4. Viewing diagnostic fallback
+5. Viewing diagnostic fallback
    Viewing/templates/view/index.html.twig
    Twig candidate: @Viewing/view/index.html.twig
 
-5. Structured JSON fallback
+6. Structured JSON fallback
    Used when policy requires JSON, traffic is classified as JSON-only, or no
    template candidate is usable.
 ----

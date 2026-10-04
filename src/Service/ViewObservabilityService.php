@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Viewing\Service;
+
+use App\Viewing\ServiceInterface\ViewObservabilityServiceInterface;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Owns the Observability service responsibility inside the Viewing presentation boundary.
+ */
+final readonly class ViewObservabilityService implements ViewObservabilityServiceInterface
+{
+    public function __construct(private ?LoggerInterface $logger = null)
+    {
+    }
+
+    /**
+     * Records a structured Viewing observability event without exposing payload or filesystem details.
+     */
+    public function record(string $event, array $context = [], string $level = 'info'): void
+    {
+        if (null === $this->logger) {
+            return;
+        }
+
+        $payload = [
+            'component' => 'viewing',
+            'event' => $event,
+            'metric' => 'viewing_'.$event.'_total',
+            'value' => 1,
+        ] + $context;
+
+        $this->logger->log($level, 'viewing.'.$event, $payload);
+    }
+}

@@ -18,10 +18,10 @@ This document defines the release-candidate packaging posture for the `viewing/v
 The RC source package should include these families:
 
 - `src/` runtime classes, subscribers, services, interfaces, values, and bundle wiring;
-- `config/` Symfony bundle configuration and route samples;
+- `config/` Symfony bundle configuration, route samples, and the canonical `config/openapi/view_openapi.yaml` OpenAPI source;
 - `templates/` Viewing-owned diagnostic/self-processing fallback templates only;
 - `tests/` PHPUnit coverage for the hardened contract;
-- `docs/adr/`, `docs/canon/`, `docs/migration/`, `docs/schema/`, and `docs/release/`;
+- `docs/adr/`, `docs/canon/`, `docs/migration/`, and `docs/release/`;
 - Composer metadata and local development gate configuration.
 
 The RC source package should exclude these families:
@@ -62,7 +62,7 @@ The packaging gate must run from a clean working tree and pass:
 - `composer run-script php-cs-fixer`;
 - RC validate with canon issue count equal to zero.
 
-The PHPUnit baseline is clean: 48 tests and 107 assertions complete without failures, errors, warnings, risky tests, or PHPUnit notices. Packaging must preserve that clean baseline.
+The PHPUnit baseline is clean: 83 tests and 239 assertions complete without failures, errors, warnings, risky tests, or PHPUnit notices. Packaging must preserve that clean baseline.
 
 ## Host import posture
 
