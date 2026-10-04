@@ -17,6 +17,18 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 final readonly class ViewResponseGuardService implements ViewResponseGuardServiceInterface
 {
+    /**
+     * Response variants that are already explicit non-HTML delivery modes.
+     *
+     * @var list<class-string<Response>>
+     */
+    private const EXEMPT_RESPONSE_TYPES = [
+        JsonResponse::class,
+        RedirectResponse::class,
+        BinaryFileResponse::class,
+        StreamedResponse::class,
+    ];
+
     public function __construct(
         private string $controlledRouteAttribute = '_view_controlled',
         private string $guardMode = 'enforce',
@@ -45,7 +57,7 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
             return false;
         }
 
-        if ($response instanceof JsonResponse || $response instanceof RedirectResponse || $response instanceof BinaryFileResponse || $response instanceof StreamedResponse) {
+        if ($this->isExemptResponseType($response)) {
             return false;
         }
 
@@ -66,6 +78,17 @@ final readonly class ViewResponseGuardService implements ViewResponseGuardServic
         }
 
         return true;
+    }
+
+    private function isExemptResponseType(Response $response): bool
+    {
+        foreach (self::EXEMPT_RESPONSE_TYPES as $responseType) {
+            if (is_a($response, $responseType)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
