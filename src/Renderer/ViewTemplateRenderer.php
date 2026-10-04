@@ -48,45 +48,20 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
         }
 
         $compositionStartedAt = microtime(true);
-        if (null !== $request && null !== $this->interfaceLocationComposeService) {
-            $locations = $this->mergeLocations(
-                $locations,
-                $this->interfaceLocationComposeService->composeLocations($request),
-            );
-        }
+        $locations = $this->composedLocations($request, $locations);
         $compositionMs = (microtime(true) - $compositionStartedAt) * 1000;
 
         foreach ($resolution->availableCandidates as $candidate) {
             try {
                 $contextStartedAt = microtime(true);
-                $payloadArray = $payload->toArray();
-                $renderContext = [
-                    'view' => $payloadArray['_view'],
-                    'interface' => [
-                        'locations' => $locations,
-                    ],
-                    'locations' => $locations,
-                    'data' => $payload->data,
-                    'meta' => $payload->meta,
-                    'debug' => $payload->debug,
-                    'payload' => $payloadArray,
-                    'surface' => $payload->surface,
-                    'operation' => $payload->operation,
-                    'component' => $payload->component,
-                    'request_context' => [
-                        'path' => $context->path,
-                        'method' => $context->method,
-                        'route' => $context->routeName,
-                        'format' => $context->requestFormat,
-                        'actor_type' => $context->actorType,
-                    ],
-                    'viewing' => [
-                        'selected_template' => $candidate,
-                        'template_candidates' => $decision->templateCandidates,
-                        'template_resolution' => $resolution->toArray(),
-                        'decision_reasons' => $decision->reasons,
-                    ],
-                ];
+                $renderContext = $this->renderContext(
+                    $payload,
+                    $context,
+                    $decision,
+                    $resolution->toArray(),
+                    $locations,
+                    $candidate,
+                );
 
                 // Viewing keeps its reserved keys authoritative, then exposes
                 // producer payload data as template context after the canonical
@@ -96,50 +71,149 @@ final readonly class ViewTemplateRenderer implements ViewTemplateRendererInterfa
                 $content = $this->twig->render($candidate, $renderContext + $payload->data);
                 $twigMs = (microtime(true) - $twigStartedAt) * 1000;
             } catch (\Throwable $exception) {
-                $this->observability?->record('template_render_failure', [
-                    'route' => $context->routeName,
-                    'path' => $context->path,
-                    'actor_type' => $context->actorType,
-                    'exception_class' => $exception::class,
-                    'candidate_depth' => \count($decision->templateCandidates),
-                    'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
-                ], 'error');
-
-                if (null !== $request) {
-                    $failures = $request->attributes->get('_view_render_failures');
-                    $failures = \is_array($failures) ? $failures : [];
-                    $failures[] = [
-                        'template' => $candidate,
-                        'exception' => $exception::class,
-                        'message' => mb_substr($exception->getMessage(), 0, 300),
-                    ];
-                    $request->attributes->set('_view_render_failures', $failures);
-                }
+                $this->recordRenderFailure($exception, $context, $decision, $candidate, $startedAt, $request);
 
                 continue;
             }
 
-            $statusCode = $this->statusCodeResolver?->resolve($payload) ?? Response::HTTP_OK;
-            $this->observability?->record('template_render', [
-                'route' => $context->routeName,
-                'path' => $context->path,
-                'actor_type' => $context->actorType,
-                'status_code' => $statusCode,
-                'candidate_depth' => \count($decision->templateCandidates),
-                'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
-            ]);
-
-            $response = new Response($content, $statusCode, ['Content-Type' => 'text/html; charset=UTF-8']);
-            $response->headers->set('X-Viewing-Resolve-ms', number_format($resolutionMs, 2, '.', ''));
-            $response->headers->set('X-Viewing-Compose-ms', number_format($compositionMs, 2, '.', ''));
-            $response->headers->set('X-Viewing-Context-ms', number_format($contextMs, 2, '.', ''));
-            $response->headers->set('X-Viewing-Twig-ms', number_format($twigMs, 2, '.', ''));
-            $response->headers->set('X-Viewing-Template', $candidate);
-
-            return $response;
+            return $this->renderedResponse(
+                $content,
+                $payload,
+                $context,
+                $decision,
+                $candidate,
+                $startedAt,
+                $resolutionMs,
+                $compositionMs,
+                $contextMs,
+                $twigMs,
+            );
         }
 
         return null;
+    }
+
+    private function renderedResponse(
+        string $content,
+        ViewPayload $payload,
+        ViewRequestContext $context,
+        ViewDecision $decision,
+        string $candidate,
+        float $startedAt,
+        float $resolutionMs,
+        float $compositionMs,
+        float $contextMs,
+        float $twigMs,
+    ): Response {
+        $statusCode = $this->statusCodeResolver?->resolve($payload) ?? Response::HTTP_OK;
+        $this->observability?->record('template_render', [
+            'route' => $context->routeName,
+            'path' => $context->path,
+            'actor_type' => $context->actorType,
+            'status_code' => $statusCode,
+            'candidate_depth' => \count($decision->templateCandidates),
+            'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
+        ]);
+
+        $response = new Response($content, $statusCode, ['Content-Type' => 'text/html; charset=UTF-8']);
+        $response->headers->set('X-Viewing-Resolve-ms', number_format($resolutionMs, 2, '.', ''));
+        $response->headers->set('X-Viewing-Compose-ms', number_format($compositionMs, 2, '.', ''));
+        $response->headers->set('X-Viewing-Context-ms', number_format($contextMs, 2, '.', ''));
+        $response->headers->set('X-Viewing-Twig-ms', number_format($twigMs, 2, '.', ''));
+        $response->headers->set('X-Viewing-Template', $candidate);
+
+        return $response;
+    }
+
+    private function recordRenderFailure(
+        \Throwable $exception,
+        ViewRequestContext $context,
+        ViewDecision $decision,
+        string $candidate,
+        float $startedAt,
+        ?\Symfony\Component\HttpFoundation\Request $request,
+    ): void {
+        $this->observability?->record('template_render_failure', [
+            'route' => $context->routeName,
+            'path' => $context->path,
+            'actor_type' => $context->actorType,
+            'exception_class' => $exception::class,
+            'candidate_depth' => \count($decision->templateCandidates),
+            'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
+        ], 'error');
+
+        if (null === $request) {
+            return;
+        }
+
+        $failures = $request->attributes->get('_view_render_failures');
+        $failures = \is_array($failures) ? $failures : [];
+        $failures[] = [
+            'template' => $candidate,
+            'exception' => $exception::class,
+            'message' => mb_substr($exception->getMessage(), 0, 300),
+        ];
+        $request->attributes->set('_view_render_failures', $failures);
+    }
+
+    /**
+     * @param array<string, mixed>                      $resolution
+     * @param array<string, list<array<string, mixed>>> $locations
+     *
+     * @return array<string, mixed>
+     */
+    private function renderContext(
+        ViewPayload $payload,
+        ViewRequestContext $context,
+        ViewDecision $decision,
+        array $resolution,
+        array $locations,
+        string $candidate,
+    ): array {
+        $payloadArray = $payload->toArray();
+
+        return [
+            'view' => $payloadArray['_view'],
+            'interface' => ['locations' => $locations],
+            'locations' => $locations,
+            'data' => $payload->data,
+            'meta' => $payload->meta,
+            'debug' => $payload->debug,
+            'payload' => $payloadArray,
+            'surface' => $payload->surface,
+            'operation' => $payload->operation,
+            'component' => $payload->component,
+            'request_context' => [
+                'path' => $context->path,
+                'method' => $context->method,
+                'route' => $context->routeName,
+                'format' => $context->requestFormat,
+                'actor_type' => $context->actorType,
+            ],
+            'viewing' => [
+                'selected_template' => $candidate,
+                'template_candidates' => $decision->templateCandidates,
+                'template_resolution' => $resolution,
+                'decision_reasons' => $decision->reasons,
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, list<array<string, mixed>>> $locations
+     *
+     * @return array<string, list<array<string, mixed>>>
+     */
+    private function composedLocations(?\Symfony\Component\HttpFoundation\Request $request, array $locations): array
+    {
+        if (null === $request || null === $this->interfaceLocationComposeService) {
+            return $locations;
+        }
+
+        return $this->mergeLocations(
+            $locations,
+            $this->interfaceLocationComposeService->composeLocations($request),
+        );
     }
 
     /**
