@@ -10,7 +10,7 @@ This report captures release-candidate evidence for the `viewing/view` Symfony b
 - Package: `viewing/view`.
 - Runtime role: Symfony event-driven presentation boundary.
 - Primary flow: `kernel.request -> kernel.view -> kernel.response`.
-- Current RC posture: R1-R11 hardened; all in-scope Viewing quality/debt gates are green. The only remaining hard failure is the external Canon022 root-package self-dependency rule.
+- Current RC posture: R1-R11 hardened; all current in-scope Viewing quality/debt gates are green. Canon022 now explicitly excludes a baseline package from requiring itself, and current repository Gating accepts the Viewing root package without a self-dependency.
 
 ## Hardened contract surface
 
@@ -39,7 +39,7 @@ R11 treats `config/reference.php` as generated output that is ignored and not tr
 | npm audit | PASS | `package-lock.json` present; 0 vulnerabilities. |
 | Canon031 PHPDoc coverage | PASS | Classes 47/47 (100.0%); contract methods 49/49 (100.0%). |
 | Canon040 PHP coverage | PASS | Lines 99.2%; methods 80.8%; branches 87.8% against 80/80/70 targets. |
-| Gating | BLOCKED externally | Direct Canon022 check still requires the root package `viewing/view` to require itself. Canon031 and Canon040 now pass. |
+| Gating | PASS | Current repository Gating reports 0 failed and 0 warnings; Canon022 excludes the root package itself and Canon052 accepts the consumer artifact-only `.gating/` boundary. |
 
 ## PHPUnit baseline
 
@@ -51,6 +51,6 @@ Running the PHPUnit suite should not leave `.phpunit.result.cache` as source dri
 
 ## Remaining RC work
 
-- Reusable OpenAPI/Nelmio schemas are published in `docs/schema/viewing-openapi.yaml`.
+- Canonical OpenAPI source is published under `config/openapi/view_openapi.yaml`.
 - RC packaging posture, manifest/checksum policy, and host import guidance are published in `docs/release/viewing-rc-packaging.md`.
 - PHPUnit warning/notices baseline, Canon031 documentation debt, and Canon040 executable coverage debt are closed. Keep these gates green during packaging and GA hardening.
