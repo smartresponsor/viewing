@@ -596,6 +596,43 @@
 
 - Integrate only the coherent source changes owned by this run (`src/Normalizer/ViewPayloadNormalizer.php` and `src/DependencyInjection/Configuration.php`). Keep the shared dirty `CMCP_CHANGELOG.md` unstaged because it contains concurrent protected orchestration content from other executions.
 
+## 2026-10-03 — Autonomous RC structural closure `engine-20261004005903-viewing-9caaa1`
+
+### Baseline and market posture
+
+- Console MCP resolved `D:\\PhpstormProjects\\www\\Viewing`; active branch `rc/viewing-master-sync-20260911` was synchronized with upstream at reconnaissance.
+- Supplied CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` contained historical Canon022/052 failures; current Canon022 explicitly excludes a package from requiring itself and current Canon052 keeps consumer `.gating/` artifact-only.
+- Supplied Inspecting evidence had five medium findings. Prior integrated work had already closed the Configuration, kernel.view subscriber, and payload-normalizer findings; this execution continued the remaining renderer/response-guard structural hardening.
+- Viewing remains the Symfony `kernel.view` presentation/response boundary; Cruding owns generic CRUD mechanics, Interfacing owns reusable visible templates/composition, and Objecting remains a reusable object-system-field foundation.
+
+### Canonization mapping
+
+- Canon022: preserve the direct standalone dependency baseline without adding the invalid `viewing/view` self-dependency.
+- Canon052: preserve `gating/gate` as development tooling, the standard `gate`/`quality` Composer entrypoints, and artifact-only consumer `.gating/` state.
+- Existing role-first `App\\Viewing\\` topology and the no-Domain/Port/Adapter/Adaptor constraint remain unchanged.
+
+### RC-critical and growth workstreams
+
+- RC-critical: finish behavior-preserving structural hardening of `ViewTemplateRenderer` and `ViewResponseGuardService`, run lint/static/unit/style/Gating/behavioral/Inspecting verification, probe the existing managed runtime before restart, and reconcile Git state without discarding concurrent work.
+- Growth: richer Twig/Live Component composition, UI design, and host-shell capabilities remain post-RC in Interfacing/consumer composition and do not block this task.
+
+### Verification checkpoint
+
+- Changed PHP lint: PASS.
+- `composer validate --strict --check-lock`: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, Gating 0 failed / 0 warnings.
+- PHP-CS-Fixer dry-run: PASS after applying the exact docblock alignment it requested.
+- Behavioral/UI coverage generator: PASS.
+- Fresh Inspecting reduced the supplied structural backlog to one medium, non-autofixable SRP cohesion observation in `ViewTemplateRenderer`; PHPStan errors remain 0 and the previous repeated-type-dispatch finding is closed.
+- Managed runtime on port 19081 was probed first, found running but unhealthy, and only then restarted; `/viewing` returned HTTP 200 after restart.
+- Playwright final retry: PASS, 1/1 standalone browser test. Two earlier attempts were transient infrastructure contention (`EBUSY` trace lock, then `ERR_ABORTED` during navigation) while the independent managed-runtime probe remained healthy after restart.
+
+### Final acceptance and integration posture
+
+- Fresh Inspecting leaves one medium, non-autofixable SRP cohesion observation in `ViewTemplateRenderer`; it is observational rather than a canon/Gating failure, PHPStan is clean, and no high-severity or autofixable finding remains.
+- Concurrent execution integrated `ViewResponseGuardService` during this window; its repeated-type-dispatch finding is therefore already part of synchronized HEAD/upstream.
+- Remaining coherent work for this task is the behavior-preserving `ViewTemplateRenderer` structural refactor plus this journal section. No Playwright artifact deletion or other destructive cleanup was performed.
+
 ## 2026-10-03 — Autonomous RC structural closure `engine-20261004005425-viewing-30f79b`
 
 ### Baseline and canon mapping
