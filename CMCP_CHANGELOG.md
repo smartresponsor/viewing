@@ -662,6 +662,31 @@
 
 - Commit only `src/Service/ViewResponseGuardService.php` plus this journal entry if the shared journal remains conflict-free. Preserve the concurrent renderer diff unstaged unless its owning execution integrates it first.
 
+## 2026-10-03 — Autonomous RC structural completion `engine-20261004010508-viewing-afad54`
+
+### Baseline, market posture, and canon mapping
+
+- Console MCP resolved `D:\\PhpstormProjects\\www\\Viewing`; the supplied 2026-09-29 CanonScanning fingerprint was historical evidence, not assumed current state.
+- Current Canonization `Canon022StandaloneApplicationDependencyBaselineRule.md` excludes a baseline package from requiring itself, so `viewing/view` must not self-require. `Canon052GatingIntegrationRule.md` keeps consumer `.gating/` artifact-only with executable policy in `gating/gate`; current repository Gating is green.
+- Mandatory dependency contour was reviewed through Viewing/Objecting/Cruding/Interfacing manifests/contracts plus Gating and Canonization. Viewing remains the Symfony `kernel.view` representation boundary; Cruding retains generic CRUD ownership and Interfacing retains visible template/composition ownership.
+- Mature Symfony practice confirms `kernel.view` converts non-Response controller data into final format-specific responses; Symfony UX Twig/Live Components provide richer reusable/reactive UI composition as a separate growth surface. RC-critical work therefore remains deterministic response/rendering hardening; UX component expansion remains post-RC and outside Viewing ownership.
+- Fresh pre-remediation Inspecting evidence on the locally refactored renderer had exactly one medium `solid.srp.low-property-cohesion` finding and zero PHPStan errors.
+
+### Material implementation
+
+- Preserved the behavior-preserving renderer extraction already present in the worktree and completed it by making internal context/response/failure/location helpers `private static` with optional collaborators passed explicitly from `render()`.
+- This centralizes all injected-property access in the public render orchestration method while preserving template resolution order, Twig context, location composition, observability events, failure traces, timing headers, status resolution, and response semantics.
+- Preserved the concurrently integrated response-guard type-dispatch hardening; no public API, route, template, navigation, form, database, or user-flow semantics were added.
+
+### Verification and integration
+
+- PHP syntax lint: PASS. PHP-CS-Fixer dry-run: PASS (0 fixable files).
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, repository Gating 0 failed / 0 warnings.
+- `composer run-script test:behavioral-coverage`: PASS; behavioral/UI evidence regenerated.
+- Fresh Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-012147.json`: PHPStan errors 0, finding count 0, autofixable count 0.
+- During execution the coherent renderer work was concurrently committed as `b33a147` (`Harden Viewing template renderer structure`). After that integration the worktree was clean; the branch was one commit ahead of upstream and required normal publication verification.
+- The change is structural/behavior-preserving and does not alter browser-visible UI semantics; a new screenshot is not applicable to this patch. Existing central visual acceptance remains the relevant UI evidence.
+
 ## 2026-10-03 — Autonomous RC renderer closure `engine-20261004004259-viewing-72760e`
 
 ### Baseline and canon mapping
