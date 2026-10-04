@@ -799,9 +799,13 @@
 - Updated the RC hardening plan and RC packaging posture so they no longer advertise the retired `docs/schema/` source location.
 - No PHP, Twig, route, configuration, browser behavior, navigation, form, or user-flow implementation changed; runtime restart and new screenshot capture are not applicable to this remediation.
 
-### Verification plan
+### Verification result
 
-- Search authoritative current documentation for residual retired `docs/schema` references outside historical orchestration records.
-- Run Composer development/production validation, aggregate quality/Gating, behavioral evidence, security audit, and npm audit.
-- Inspect final Git diff/status/upstream state and publish only this coherent documentation/journal set if verification remains green.
+- Residual `docs/schema` search found only historical/orchestration-journal references; current authoritative documentation no longer points to the retired source path.
+- `composer validate --strict --check-lock`: PASS; `composer run-script validate:prod`: PASS.
+- `composer run-script gate`: PASS with 0 failed / 0 warnings; PHPStan level 8: PASS; PHPUnit: PASS, 83 tests / 239 assertions; PHP-CS-Fixer dry-run: PASS, 0 fixable files.
+- `composer run-script test:behavioral-coverage`: PASS; Composer audit: PASS with no advisories; npm audit: PASS with 0 vulnerabilities.
+- Fresh Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-014550.json`: 0 findings, 0 PHPStan errors, 0 autofixable findings. Semgrep timed out, while the available PHPStan/php-structure analyzers are GREEN.
+- A concurrent in-scope execution window integrated and published the same coherent documentation remediation as commit `f78b2357085cc09033d9eef02d072dafc8e8ee22` (`Align Viewing OpenAPI documentation`); post-integration worktree is clean and branch/upstream are `0/0`.
+- No user-observable UI/runtime behavior changed, so runtime restart, new Playwright execution, and new screenshot capture are not applicable. Existing central visual evidence remains the relevant UI baseline.
 
