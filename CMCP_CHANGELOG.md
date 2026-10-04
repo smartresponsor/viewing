@@ -410,6 +410,48 @@
 - The candidate fallback can alter user-visible rendering for Cruding payloads, so behavioral/browser verification and visual evidence are required before factual completion.
 - Do not reset, delete, or overwrite concurrent/protected dirty work merely to obtain a clean tree.
 
+## 2026-10-03 — Autonomous RC execution `engine-20261003235112-viewing-f56bc2`
+
+### Baseline and market posture
+
+- Workspace resolved through Console MCP as `D:\\PhpstormProjects\\www\\Viewing`; branch `rc/viewing-master-sync-20260911`, reconnaissance HEAD `14872bdb40d7ace831585c42e7409d20cca32cf3`, upstream initially synchronized.
+- Pre-existing dirty set was preserved and semantically reconciled: `.gating/README.md`, `AGENTS.md`, `CMCP_CHANGELOG.md`, `src/Service/ViewTemplateCandidateService.php`, and `tests/Unit/ViewTemplateCandidateServiceTest.php`.
+- Supplied CanonScanning fingerprint `45a39658b8902da3b29e233cab77fa5f09514b68352213d55f629b6d478d28c1` reported historical Canon022/052 failures; supplied Inspecting evidence contained five medium, non-autofixable structural observations and no high-severity finding.
+- Market/framework baseline: Symfony `kernel.view` is the native response-conversion boundary for non-Response controller results; mature presentation stacks keep reusable template composition separate from resource/CRUD mechanics. Viewing therefore owns deterministic representation selection and dispatch, Interfacing owns reusable visible templates, and Cruding owns generic CRUD processing.
+- Growth workstream remains post-RC: richer Twig/Live Component composition and presentation DX belong at Interfacing/consumer composition boundaries and do not block this RC remediation.
+
+### Canonization mapping
+
+- `Canon021CrudingOwnsGenericCrudRule.md`: the change does not add generic CRUD routing or processing to Viewing; it only selects an Interfacing-owned presentation candidate for a neutral Cruding payload.
+- `Canon022StandaloneApplicationDependencyBaselineRule.md`: current canon explicitly excludes a baseline package from requiring itself. Current Gating mirrors that filter, so the historical `viewing/view` self-dependency finding is stale and no invalid self-require is introduced.
+- `Canon052GatingIntegrationRule.md`: consumer `.gating/` is artifact-only and may contain a non-executable boundary README. Current target state does not contain the copied Gating owner tree described by the historical RED report.
+- Dependency contour consulted as read-only references: Objecting, Cruding, Interfacing, Canonization, and Gating contracts/manifests/rules. `Interfacing/templates/crud/index.html.twig` exists and extends the Interfacing-owned CRUD workbench base.
+
+### RC-critical workstream and implementation
+
+- Preserve the existing Cruding-specific candidate insertion in `ViewTemplateCandidateService`: `@Interfacing/crud/index.html.twig` is tried after the resource-specific Interfacing candidate and before the Interfacing root/local-component/Viewing diagnostic fallbacks.
+- Preserve synchronized unit expectations for the candidate order.
+- Preserve the Canon021/052 agent-facing projection updates in `AGENTS.md` and the consumer-boundary `.gating/README.md` state after semantic review.
+- Do not expand into Cruding, Interfacing, App, database, or migration remediation.
+
+### Verification
+
+- `composer validate --strict --check-lock`: PASS.
+- `composer run-script validate:prod`: PASS.
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83 tests / 239 assertions, repository Gating 0 failed / 0 warning.
+- `composer run-script test:behavioral-coverage`: PASS.
+- Playwright repository browser suite: PASS, 1/1.
+- Changed runtime PHP syntax (`src/Service/ViewTemplateCandidateService.php`): PASS.
+- Composer audit: PASS, no vulnerability advisories. npm audit (`high`): PASS, 0 vulnerabilities.
+- Post-mutation Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261003-235603.json`: phpstan errors 0; the same five medium structural observations remain; zero autofixable and no new high-severity finding.
+- Existing managed Viewing runtime on port 19081 was reused without restart and remains healthy. Component visual capture succeeded under central artifact root `D:\\PhpstormProjects\\www\\var\\Viewing\\2026-10-04\\run-00-02-41\\screenshots\\web\\unspecified\\page.png` with HTTP 200.
+- Exact Cruding fallback visual acceptance is NOT_VERIFIED: the standalone Viewing route emits a Viewing payload, while the App composition host `/vendor/index` reaches HTTP 500 because of external App/database migration/schema state. That host failure is outside the Viewing repository boundary and is not remediated here.
+
+### Integration state and residual acceptance risk
+
+- During this execution window, the coherent product set was concurrently integrated as `bf3d48f` (`Harden Viewing CRUD template fallback`) and the prior RC journal checkpoint as `3c9e90e` (`Record Viewing RC execution checkpoint`); after fetch, `3c9e90e` is both local HEAD and `origin/rc/viewing-master-sync-20260911` with ahead/behind `0/0`.
+- The deterministic Viewing implementation/test contract is green and the product change is published. Exact generic-Cruding fallback visual acceptance remains ATTENTION/NOT_VERIFIED because the fallback has no dedicated Viewing HTTP fixture and the attempted App `/vendor/index` path is blocked by external App/database state. This task therefore remains open for that acceptance evidence rather than inventing a debug-only production route.
+
 ### Final verification and acceptance
 
 - Development Composer validation: PASS (`--strict --check-lock`); production manifest validation: PASS.
