@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ViewTemplateCandidateServiceTest extends TestCase
 {
-    public function testCanonicalTemplateHierarchyIsResourceIndexThenInterfacingRootThenLocalIndex(): void
+    public function testCrudingCanonicalTemplateHierarchyNeverReturnsToProducerUi(): void
     {
         $service = new ViewTemplateCandidateService();
         $payload = new ViewPayload(surface: 'Vendor Profile', operation: 'Show', intent: 'Profile', component: 'Cruding');
@@ -23,7 +23,6 @@ final class ViewTemplateCandidateServiceTest extends TestCase
             '@Interfacing/vendor-profile/index.html.twig',
             '@Interfacing/crud/index.html.twig',
             '@Interfacing/index.html.twig',
-            '@Cruding/index.html.twig',
             '@Viewing/view/index.html.twig',
         ], $candidates);
     }
@@ -72,7 +71,6 @@ final class ViewTemplateCandidateServiceTest extends TestCase
             '@Interfacing/vendor/index.html.twig',
             '@Interfacing/crud/index.html.twig',
             '@Interfacing/index.html.twig',
-            '@Cruding/index.html.twig',
         ], $candidates);
     }
 
