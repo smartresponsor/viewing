@@ -562,3 +562,37 @@
 - npm audit at high threshold: PASS, 0 vulnerabilities.
 - No additional runtime/UI semantics were introduced by this final reconciliation; existing visual evidence remains applicable and the central Visual Gallery is healthy.
 
+## 2026-10-03 — Autonomous RC structural continuation `engine-20261004003623-viewing-00cbe6`
+
+### Baseline and canon mapping
+
+- Console MCP resolved `D:\\PhpstormProjects\\www\\Viewing`; active branch is `rc/viewing-master-sync-20260911`. The shared `CMCP_CHANGELOG.md` already contained concurrent protected orchestration entries and is preserved rather than reset or silently absorbed into a source commit.
+- Read the authoritative execution specification, Viewing repository guidance/Markdown/AsciiDoc/manifests/runtime/tests, the Objecting/Cruding/Interfacing dependency contour, current Gating contract, Canonization textual Canon020/022/052 rules and executable Gating mirrors, plus the supplied CanonScanning RED and Inspecting reports before mutation.
+- Canon022 current text excludes the root baseline package from requiring itself; Canon052 requires `gating/gate` integration and artifact-only consumer `.gating/`. Current `composer gate` is GREEN (0 failed, 0 warnings), so the historical Canon022/052 RED envelope is stale against the present repository/canon state.
+- RC-critical workstream: reduce behavior-preserving structural hotspots while preserving the central presentation boundary and all deterministic acceptance gates. Growth workstream: richer Twig/component composition and presentation DX remain post-RC in Interfacing/host ownership.
+
+### Target-to-canon mapping
+
+- Canon020: retain explicit technical role roots under `App\\Viewing\\`; this run changes only existing `Normalizer` and `DependencyInjection` types and introduces no generic architecture layer.
+- Canon022: preserve the current complete standalone baseline without adding a forbidden `viewing/view` self-dependency.
+- Canon052: preserve standard Composer `gate`/`quality` execution and artifact-only `.gating/`; no local policy engine is copied into Viewing.
+- Viewing boundary: payload normalization and Symfony configuration remain presentation infrastructure; no CRUD semantics, template design ownership, domain model, navigation ownership, or alternative Domain/Port/Adapter topology is introduced.
+
+### Material implementation
+
+- Refactored `ViewPayloadNormalizer::normalize()` to delegate array normalization and canonical optional/required string normalization to focused private helpers. Existing ViewPayload pass-through, object-payload delegation, required-field failures, trimming, defaults, locations, data, meta, and debug semantics are preserved.
+- Refactored `Configuration::getConfigTreeBuilder()` into focused decision, traffic, and exclusion/template node builders while preserving every existing Symfony configuration node and default value.
+- Fresh Inspecting evidence reduced the supplied five medium findings to two: `ViewTemplateRenderer::render()` long-method observation and `ViewResponseGuardService::isViolation()` repeated-type-dispatch observation. Both are medium, non-autofixable observations; no high-severity or PHPStan finding remains.
+
+### Verification and runtime evidence
+
+- `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, Gating 0 failed / 0 warnings.
+- `composer validate --strict --check-lock`: PASS. `composer run-script test:behavioral-coverage`: PASS.
+- Post-change Inspecting report `D:\\PhpstormProjects\\www\\Inspecting\\.inspecting\\reports\\D--PhpstormProjects-www-Viewing-20261004-004801.json`: PHPStan errors 0; two medium findings, zero high-severity findings.
+- Playwright contour was inspected before execution. Managed runtime on `127.0.0.1:19081` was running but unhealthy (health probe timeout), so restart was allowed by REUSE_EXISTING_FIRST. Restarted runtime returned HTTP 200 at `/viewing`; Playwright then passed 1/1 standalone browser test.
+- No intentional user-observable template, navigation, CSS, form, or interaction change was made by this run, so a new screenshot is not required for acceptance; browser behavior was nevertheless revalidated.
+
+### Integration policy
+
+- Integrate only the coherent source changes owned by this run (`src/Normalizer/ViewPayloadNormalizer.php` and `src/DependencyInjection/Configuration.php`). Keep the shared dirty `CMCP_CHANGELOG.md` unstaged because it contains concurrent protected orchestration content from other executions.
+
