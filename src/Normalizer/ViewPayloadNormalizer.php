@@ -58,34 +58,51 @@ final class ViewPayloadNormalizer implements ViewPayloadNormalizerInterface
             throw new ViewPayloadException('Unsupported controller result for View payload normalization.');
         }
 
+        return $this->normalizeArrayPayload($controllerResult);
+    }
+
+    /**
+     * @param array<string, mixed> $controllerResult
+     */
+    private function normalizeArrayPayload(array $controllerResult): ViewPayload
+    {
         $view = \is_array($controllerResult['_view'] ?? null) ? $controllerResult['_view'] : [];
 
-        $surface = $view['surface'] ?? $controllerResult['_surface'] ?? null;
-        $operation = $view['operation'] ?? $controllerResult['_operation'] ?? null;
-
-        if (!\is_string($surface) || '' === trim($surface)) {
-            throw ViewPayloadException::missingRequiredField('_view.surface');
-        }
-
-        if (!\is_string($operation) || '' === trim($operation)) {
-            throw ViewPayloadException::missingRequiredField('_view.operation');
-        }
-
-        $format = $view['format'] ?? $controllerResult['_format'] ?? 'auto';
-        $intent = $view['intent'] ?? $controllerResult['_intent'] ?? null;
-        $component = $view['component'] ?? $controllerResult['_component'] ?? null;
+        $surface = $this->requiredString($view['surface'] ?? $controllerResult['_surface'] ?? null, '_view.surface');
+        $operation = $this->requiredString($view['operation'] ?? $controllerResult['_operation'] ?? null, '_view.operation');
 
         return new ViewPayload(
-            surface: trim($surface),
-            operation: trim($operation),
-            format: \is_string($format) && '' !== trim($format) ? trim($format) : 'auto',
-            intent: \is_string($intent) && '' !== trim($intent) ? trim($intent) : null,
-            component: \is_string($component) && '' !== trim($component) ? trim($component) : null,
+            surface: $surface,
+            operation: $operation,
+            format: $this->optionalString($view['format'] ?? $controllerResult['_format'] ?? null) ?? 'auto',
+            intent: $this->optionalString($view['intent'] ?? $controllerResult['_intent'] ?? null),
+            component: $this->optionalString($view['component'] ?? $controllerResult['_component'] ?? null),
             locations: $this->interfaceLocationsFromControllerResult($controllerResult),
             data: \is_array($controllerResult['data'] ?? null) ? $controllerResult['data'] : [],
             meta: \is_array($controllerResult['meta'] ?? null) ? $controllerResult['meta'] : [],
             debug: \is_array($controllerResult['debug'] ?? null) ? $controllerResult['debug'] : [],
         );
+    }
+
+    private function requiredString(mixed $value, string $field): string
+    {
+        $value = $this->optionalString($value);
+        if (null === $value) {
+            throw ViewPayloadException::missingRequiredField($field);
+        }
+
+        return $value;
+    }
+
+    private function optionalString(mixed $value): ?string
+    {
+        if (!\is_string($value)) {
+            return null;
+        }
+
+        $value = trim($value);
+
+        return '' === $value ? null : $value;
     }
 
     /**
