@@ -809,3 +809,15 @@
 - A concurrent in-scope execution window integrated and published the same coherent documentation remediation as commit `f78b2357085cc09033d9eef02d072dafc8e8ee22` (`Align Viewing OpenAPI documentation`); post-integration worktree is clean and branch/upstream are `0/0`.
 - No user-observable UI/runtime behavior changed, so runtime restart, new Playwright execution, and new screenshot capture are not applicable. Existing central visual evidence remains the relevant UI baseline.
 
+## 2026-10-05 — Final acceptance closure `engine-20261003200255-viewing-d1a028`
+
+- Console MCP identity reverified: `server_name=console-mcp`, workspace root `D:\PhpstormProjects\www`.
+- Current branch at continuation start: clean synchronized `master` at `08d81b113e31f1ddc448d9ef5cab8f59be4fb90a`.
+- Fresh Inspecting on current Viewing state: 0 findings, 0 PHPStan errors, 0 autofixable findings.
+- Existing managed runtime on port 19081 was probed first, found running but unhealthy, and only then restarted; `/viewing` returned HTTP 200.
+- Playwright browser acceptance: PASS, 1/1.
+- Browser smoke now persists a full-page screenshot into the central visual artifact contract `../var/Viewing/<date>/<run-id>/viewing-home.png`.
+- Independent localhost browser inspection produced HTTP 200 and screenshot evidence at `D:\PhpstormProjects\www\var\Viewing\2026-10-05\run-18-04-06\screenshots\web\unspecified\page.png`; page diagnostics were clean for the actual fetched HTML.
+- Visual Gallery server health: GREEN at `http://100.101.253.65:9477/`.
+- Final `composer run-script quality`: PASS; PHPStan level 8 clean, PHPUnit 83/83 with 239 assertions, repository Gating 0 failed / 0 warnings.
+
